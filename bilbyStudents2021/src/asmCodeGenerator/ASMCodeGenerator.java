@@ -245,6 +245,9 @@ public class ASMCodeGenerator {
 					args.add(arg);
 				}
 				ASMCodeFragment generated = generator.generate(node, args);
+				if(generated == null) {
+					throw new RuntimeException("SimpleCodeGenerator produced null code fragment in ASMCodeGenerator.OperatorNode");
+				}
 				code.appendWithCodeType(generated);
 			} 
 			else {

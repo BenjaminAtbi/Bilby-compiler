@@ -4,7 +4,7 @@ use Cwd;
 use File::Find;
 use File::Basename;
 
-my $project_location = "D:/Projects/Bilby-compiler";
+my $project_location = "C:/Users/Benja/Projects/Bilby-compiler";
 my $language_name = "bilby";
 my $project_name = "bilbyStudents2021";
 
