@@ -13,7 +13,8 @@ import lexicalAnalyzer.Lextant;
 import lexicalAnalyzer.Punctuator;
 import parseTree.*;
 import parseTree.nodeTypes.BooleanConstantNode;
-import parseTree.nodeTypes.MainBlockNode;
+import parseTree.nodeTypes.CharConstantNode;
+import parseTree.nodeTypes.BlockNode;
 import parseTree.nodeTypes.DeclarationNode;
 import parseTree.nodeTypes.FloatConstantNode;
 import parseTree.nodeTypes.IdentifierNode;
@@ -171,7 +172,7 @@ public class ASMCodeGenerator {
 				code.append(childCode);
 			}
 		}
-		public void visitLeave(MainBlockNode node) {
+		public void visitLeave(BlockNode node) {
 			newVoidCode(node);
 			for(ParseNode child : node.getChildren()) {
 				ASMCodeFragment childCode = removeVoidCode(child);
@@ -267,7 +268,12 @@ public class ASMCodeGenerator {
 			Binding binding = node.getBinding();
 			
 			binding.generateAddress(code);
-		}		
+		}	
+		public void visit(CharConstantNode node) {
+			newValueCode(node);
+			
+			code.add(PushI, node.getValue());
+		}
 		public void visit(IntegerConstantNode node) {
 			newValueCode(node);
 			

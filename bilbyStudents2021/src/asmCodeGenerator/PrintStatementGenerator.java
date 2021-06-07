@@ -40,7 +40,6 @@ public class PrintStatementGenerator {
 
 	private void appendPrintCode(ParseNode node) {
 		String format = printFormat(node.getType());
-
 		code.append(visitor.removeValueCode(node));
 		convertToStringIfBoolean(node);
 		code.add(PushD, format);
@@ -68,6 +67,7 @@ public class PrintStatementGenerator {
 		assert type instanceof PrimitiveType;
 		
 		switch((PrimitiveType)type) {
+		case CHAR: 		return RunTime.CHAR_PRINT_FORMAT;
 		case INTEGER:	return RunTime.INTEGER_PRINT_FORMAT;
 		case FLOAT: 	return RunTime.FLOATING_PRINT_FORMAT;
 		case BOOLEAN:	return RunTime.BOOLEAN_PRINT_FORMAT;

@@ -8,7 +8,8 @@ import logging.BilbyLogger;
 import parseTree.ParseNode;
 import parseTree.ParseNodeVisitor;
 import parseTree.nodeTypes.BooleanConstantNode;
-import parseTree.nodeTypes.MainBlockNode;
+import parseTree.nodeTypes.CharConstantNode;
+import parseTree.nodeTypes.BlockNode;
 import parseTree.nodeTypes.DeclarationNode;
 import parseTree.nodeTypes.ErrorNode;
 import parseTree.nodeTypes.FloatConstantNode;
@@ -43,9 +44,9 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	public void visitLeave(ProgramNode node) {
 		leaveScope(node);
 	}
-	public void visitEnter(MainBlockNode node) {
+	public void visitEnter(BlockNode node) {
 	}
-	public void visitLeave(MainBlockNode node) {
+	public void visitLeave(BlockNode node) {
 	}
 	
 	
@@ -127,6 +128,10 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	@Override
 	public void visit(ErrorNode node) {
 		node.setType(PrimitiveType.ERROR);
+	}
+	@Override
+	public void visit(CharConstantNode node) {
+		node.setType(PrimitiveType.CHAR);
 	}
 	@Override
 	public void visit(IntegerConstantNode node) {

@@ -1,10 +1,6 @@
         Jump         $$main                    
         DLabel       $eat-location-zero        
         DataZ        8                         
-        DLabel       $print-format-char        
-        DataC        37                        %% "%c"
-        DataC        99                        
-        DataC        0                         
         DLabel       $print-format-integer     
         DataC        37                        %% "%d"
         DataC        100                       
@@ -91,43 +87,23 @@
         DLabel       $global-memory-block      
         DataZ        0                         
         Label        $$main                    
-        PushI        115                       
-        PushD        $print-format-char        
+        PushI        123                       
+        PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
-        PushI        65                        
-        PushD        $print-format-char        
+        PushI        123                       
+        PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
-        PushI        35                        
-        PushD        $print-format-char        
+        PushI        123                       
+        PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
-        PushI        51                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
-        PushI        115                       
-        PushD        $print-format-char        
-        Printf                                 
-        PushD        $print-format-space       
-        Printf                                 
-        PushI        65                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushD        $print-format-space       
-        Printf                                 
-        PushI        35                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushD        $print-format-space       
-        Printf                                 
-        PushI        51                        
-        PushD        $print-format-char        
+        PushI        123                       
+        PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 

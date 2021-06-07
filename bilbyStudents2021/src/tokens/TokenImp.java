@@ -1,6 +1,7 @@
 package tokens;
 
 import lexicalAnalyzer.Lextant;
+import logging.BilbyLogger;
 import inputHandler.Locator;
 import inputHandler.TextLocation;
 
@@ -48,4 +49,8 @@ public abstract class TokenImp implements Token {
 		return false;
 	}
 	
+	protected static void tokenCreationError(Locator locator, String message) {
+		BilbyLogger log = BilbyLogger.getLogger("compiler.tokens");
+		log.severe("Token creation error:"+ message + " at " + locator.getLocation());
+	}
 }

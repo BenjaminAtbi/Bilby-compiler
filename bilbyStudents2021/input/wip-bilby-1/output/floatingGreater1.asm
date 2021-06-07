@@ -1,10 +1,6 @@
         Jump         $$main                    
         DLabel       $eat-location-zero        
         DataZ        8                         
-        DLabel       $print-format-char        
-        DataC        37                        %% "%c"
-        DataC        99                        
-        DataC        0                         
         DLabel       $print-format-integer     
         DataC        37                        %% "%d"
         DataC        100                       
@@ -91,43 +87,27 @@
         DLabel       $global-memory-block      
         DataZ        0                         
         Label        $$main                    
-        PushI        115                       
-        PushD        $print-format-char        
-        Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
-        PushI        65                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
-        PushI        35                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
-        PushI        51                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
-        PushI        115                       
-        PushD        $print-format-char        
-        Printf                                 
-        PushD        $print-format-space       
-        Printf                                 
-        PushI        65                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushD        $print-format-space       
-        Printf                                 
-        PushI        35                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushD        $print-format-space       
-        Printf                                 
-        PushI        51                        
-        PushD        $print-format-char        
+        Label        -compare-1-start          
+        PushF        1.230000                  
+        PushF        2.340000                  
+        Label        -compare-1-sub            
+        FSubtract                              
+        JumpFPos     -compare-1-true           
+        Jump         -compare-1-false          
+        Label        -compare-1-true           
+        PushI        1                         
+        Jump         -compare-1-join           
+        Label        -compare-1-false          
+        PushI        0                         
+        Jump         -compare-1-join           
+        Label        -compare-1-join           
+        JumpTrue     -print-boolean-2-true     
+        PushD        $boolean-false-string     
+        Jump         -print-boolean-2-join     
+        Label        -print-boolean-2-true     
+        PushD        $boolean-true-string      
+        Label        -print-boolean-2-join     
+        PushD        $print-format-boolean     
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 

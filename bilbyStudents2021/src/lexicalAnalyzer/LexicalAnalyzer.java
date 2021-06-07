@@ -7,6 +7,7 @@ import inputHandler.InputHandler;
 import inputHandler.LocatedChar;
 import inputHandler.LocatedCharStream;
 import inputHandler.PushbackCharStream;
+import tokens.CharToken;
 import tokens.FloatToken;
 import tokens.IdentifierToken;
 import tokens.LextantToken;
@@ -18,6 +19,7 @@ import static lexicalAnalyzer.PunctuatorScanningAids.*;
 
 public class LexicalAnalyzer extends ScannerImp implements Scanner {
 	private static final char DECIMAL_POINT = '.';
+	private static final char CAPITAL_E = 'E';
 
 	public static LexicalAnalyzer make(String filename) {
 		InputHandler handler = InputHandler.fromFilename(filename);
@@ -45,6 +47,9 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 		else if(isPunctuatorStart(ch)) {
 			return PunctuatorScanner.scan(ch, input);
 		}
+		else if(isCharStart(ch)) {
+			return scanChar(ch);
+		}
 		else if(isEndOfInput(ch)) {
 			return NullToken.make(ch);
 		}
@@ -53,6 +58,8 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 			return findNextToken();
 		}
 	}
+
+
 
 
 	private LocatedChar nextNonWhitespaceChar() {
@@ -75,6 +82,20 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 			buffer.append(input.next().getCharacter());
 			if(input.peek().isDigit()) {
 				appendSubsequentDigits(buffer);
+				if(input.peek().getCharacter() == CAPITAL_E) {
+					LocatedChar expChar = input.next();
+					buffer.append(expChar.getCharacter());
+					if(input.peek().getCharacter() == '+' || input.peek().getCharacter() == '-') {
+						buffer.append(input.next().getCharacter());
+					}
+					if(input.peek().isDigit()) {
+						appendSubsequentDigits(buffer);
+					}
+					else {
+						lexicalError(expChar, "malformed floating exponent literal");
+						return findNextToken();
+					}
+				} 
 				return FloatToken.make(firstChar, buffer.toString());
 			}
 			else {
@@ -95,6 +116,51 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 			c = input.next();
 		}
 		input.pushback(c);
+	}
+	
+//////////////////////////////////////////////////////////////////////////////
+// Char lexical analysis	
+
+	private Token scanChar(LocatedChar firstChar) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(firstChar.getCharacter());
+		if(input.peek().isChar('#')) {
+			buffer.append(input.next().getCharacter());
+			LocatedChar next = input.peek();
+			if(next.isChar('#') || next.isOctal()) {
+				buffer.append(input.next().getCharacter());
+			} 
+			else {
+				lexicalError(firstChar, "malformed char of form ##[0..9#]");
+				return findNextToken();
+			}
+			return CharToken.makePrecise(firstChar, buffer.toString());
+		} 
+		else if(input.peek().isOctal()) {
+			appendSubsequentOctals(buffer);
+			return CharToken.makeOctal(firstChar, buffer.toString());
+		}
+		else if(!input.peek().isWhitespace()){
+			buffer.append(input.next().getCharacter());
+			return CharToken.make(firstChar, buffer.toString());
+		}
+		else {
+			lexicalError(firstChar, "malformed char of form #@");
+			return findNextToken();
+		}
+	}
+
+	private void appendSubsequentOctals(StringBuffer buffer) {
+		LocatedChar c = input.next();
+		while(c.isOctal()) {
+			buffer.append(c.getCharacter());
+			c = input.next();
+		}
+		input.pushback(c);
+	}
+	
+	private boolean isCharStart(LocatedChar ch) {
+		return ch.isChar('#');
 	}
 	
 	

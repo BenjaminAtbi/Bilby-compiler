@@ -1,0 +1,9 @@
+main {
+	{
+		print 123 $n;
+	}
+	{
+		print 123 $n;
+		print 123 $n;
+	}
+}

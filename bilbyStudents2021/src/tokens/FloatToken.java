@@ -1,6 +1,8 @@
 package tokens;
 
+import inputHandler.LocatedChar;
 import inputHandler.Locator;
+import logging.BilbyLogger;
 
 public class FloatToken extends TokenImp {
 	protected double value;
@@ -17,7 +19,11 @@ public class FloatToken extends TokenImp {
 	
 	public static FloatToken make(Locator locator, String lexeme) {
 		FloatToken result = new FloatToken(locator, lexeme);
-		result.setValue(Double.parseDouble(lexeme));
+		double value = Double.parseDouble(lexeme);
+		if (value == Double.POSITIVE_INFINITY) {
+			tokenCreationError(locator, "float out of bounds");
+		}
+		result.setValue(value);
 		return result;
 	}
 	
@@ -25,4 +31,6 @@ public class FloatToken extends TokenImp {
 	protected String rawString() {
 		return "double, " + value;
 	}
+
+
 }

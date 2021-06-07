@@ -5,7 +5,8 @@ import java.util.Arrays;
 import logging.BilbyLogger;
 import parseTree.*;
 import parseTree.nodeTypes.BooleanConstantNode;
-import parseTree.nodeTypes.MainBlockNode;
+import parseTree.nodeTypes.CharConstantNode;
+import parseTree.nodeTypes.BlockNode;
 import parseTree.nodeTypes.DeclarationNode;
 import parseTree.nodeTypes.ErrorNode;
 import parseTree.nodeTypes.FloatConstantNode;
@@ -53,7 +54,7 @@ public class Parser {
 		ParseNode program = new ProgramNode(nowReading);
 		
 		expect(Keyword.MAIN);
-		ParseNode mainBlock = parseMainBlock();
+		ParseNode mainBlock = parseBlockStatement();
 		program.appendChild(mainBlock);
 		
 		if(!(nowReading instanceof NullToken)) {
@@ -68,32 +69,9 @@ public class Parser {
 	
 	
 	///////////////////////////////////////////////////////////
-	// mainBlock
-	
-	// mainBlock -> { statement* }
-	private ParseNode parseMainBlock() {
-		if(!startsMainBlock(nowReading)) {
-			return syntaxErrorNode("mainBlock");
-		}
-		ParseNode mainBlock = new MainBlockNode(nowReading);
-		expect(Punctuator.OPEN_BRACE);
-		
-		while(startsStatement(nowReading)) {
-			ParseNode statement = parseStatement();
-			mainBlock.appendChild(statement);
-		}
-		expect(Punctuator.CLOSE_BRACE);
-		return mainBlock;
-	}
-	private boolean startsMainBlock(Token token) {
-		return token.isLextant(Punctuator.OPEN_BRACE);
-	}
-	
-	
-	///////////////////////////////////////////////////////////
 	// statements
 	
-	// statement-> declaration | printStmt
+	// statement-> declaration | printStmt | assignmnetStmt | blockStmt
 	private ParseNode parseStatement() {
 		if(!startsStatement(nowReading)) {
 			return syntaxErrorNode("statement");
@@ -104,12 +82,18 @@ public class Parser {
 		if(startsPrintStatement(nowReading)) {
 			return parsePrintStatement();
 		}
+		if(startsBlockStatement(nowReading)) {
+			return parseBlockStatement();
+		}
 		return syntaxErrorNode("statement");
 	}
 	private boolean startsStatement(Token token) {
 		return startsPrintStatement(token) ||
-			   startsDeclaration(token);
+			   startsDeclaration(token) ||
+			   startsBlockStatement(token);
 	}
+
+/////////////////////////////////////////////////// Print Statement ///////////////////////////////////////////////////	
 	
 	// printStmt -> PRINT printExpressionList TERMINATOR
 	private ParseNode parsePrintStatement() {
@@ -183,6 +167,8 @@ public class Parser {
 		return token.isLextant(Punctuator.PRINT_SEPARATOR, Punctuator.PRINT_SPACE, Punctuator.PRINT_NEWLINE);
 	}
 	
+/////////////////////////////////////////////////// Declaration ///////////////////////////////////////////////////	
+	
 	
 	// declaration -> IMM identifier := expression TERMINATOR
 	private ParseNode parseDeclaration() {
@@ -203,7 +189,31 @@ public class Parser {
 		return token.isLextant(Keyword.IMM);
 	}
 
-
+/////////////////////////////////////////////////// Block Statement ///////////////////////////////////////////////////	
+	
+	private ParseNode parseBlockStatement() {
+		if(!startsBlockStatement(nowReading)) {
+			return syntaxErrorNode("mainBlock");
+		}
+		ParseNode block = new BlockNode(nowReading);
+		expect(Punctuator.OPEN_BRACE);
+		
+		while(startsStatement(nowReading)) {
+			ParseNode statement = parseStatement();
+			block.appendChild(statement);
+		}
+		expect(Punctuator.CLOSE_BRACE);
+		return block;
+	}
+	private boolean startsBlockStatement(Token token) {
+		return token.isLextant(Punctuator.OPEN_BRACE);
+	}
+	
+/////////////////////////////////////////////////// assignment Statement ///////////////////////////////////////////////////	
+	
+	// TODO
+	
+	
 	
 	///////////////////////////////////////////////////////////
 	// expressions
@@ -321,7 +331,9 @@ public class Parser {
 		if(!startsLiteral(nowReading)) {
 			return syntaxErrorNode("literal");
 		}
-		
+		if(startsCharLiteral(nowReading)) {
+			return parseCharLiteral();
+		}
 		if(startsIntLiteral(nowReading)) {
 			return parseIntLiteral();
 		}
@@ -338,9 +350,21 @@ public class Parser {
 		return syntaxErrorNode("literal");
 	}
 	private boolean startsLiteral(Token token) {
-		return startsIntLiteral(token)|| startsFloatLiteral(token) || startsIdentifier(token) || startsBooleanLiteral(token);
+		return startsIntLiteral(token)|| startsFloatLiteral(token) || startsIdentifier(token) || startsBooleanLiteral(token) || startsCharLiteral(token);
 	}
 
+	// char (literal)
+	private ParseNode parseCharLiteral() {
+		if(!startsCharLiteral(nowReading)) {
+			return syntaxErrorNode("char constant");
+		}
+		readToken();
+		return new CharConstantNode(previouslyRead);
+	}
+	private boolean startsCharLiteral(Token token) {
+		return token instanceof CharToken;
+	}
+	
 	// int (literal)
 	private ParseNode parseIntLiteral() {
 		if(!startsIntLiteral(nowReading)) {

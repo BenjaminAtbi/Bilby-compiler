@@ -28,8 +28,7 @@ public class LocatedChar implements Locator {
 		return character == c;
 	}
 	
-	
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	// toString
 	
@@ -58,5 +57,9 @@ public class LocatedChar implements Locator {
 	}
 	public boolean isWhitespace() {
 		return Character.isWhitespace(character);
+	}
+	
+	public boolean isOctal() {
+		return character >= '0' && character <= '7';
 	}
 }

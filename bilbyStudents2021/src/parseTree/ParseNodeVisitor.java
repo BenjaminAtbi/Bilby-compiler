@@ -1,7 +1,8 @@
 package parseTree;
 
 import parseTree.nodeTypes.BooleanConstantNode;
-import parseTree.nodeTypes.MainBlockNode;
+import parseTree.nodeTypes.CharConstantNode;
+import parseTree.nodeTypes.BlockNode;
 import parseTree.nodeTypes.DeclarationNode;
 import parseTree.nodeTypes.ErrorNode;
 import parseTree.nodeTypes.FloatConstantNode;
@@ -20,8 +21,8 @@ public interface ParseNodeVisitor {
 	void visitEnter(OperatorNode node);
 	void visitLeave(OperatorNode node);
 	
-	void visitEnter(MainBlockNode node);
-	void visitLeave(MainBlockNode node);
+	void visitEnter(BlockNode node);
+	void visitLeave(BlockNode node);
 
 	void visitEnter(DeclarationNode node);
 	void visitLeave(DeclarationNode node);
@@ -41,6 +42,7 @@ public interface ParseNodeVisitor {
 	void visit(BooleanConstantNode node);
 	void visit(ErrorNode node);
 	void visit(IdentifierNode node);
+	void visit(CharConstantNode node);
 	void visit(IntegerConstantNode node);
 	void visit(FloatConstantNode node);
 	void visit(NewlineNode node);
@@ -72,10 +74,10 @@ public interface ParseNodeVisitor {
 		public void visitLeave(DeclarationNode node) {
 			defaultVisitLeave(node);
 		}					
-		public void visitEnter(MainBlockNode node) {
+		public void visitEnter(BlockNode node) {
 			defaultVisitEnter(node);
 		}
-		public void visitLeave(MainBlockNode node) {
+		public void visitLeave(BlockNode node) {
 			defaultVisitLeave(node);
 		}				
 		public void visitEnter(ParseNode node) {
@@ -105,6 +107,9 @@ public interface ParseNodeVisitor {
 			defaultVisitForLeaf(node);
 		}
 		public void visit(IdentifierNode node) {
+			defaultVisitForLeaf(node);
+		}
+		public void visit(CharConstantNode node) {
 			defaultVisitForLeaf(node);
 		}
 		public void visit(IntegerConstantNode node) {

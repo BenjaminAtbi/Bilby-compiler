@@ -17,6 +17,14 @@ public class ASMCodeChunk {
 			instructions.add(instructionCopy);
 		}
 	}
+	public void add(ASMOpcode opcode, char operand, String comment) {
+		ASMInstruction instruction = new ASMInstruction(opcode, operand, comment);
+		instructions.add(instruction);
+	}
+	public void add(ASMOpcode opcode, char operand) {
+		ASMInstruction instruction = new ASMInstruction(opcode, operand);
+		instructions.add(instruction);
+	}
 	public void add(ASMOpcode opcode, int operand, String comment) {
 		ASMInstruction instruction = new ASMInstruction(opcode, operand, comment);
 		instructions.add(instruction);

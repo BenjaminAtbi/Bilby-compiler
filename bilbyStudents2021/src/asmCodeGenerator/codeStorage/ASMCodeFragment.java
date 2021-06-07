@@ -67,6 +67,12 @@ public class ASMCodeFragment {
 		codeType = generated.codeType;
 	}	
 	
+	public void add(ASMOpcode opcode, char operand, String comment) {
+		lastChunk().add(opcode, operand, comment);
+	}
+	public void add(ASMOpcode opcode, char operand) {
+		lastChunk().add(opcode, operand);
+	}
 	public void add(ASMOpcode opcode, int operand, String comment) {
 		lastChunk().add(opcode, operand, comment);
 	}
