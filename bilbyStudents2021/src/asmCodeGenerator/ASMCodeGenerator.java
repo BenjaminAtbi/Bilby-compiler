@@ -9,8 +9,6 @@ import asmCodeGenerator.codeStorage.ASMCodeFragment;
 import asmCodeGenerator.codeStorage.ASMOpcode;
 import asmCodeGenerator.operators.SimpleCodeGenerator;
 import asmCodeGenerator.runtime.RunTime;
-import lexicalAnalyzer.Lextant;
-import lexicalAnalyzer.Punctuator;
 import parseTree.*;
 import parseTree.nodeTypes.BooleanConstantNode;
 import parseTree.nodeTypes.CharConstantNode;
@@ -24,6 +22,7 @@ import parseTree.nodeTypes.OperatorNode;
 import parseTree.nodeTypes.PrintStatementNode;
 import parseTree.nodeTypes.ProgramNode;
 import parseTree.nodeTypes.SpaceNode;
+import parseTree.nodeTypes.StringConstantNode;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
 import symbolTable.Binding;
@@ -140,7 +139,10 @@ public class ASMCodeGenerator {
 			}	
 		}
 		private void turnAddressIntoValue(ASMCodeFragment code, ParseNode node) {
-			if(node.getType() == PrimitiveType.INTEGER) {
+			if(node.getType() == PrimitiveType.CHAR) {
+				code.add(LoadC);
+			}	
+			else if(node.getType() == PrimitiveType.INTEGER) {
 				code.add(LoadI);
 			}	
 			else if(node.getType() == PrimitiveType.FLOAT) {
@@ -210,7 +212,11 @@ public class ASMCodeGenerator {
 			Type type = node.getType();
 			code.add(opcodeForStore(type));
 		}
+		
 		private ASMOpcode opcodeForStore(Type type) {
+			if(type == PrimitiveType.CHAR) {
+				return StoreC;
+			}
 			if(type == PrimitiveType.INTEGER) {
 				return StoreI;
 			}
@@ -283,6 +289,17 @@ public class ASMCodeGenerator {
 			newValueCode(node);
 			
 			code.add(PushF, node.getValue());
+		}
+		public void visit(StringConstantNode node) {
+			newValueCode(node);
+			
+			String label = new Labeller("string-constant").newLabel("");
+			code.add(DLabel, label);
+			code.add(DataI,3);
+			code.add(DataI,9);
+			code.add(DataI,node.getValue().length());
+			code.add(DataS,node.getValue());
+			code.add(PushD, label);
 		}
 	}
 

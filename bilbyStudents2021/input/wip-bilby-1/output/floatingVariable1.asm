@@ -1,6 +1,10 @@
         Jump         $$main                    
         DLabel       $eat-location-zero        
         DataZ        8                         
+        DLabel       $print-format-char        
+        DataC        37                        %% "%c"
+        DataC        99                        
+        DataC        0                         
         DLabel       $print-format-integer     
         DataC        37                        %% "%d"
         DataC        100                       
@@ -8,6 +12,10 @@
         DLabel       $print-format-floating    
         DataC        37                        %% "%f"
         DataC        102                       
+        DataC        0                         
+        DLabel       $print-format-string      
+        DataC        37                        %% "%s"
+        DataC        115                       
         DataC        0                         
         DLabel       $print-format-boolean     
         DataC        37                        %% "%s"

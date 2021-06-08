@@ -7,6 +7,7 @@ public class RunTime {
 	public static final String CHAR_PRINT_FORMAT 	  = "$print-format-char";
 	public static final String INTEGER_PRINT_FORMAT   = "$print-format-integer";
 	public static final String FLOATING_PRINT_FORMAT  = "$print-format-floating";
+	public static final String STRING_PRINT_FORMAT 	  = "$print-format-string";
 	public static final String BOOLEAN_PRINT_FORMAT   = "$print-format-boolean";
 	public static final String NEWLINE_PRINT_FORMAT   = "$print-format-newline";
 	public static final String SPACE_PRINT_FORMAT     = "$print-format-space";
@@ -18,6 +19,7 @@ public class RunTime {
 	
 	public static final String GENERAL_RUNTIME_ERROR = "$$general-runtime-error";
 	public static final String INTEGER_DIVIDE_BY_ZERO_RUNTIME_ERROR = "$$i-divide-by-zero";
+	
 	
 
 
@@ -46,6 +48,8 @@ public class RunTime {
 		frag.add(DataS, "%d");
 		frag.add(DLabel, FLOATING_PRINT_FORMAT);
 		frag.add(DataS, "%f");
+		frag.add(DLabel, STRING_PRINT_FORMAT);
+		frag.add(DataS, "%s");		
 		frag.add(DLabel, BOOLEAN_PRINT_FORMAT);
 		frag.add(DataS, "%s");
 		frag.add(DLabel, NEWLINE_PRINT_FORMAT);

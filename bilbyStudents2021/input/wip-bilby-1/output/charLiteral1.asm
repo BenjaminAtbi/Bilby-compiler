@@ -95,9 +95,43 @@
         DLabel       $global-memory-block      
         DataZ        0                         
         Label        $$main                    
-        PushF        1.450000                  
-        FNegate                                
-        PushD        $print-format-floating    
+        PushI        115                       
+        PushD        $print-format-char        
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushI        65                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushI        35                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushI        51                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushI        115                       
+        PushD        $print-format-char        
+        Printf                                 
+        PushD        $print-format-space       
+        Printf                                 
+        PushI        65                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushD        $print-format-space       
+        Printf                                 
+        PushI        35                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushD        $print-format-space       
+        Printf                                 
+        PushI        51                        
+        PushD        $print-format-char        
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 

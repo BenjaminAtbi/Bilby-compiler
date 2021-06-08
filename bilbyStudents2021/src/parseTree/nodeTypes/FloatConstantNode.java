@@ -3,7 +3,6 @@ package parseTree.nodeTypes;
 import parseTree.ParseNode;
 import parseTree.ParseNodeVisitor;
 import tokens.FloatToken;
-import tokens.IntToken;
 import tokens.Token;
 
 public class FloatConstantNode extends ParseNode {

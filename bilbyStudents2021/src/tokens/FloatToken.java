@@ -1,8 +1,6 @@
 package tokens;
 
-import inputHandler.LocatedChar;
 import inputHandler.Locator;
-import logging.BilbyLogger;
 
 public class FloatToken extends TokenImp {
 	protected double value;

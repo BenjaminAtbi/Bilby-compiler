@@ -1,0 +1,7 @@
+main {
+	imm ca := #s;
+	imm cb := #101;
+	imm cc := ###;
+	imm cd := ##3;
+	print ca $s cb $s cc $s cd $n;
+}

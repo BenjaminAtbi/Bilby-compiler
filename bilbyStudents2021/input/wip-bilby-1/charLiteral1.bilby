@@ -3,5 +3,5 @@ main {
 	print #101 $n;
 	print ### $n;
 	print ##3 $n;
-	print #s #101 ### ##3 $n;
+	print #s $s #101 $s ### $s ##3 $n;
 }

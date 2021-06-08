@@ -12,6 +12,7 @@ import tokens.FloatToken;
 import tokens.IdentifierToken;
 import tokens.LextantToken;
 import tokens.NullToken;
+import tokens.StringToken;
 import tokens.IntToken;
 import tokens.Token;
 
@@ -20,6 +21,7 @@ import static lexicalAnalyzer.PunctuatorScanningAids.*;
 public class LexicalAnalyzer extends ScannerImp implements Scanner {
 	private static final char DECIMAL_POINT = '.';
 	private static final char CAPITAL_E = 'E';
+	private static final char NEWLINE = 10;
 
 	public static LexicalAnalyzer make(String filename) {
 		InputHandler handler = InputHandler.fromFilename(filename);
@@ -49,6 +51,9 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 		}
 		else if(isCharStart(ch)) {
 			return scanChar(ch);
+		}
+		else if(isStrStart(ch)) {
+			return scanString(ch);
 		}
 		else if(isEndOfInput(ch)) {
 			return NullToken.make(ch);
@@ -118,16 +123,15 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 		input.pushback(c);
 	}
 	
-//////////////////////////////////////////////////////////////////////////////
-// Char lexical analysis	
+	//////////////////////////////////////////////////////////////////////////////
+	// Char lexical analysis	
 
 	private Token scanChar(LocatedChar firstChar) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(firstChar.getCharacter());
-		if(input.peek().isChar('#')) {
+		if(input.peek().matchChar('#')) {
 			buffer.append(input.next().getCharacter());
 			LocatedChar next = input.peek();
-			if(next.isChar('#') || next.isOctal()) {
+			if(next.matchChar('#') || next.isOctal()) {
 				buffer.append(input.next().getCharacter());
 			} 
 			else {
@@ -140,7 +144,7 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 			appendSubsequentOctals(buffer);
 			return CharToken.makeOctal(firstChar, buffer.toString());
 		}
-		else if(!input.peek().isWhitespace()){
+		else if(input.peek().isRecognized()){
 			buffer.append(input.next().getCharacter());
 			return CharToken.make(firstChar, buffer.toString());
 		}
@@ -159,8 +163,38 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 		input.pushback(c);
 	}
 	
+	
 	private boolean isCharStart(LocatedChar ch) {
-		return ch.isChar('#');
+		return ch.matchChar('#');
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////
+	// String lexical analysis	
+	
+	private Token scanString(LocatedChar firstChar) {
+		StringBuffer buffer = new StringBuffer();
+		appendSubsequentString(buffer);
+		LocatedChar ch = input.peek();
+		if(ch.matchChar('"')) {
+			input.next();
+			return StringToken.make(firstChar, buffer.toString());
+		} else {
+			lexicalError(ch, "malformed string");
+			return findNextToken();
+		}
+	}
+	
+	private void appendSubsequentString(StringBuffer buffer) {
+		LocatedChar c = input.next();
+		while(!c.matchChar('"') && !c.matchChar(NEWLINE)) {
+			buffer.append(c.getCharacter());
+			c = input.next();
+		}
+		input.pushback(c);
+	}
+	
+	private boolean isStrStart(LocatedChar ch) {
+		return ch.matchChar('"');
 	}
 	
 	

@@ -24,7 +24,7 @@ public class LocatedChar implements Locator {
 	public TextLocation getLocation() {
 		return location;
 	}
-	public boolean isChar(char c) {
+	public boolean matchChar(char c) {
 		return character == c;
 	}
 	
@@ -57,6 +57,10 @@ public class LocatedChar implements Locator {
 	}
 	public boolean isWhitespace() {
 		return Character.isWhitespace(character);
+	}
+	
+	public boolean isRecognized() {
+		return character > 32 && character <= 126;
 	}
 	
 	public boolean isOctal() {

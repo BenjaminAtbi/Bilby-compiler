@@ -1,6 +1,5 @@
 package tokens;
 
-import inputHandler.LocatedChar;
 import inputHandler.Locator;
 
 public class CharToken extends TokenImp {
@@ -18,13 +17,13 @@ public class CharToken extends TokenImp {
 	
 	public static CharToken make(Locator locator, String lexeme) {
 		CharToken result = new CharToken(locator, lexeme);
-		result.setValue(lexeme.charAt(1));
+		result.setValue(lexeme.charAt(0));
 		return result;
 	}
 	
 	public static CharToken makePrecise(Locator locator, String lexeme) {
 		CharToken result = new CharToken(locator, lexeme);
-		result.setValue(lexeme.charAt(2));
+		result.setValue(lexeme.charAt(1));
 		return result;
 	}
 	
@@ -32,7 +31,7 @@ public class CharToken extends TokenImp {
 		CharToken result = new CharToken(locator, lexeme);
 		int val;
 		try {
-			val = Integer.parseInt(lexeme.substring(1), 8);
+			val = Integer.parseInt(lexeme, 8);
 		} catch (NumberFormatException e) {
 			tokenCreationError(locator, "char value out of integer bounds");
 			val = 0;

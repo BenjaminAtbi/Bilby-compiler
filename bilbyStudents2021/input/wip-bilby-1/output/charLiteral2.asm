@@ -93,11 +93,18 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        0                         
+        DataZ        1                         
         Label        $$main                    
-        PushF        1.450000                  
-        FNegate                                
-        PushD        $print-format-floating    
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% char
+        PushI        57                        
+        StoreC                                 
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% char
+        LoadC                                  
+        PushD        $print-format-char        
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 

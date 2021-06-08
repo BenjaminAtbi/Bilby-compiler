@@ -2,27 +2,27 @@ package parseTree.nodeTypes;
 
 import parseTree.ParseNode;
 import parseTree.ParseNodeVisitor;
-import tokens.CharToken;
+import tokens.StringToken;
 import tokens.Token;
 
-public class CharConstantNode extends ParseNode {
-	public CharConstantNode(Token token) {
+public class StringConstantNode extends ParseNode {
+	public StringConstantNode(Token token) {
 		super(token);
-		assert(token instanceof CharToken);
+		assert(token instanceof StringToken);
 	}
-	public CharConstantNode(ParseNode node) {
+	public StringConstantNode(ParseNode node) {
 		super(node);
 	}
 
 ////////////////////////////////////////////////////////////
 // attributes
 	
-	public char getValue() {
-		return charToken().getValue();
+	public String getValue() {
+		return stringToken().getValue();
 	}
 
-	public CharToken charToken() {
-		return (CharToken)token;
+	public StringToken stringToken() {
+		return (StringToken)token;
 	}	
 
 ///////////////////////////////////////////////////////////

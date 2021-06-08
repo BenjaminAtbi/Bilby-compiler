@@ -13,10 +13,6 @@
         DataC        37                        %% "%f"
         DataC        102                       
         DataC        0                         
-        DLabel       $print-format-string      
-        DataC        37                        %% "%s"
-        DataC        115                       
-        DataC        0                         
         DLabel       $print-format-boolean     
         DataC        37                        %% "%s"
         DataC        115                       
@@ -95,9 +91,8 @@
         DLabel       $global-memory-block      
         DataZ        0                         
         Label        $$main                    
-        PushF        1.450000                  
-        FNegate                                
-        PushD        $print-format-floating    
+        PushI        32                        
+        PushD        $print-format-char        
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
