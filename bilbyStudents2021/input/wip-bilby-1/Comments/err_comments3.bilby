@@ -1,0 +1,4 @@
+main { 
+	imm ch := #a;
+	print %%% ch $n;
+}

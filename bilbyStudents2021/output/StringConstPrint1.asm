@@ -13,6 +13,10 @@
         DataC        37                        %% "%f"
         DataC        102                       
         DataC        0                         
+        DLabel       $print-format-string      
+        DataC        37                        %% "%s"
+        DataC        115                       
+        DataC        0                         
         DLabel       $print-format-boolean     
         DataC        37                        %% "%s"
         DataC        115                       
@@ -91,7 +95,26 @@
         DLabel       $global-memory-block      
         DataZ        0                         
         Label        $$main                    
-        PushI        59                        
-        PushD        $print-format-char        
+        DLabel       -string-constant-1-       
+        DataI        3                         
+        DataI        9                         
+        DataI        12                        
+        DataC        104                       %% "hello, world"
+        DataC        101                       
+        DataC        108                       
+        DataC        108                       
+        DataC        111                       
+        DataC        44                        
+        DataC        32                        
+        DataC        119                       
+        DataC        111                       
+        DataC        114                       
+        DataC        108                       
+        DataC        100                       
+        DataC        0                         
+        PushD        -string-constant-1-       
+        PushI        12                        
+        Add                                    
+        PushD        $print-format-string      
         Printf                                 
         Halt                                   

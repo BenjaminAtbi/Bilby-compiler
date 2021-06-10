@@ -52,15 +52,14 @@ public class LocatedChar implements Locator {
 	public boolean isLowerCase() {
 		return Character.isLowerCase(character) || (character == '_');
 	}
+	public boolean isLetter() {
+		return Character.isLetter(character);
+	}
 	public boolean isDigit() {
 		return Character.isDigit(character);
 	}
 	public boolean isWhitespace() {
 		return Character.isWhitespace(character);
-	}
-	
-	public boolean isRecognized() {
-		return character > 32 && character <= 126;
 	}
 	
 	public boolean isOctal() {

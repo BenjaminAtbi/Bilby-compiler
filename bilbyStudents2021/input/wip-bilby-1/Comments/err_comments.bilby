@@ -1,0 +1,4 @@
+main { 
+	imm ch := %comment #a;
+	print ch $n;
+}

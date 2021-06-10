@@ -40,10 +40,14 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 	@Override
 	protected Token findNextToken() {
 		LocatedChar ch = nextNonWhitespaceChar();
+		if(isCommentStart(ch)) {
+			scanComment(ch);
+			return findNextToken();
+		}
 		if(ch.isDigit()) {
 			return scanNumber(ch);
 		}
-		else if(ch.isLowerCase()) {
+		else if(isIdentifierStart(ch)) {
 			return scanIdentifier(ch);
 		}
 		else if(isPunctuatorStart(ch)) {
@@ -65,8 +69,6 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 	}
 
 
-
-
 	private LocatedChar nextNonWhitespaceChar() {
 		LocatedChar ch = input.next();
 		while(ch.isWhitespace()) {
@@ -75,6 +77,19 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 		return ch;
 	}
 	
+	//////////////////////////////////////////////////////////////////////////////
+	// Comment lexical analysis	
+	
+	private void scanComment(LocatedChar ch) {
+		ch = input.next();
+		while(!ch.matchChar('%') && !ch.matchChar('\n')) {
+			ch = input.next();
+		}
+	}
+	
+	private boolean isCommentStart(LocatedChar ch) {
+		return ch.matchChar('%');
+	}
 	
 	//////////////////////////////////////////////////////////////////////////////
 	// Integer and Float lexical analysis	
@@ -131,22 +146,36 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 		if(input.peek().matchChar('#')) {
 			buffer.append(input.next().getCharacter());
 			LocatedChar next = input.peek();
-			if(next.matchChar('#') || next.isOctal()) {
+			if(next.matchChar('#') || Character.isDigit(next.getCharacter())) {
 				buffer.append(input.next().getCharacter());
+				return CharToken.make(firstChar, buffer.toString(),next.getCharacter());
 			} 
 			else {
 				lexicalError(firstChar, "malformed char of form ##[0..9#]");
 				return findNextToken();
 			}
-			return CharToken.makePrecise(firstChar, buffer.toString());
 		} 
 		else if(input.peek().isOctal()) {
 			appendSubsequentOctals(buffer);
-			return CharToken.makeOctal(firstChar, buffer.toString());
+			int val;
+			try {
+				val = Integer.parseInt(buffer.toString(), 8);
+			} catch (NumberFormatException e) {
+				lexicalError(firstChar, "char value out of integer bounds");
+				return findNextToken();
+			}
+			if(isPrintableChar((char)val)) {
+				return CharToken.make(firstChar, buffer.toString(), (char)val);
+			}
+			else {
+				lexicalError(firstChar, "char value not printable");
+				return findNextToken();
+			}
 		}
-		else if(input.peek().isRecognized()){
-			buffer.append(input.next().getCharacter());
-			return CharToken.make(firstChar, buffer.toString());
+		else if(isPrintableChar(input.peek().getCharacter())){
+			LocatedChar next = input.next();
+			buffer.append(next.getCharacter());
+			return CharToken.make(firstChar, buffer.toString(), next.getCharacter());
 		}
 		else {
 			lexicalError(firstChar, "malformed char of form #@");
@@ -163,6 +192,9 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 		input.pushback(c);
 	}
 	
+	public boolean isPrintableChar(char ch) {
+		return ch > 32 && ch <= 126;
+	}
 	
 	private boolean isCharStart(LocatedChar ch) {
 		return ch.matchChar('#');
@@ -204,7 +236,7 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 	private Token scanIdentifier(LocatedChar firstChar) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(firstChar.getCharacter());
-		appendSubsequentLowercase(buffer);
+		appendSubsequentIdentifierChars(buffer);
 
 		String lexeme = buffer.toString();
 		if(Keyword.isAKeyword(lexeme)) {
@@ -214,9 +246,9 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 			return IdentifierToken.make(firstChar, lexeme);
 		}
 	}
-	private void appendSubsequentLowercase(StringBuffer buffer) {
+	private void appendSubsequentIdentifierChars(StringBuffer buffer) {
 		LocatedChar c = input.next();
-		while(c.isLowerCase()) {
+		while(isIdentifierChar(c)) {
 			buffer.append(c.getCharacter());
 			c = input.next();
 		}
@@ -262,6 +294,14 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 	//////////////////////////////////////////////////////////////////////////////
 	// Character-classification routines specific to bilby scanning.	
 
+	private boolean isIdentifierStart(LocatedChar lc) {
+		return lc.isLetter() || lc.getCharacter() == '_' || lc.getCharacter() == '@';
+	}
+	
+	private boolean isIdentifierChar(LocatedChar lc) {
+		return isIdentifierStart(lc) || lc.isDigit();
+	}
+	
 	private boolean isPunctuatorStart(LocatedChar lc) {
 		char c = lc.getCharacter();
 		return isPunctuatorStartingCharacter(c);

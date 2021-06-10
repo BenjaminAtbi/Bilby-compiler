@@ -38,7 +38,6 @@ public class PunctuatorScanner {
 	
 	private Token scanPunctuator() {
 		Set<Punctuator> punctuators = punctuatorSetForPrefix(scanned.asString());
-		
 		if(punctuators.size() == 1 && scanned.isPunctuator()) {
 			return scanned.asToken();
 		}

@@ -1,0 +1,4 @@
+main {
+	imm aA_@23 := #a;
+	print aA_@23 $n;
+}

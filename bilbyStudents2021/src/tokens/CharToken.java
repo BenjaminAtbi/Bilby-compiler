@@ -15,33 +15,12 @@ public class CharToken extends TokenImp {
 		return value;
 	}
 	
-	public static CharToken make(Locator locator, String lexeme) {
+	public static CharToken make(Locator locator, String lexeme, char ch) {
 		CharToken result = new CharToken(locator, lexeme);
-		result.setValue(lexeme.charAt(0));
+		result.setValue(ch);
 		return result;
 	}
 	
-	public static CharToken makePrecise(Locator locator, String lexeme) {
-		CharToken result = new CharToken(locator, lexeme);
-		result.setValue(lexeme.charAt(1));
-		return result;
-	}
-	
-	public static CharToken makeOctal(Locator locator, String lexeme) {
-		CharToken result = new CharToken(locator, lexeme);
-		int val;
-		try {
-			val = Integer.parseInt(lexeme, 8);
-		} catch (NumberFormatException e) {
-			tokenCreationError(locator, "char value out of integer bounds");
-			val = 0;
-		}
-		if (val > 127 || val < 0) {
-			tokenCreationError(locator, "char value out of char bounds");
-		}
-		result.setValue((char)val);
-		return result;
-	}
 	
 	@Override
 	protected String rawString() {

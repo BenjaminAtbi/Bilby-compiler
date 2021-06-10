@@ -148,6 +148,9 @@ public class ASMCodeGenerator {
 			else if(node.getType() == PrimitiveType.FLOAT) {
 				code.add(LoadF);
 			}	
+			else if(node.getType() == PrimitiveType.STRING) {
+				code.add(LoadI);
+			}	
 			else if(node.getType() == PrimitiveType.BOOLEAN) {
 				code.add(LoadC);
 			}	
@@ -222,6 +225,9 @@ public class ASMCodeGenerator {
 			}
 			if(type == PrimitiveType.FLOAT) {
 				return StoreF;
+			}
+			if(type == PrimitiveType.STRING) {
+				return StoreI;
 			}
 			if(type == PrimitiveType.BOOLEAN) {
 				return StoreC;

@@ -151,21 +151,27 @@ public class Parser {
 		}
 		
 		if(nowReading.isLextant(Punctuator.PRINT_NEWLINE)) {
-			readToken();
-			ParseNode child = new NewlineNode(previouslyRead);
-			parent.appendChild(child);
+			appendPrintSeparator(parent, '\n');
 		}		
 		else if(nowReading.isLextant(Punctuator.PRINT_SPACE)) {
-			readToken();
-			ParseNode child = new SpaceNode(previouslyRead);
-			parent.appendChild(child);
+			appendPrintSeparator(parent, ' ');
+		}
+		else if(nowReading.isLextant(Punctuator.PRINT_TAB)) {
+			appendPrintSeparator(parent, '\t');
 		}
 		else if(nowReading.isLextant(Punctuator.PRINT_SEPARATOR)) {
 			readToken();
 		} 
 	}
+	
+	private void appendPrintSeparator(ParseNode parent,char separator) {
+		readToken();
+		ParseNode child = new CharConstantNode(CharToken.make(previouslyRead,previouslyRead.getLexeme(),separator));
+		parent.appendChild(child);
+	}
+	
 	private boolean startsPrintSeparator(Token token) {
-		return token.isLextant(Punctuator.PRINT_SEPARATOR, Punctuator.PRINT_SPACE, Punctuator.PRINT_NEWLINE);
+		return token.isLextant(Punctuator.PRINT_SEPARATOR, Punctuator.PRINT_SPACE, Punctuator.PRINT_NEWLINE, Punctuator.PRINT_TAB);
 	}
 	
 /////////////////////////////////////////////////// Declaration ///////////////////////////////////////////////////	

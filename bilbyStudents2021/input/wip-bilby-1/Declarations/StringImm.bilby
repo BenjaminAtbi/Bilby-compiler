@@ -1,0 +1,4 @@
+main {
+	imm str := "something";
+	print str $n;
+}

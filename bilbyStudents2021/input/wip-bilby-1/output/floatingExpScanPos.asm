@@ -98,6 +98,7 @@
         PushF        123.000000                
         PushD        $print-format-floating    
         Printf                                 
-        PushD        $print-format-newline     
+        PushI        10                        
+        PushD        $print-format-char        
         Printf                                 
         Halt                                   

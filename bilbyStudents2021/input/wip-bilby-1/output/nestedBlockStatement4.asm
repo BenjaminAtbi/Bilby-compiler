@@ -98,6 +98,7 @@
         PushI        123                       
         PushD        $print-format-integer     
         Printf                                 
-        PushD        $print-format-newline     
+        PushI        10                        
+        PushD        $print-format-char        
         Printf                                 
         Halt                                   

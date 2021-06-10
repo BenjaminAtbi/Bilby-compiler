@@ -95,10 +95,12 @@
         DLabel       $global-memory-block      
         DataZ        0                         
         Label        $$main                    
-        PushF        1.450000                  
-        Nop                                    
-        PushD        $print-format-floating    
+        PushI        45                        
+        Negate                                 
+        Negate                                 
+        PushD        $print-format-integer     
         Printf                                 
-        PushD        $print-format-newline     
+        PushI        10                        
+        PushD        $print-format-char        
         Printf                                 
         Halt                                   

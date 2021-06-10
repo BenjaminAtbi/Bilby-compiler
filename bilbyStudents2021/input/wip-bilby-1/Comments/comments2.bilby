@@ -1,0 +1,4 @@
+main %comment% { %
+	%comment%imm%comment%ch%comment%:=%comment%#a%comment%;%
+	%comment%print%%%%ch%%$n%comment%;%comment
+%comment%}%comment%	

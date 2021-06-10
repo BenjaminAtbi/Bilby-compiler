@@ -1,3 +1,0 @@
-main {
-	print - 45 $n;
-}
