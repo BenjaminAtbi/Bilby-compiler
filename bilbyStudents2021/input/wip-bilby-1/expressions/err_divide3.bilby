@@ -1,0 +1,4 @@
+main {
+	print 3.1 / 0 $n;
+	print 3 / 0 $n;
+}

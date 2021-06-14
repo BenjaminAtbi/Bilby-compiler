@@ -1,5 +1,6 @@
 package asmCodeGenerator.operators;
 
+import static asmCodeGenerator.codeStorage.ASMOpcode.Duplicate;
 import static asmCodeGenerator.codeStorage.ASMOpcode.Jump;
 import static asmCodeGenerator.codeStorage.ASMOpcode.Label;
 import static asmCodeGenerator.codeStorage.ASMOpcode.PushI;
@@ -12,15 +13,23 @@ import asmCodeGenerator.codeStorage.ASMCodeFragment.CodeType;
 import asmCodeGenerator.codeStorage.ASMOpcode;
 import parseTree.ParseNode;
 
-public class GreaterCodeGenerator implements SimpleCodeGenerator {
-	private ASMOpcode subtractOpcode;
-	private ASMOpcode jumpPosOpcode;
+public class CompareCodeGenerator implements SimpleCodeGenerator {
+	private ASMOpcode equateOpcode;
+	private ASMOpcode jumpOpcode;
+	private ASMOpcode equateJumpOpcode;
 
-
-	public GreaterCodeGenerator(ASMOpcode subtractOpcode, ASMOpcode jumpPosOpcode) {
+	public CompareCodeGenerator(ASMOpcode equateOpcode, ASMOpcode jumpOpcode) {
 		super();
-		this.subtractOpcode = subtractOpcode;
-		this.jumpPosOpcode = jumpPosOpcode;
+		this.equateOpcode = equateOpcode;
+		this.jumpOpcode = jumpOpcode;
+		this.equateJumpOpcode = null;
+	}
+
+	public CompareCodeGenerator(ASMOpcode equateOpcode, ASMOpcode jumpOpcode, ASMOpcode equateJumpOpcode) {
+		super();
+		this.equateOpcode = equateOpcode;
+		this.jumpOpcode = jumpOpcode;
+		this.equateJumpOpcode = equateJumpOpcode;
 	}
 
 	@Override
@@ -41,11 +50,18 @@ public class GreaterCodeGenerator implements SimpleCodeGenerator {
 			code.append(fragment);
 		}
 		code.add(Label, subLabel);
-		code.add(subtractOpcode);
+		code.add(equateOpcode);
 
-		code.add(jumpPosOpcode, trueLabel);
+		if(equateJumpOpcode != null) {
+			code.add(Duplicate);
+			code.add(equateJumpOpcode, trueLabel);
+		}
+		if(jumpOpcode.takesString()) {
+			code.add(jumpOpcode, trueLabel);
+		} else {
+			code.add(jumpOpcode);
+		}
 		code.add(Jump, falseLabel);
-
 		code.add(Label, trueLabel);
 		code.add(PushI, 1);
 		code.add(Jump, joinLabel);

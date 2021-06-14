@@ -91,46 +91,68 @@
         Label        $$i-divide-by-zero        
         PushD        $errors-int-divide-by-zero 
         Jump         $$general-runtime-error   
+        DLabel       $errors-float-divide-by-zero 
+        DataC        102                       %% "float divide by zero"
+        DataC        108                       
+        DataC        111                       
+        DataC        97                        
+        DataC        116                       
+        DataC        32                        
+        DataC        100                       
+        DataC        105                       
+        DataC        118                       
+        DataC        105                       
+        DataC        100                       
+        DataC        101                       
+        DataC        32                        
+        DataC        98                        
+        DataC        121                       
+        DataC        32                        
+        DataC        122                       
+        DataC        101                       
+        DataC        114                       
+        DataC        111                       
+        DataC        0                         
+        Label        $$f-divide-by-zero        
+        PushD        $errors-float-divide-by-zero 
+        Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
         DataZ        0                         
         Label        $$main                    
-        Label        -compare-2-start          
-        Label        -compare-1-start          
         PushI        3                         
         PushI        2                         
-        Label        -compare-1-sub            
         Subtract                               
-        JumpNeg      -compare-1-true           
-        Jump         -compare-1-false          
-        Label        -compare-1-true           
-        PushI        1                         
-        Jump         -compare-1-join           
-        Label        -compare-1-false          
-        PushI        0                         
-        Jump         -compare-1-join           
-        Label        -compare-1-join           
-        PushI        0                         
-        Label        -compare-2-sub            
+        PushD        $print-format-integer     
+        Printf                                 
+        PushI        10                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushI        3                         
+        PushI        2                         
         Subtract                               
-        Duplicate                              
-        JumpFalse    -compare-2-true           
-        Nop                                    
-        Jump         -compare-2-false          
-        Label        -compare-2-true           
-        PushI        1                         
-        Jump         -compare-2-join           
-        Label        -compare-2-false          
-        PushI        0                         
-        Jump         -compare-2-join           
-        Label        -compare-2-join           
-        JumpTrue     -print-boolean-3-true     
-        PushD        $boolean-false-string     
-        Jump         -print-boolean-3-join     
-        Label        -print-boolean-3-true     
-        PushD        $boolean-true-string      
-        Label        -print-boolean-3-join     
-        PushD        $print-format-boolean     
+        PushI        2                         
+        Subtract                               
+        PushD        $print-format-integer     
+        Printf                                 
+        PushI        10                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushF        5.000000                  
+        PushF        2.000000                  
+        FSubtract                              
+        PushD        $print-format-floating    
+        Printf                                 
+        PushI        10                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushF        2.000000                  
+        FNegate                                
+        FNegate                                
+        PushF        4.000000                  
+        FNegate                                
+        FSubtract                              
+        PushD        $print-format-floating    
         Printf                                 
         PushI        10                        
         PushD        $print-format-char        

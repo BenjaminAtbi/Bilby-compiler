@@ -243,6 +243,7 @@ public class Parser {
 		return startsComparisonExpression(token);
 	}
 
+	
 	// comparisonExpression -> additiveExpression [> additiveExpression]?
 	private ParseNode parseComparisonExpression() {
 		if(!startsComparisonExpression(nowReading)) {
@@ -250,7 +251,7 @@ public class Parser {
 		}
 		
 		ParseNode left = parseAdditiveExpression();
-		if(nowReading.isLextant(Punctuator.GREATER)) {
+		if(nowReading.isLextant(Punctuator.GREATER, Punctuator.LESS, Punctuator.LESS_EQUAL, Punctuator.GREATER_EQUAL, Punctuator.NOT_EQUAL, Punctuator.EQUAL)) {
 			Token compareToken = nowReading;
 			readToken();
 			ParseNode right = parseAdditiveExpression();
@@ -291,7 +292,7 @@ public class Parser {
 		}
 		
 		ParseNode left = parseAtomicExpression();
-		while(nowReading.isLextant(Punctuator.MULTIPLY)) {
+		while(nowReading.isLextant(Punctuator.MULTIPLY, Punctuator.DIVIDE)) {
 			Token multiplicativeToken = nowReading;
 			readToken();
 			ParseNode right = parseAtomicExpression();
@@ -304,10 +305,14 @@ public class Parser {
 		return startsAtomicExpression(token);
 	}
 	
+	
 	// atomicExpression         -> unaryExpression | literal
 	private ParseNode parseAtomicExpression() {
 		if(!startsAtomicExpression(nowReading)) {
 			return syntaxErrorNode("atomic expression");
+		}
+		if(startsParantheticExpression(nowReading)) {
+			return parseParantheticExpression();
 		}
 		if(startsUnaryExpression(nowReading)) {
 			return parseUnaryExpression();
@@ -315,9 +320,23 @@ public class Parser {
 		return parseLiteral();
 	}
 	private boolean startsAtomicExpression(Token token) {
-		return startsLiteral(token) || startsUnaryExpression(token);
+		return startsLiteral(token) || startsUnaryExpression(token) || startsParantheticExpression(token) ;
 	}
-
+	
+	private ParseNode parseParantheticExpression() {
+		if(!startsParantheticExpression(nowReading)) {
+			return syntaxErrorNode("ParantheticExpression");
+		}
+		expect(Punctuator.OPEN_BRACKET);
+		ParseNode expression = parseExpression();
+		expect(Punctuator.CLOSE_BRACKET);
+		return expression;
+	}
+	
+	private boolean startsParantheticExpression(Token token) {
+		return token.isLextant(Punctuator.OPEN_BRACKET);
+	}
+	
 	// unaryExpression			-> UNARYOP atomicExpression
 	private ParseNode parseUnaryExpression() {
 		if(!startsUnaryExpression(nowReading)) {

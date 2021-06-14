@@ -261,33 +261,33 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 	// old method left in to show a simple scanning method.
 	// current method is the algorithm object PunctuatorScanner.java
 
-	@SuppressWarnings("unused")
-	private Token oldScanPunctuator(LocatedChar ch) {
-		
-		switch(ch.getCharacter()) {
-		case '*':
-			return LextantToken.make(ch, "*", Punctuator.MULTIPLY);
-		case '+':
-			return LextantToken.make(ch, "+", Punctuator.ADD);
-		case '>':
-			return LextantToken.make(ch, ">", Punctuator.GREATER);
-		case ':':
-			if(ch.getCharacter()=='=') {
-				return LextantToken.make(ch, ":=", Punctuator.ASSIGN);
-			}
-			else {
-				lexicalError(ch);
-				return(NullToken.make(ch));
-			}
-		case ',':
-			return LextantToken.make(ch, ",", Punctuator.PRINT_SEPARATOR);
-		case ';':
-			return LextantToken.make(ch, ";", Punctuator.TERMINATOR);
-		default:
-			lexicalError(ch);
-			return(NullToken.make(ch));
-		}
-	}
+//	@SuppressWarnings("unused")
+//	private Token oldScanPunctuator(LocatedChar ch) {
+//		
+//		switch(ch.getCharacter()) {
+//		case '*':
+//			return LextantToken.make(ch, "*", Punctuator.MULTIPLY);
+//		case '+':
+//			return LextantToken.make(ch, "+", Punctuator.ADD);
+//		case '>':
+//			return LextantToken.make(ch, ">", Punctuator.GREATER);
+//		case ':':
+//			if(ch.getCharacter()=='=') {
+//				return LextantToken.make(ch, ":=", Punctuator.ASSIGN);
+//			}
+//			else {
+//				lexicalError(ch);
+//				return(NullToken.make(ch));
+//			}
+//		case ',':
+//			return LextantToken.make(ch, ",", Punctuator.PRINT_SEPARATOR);
+//		case ';':
+//			return LextantToken.make(ch, ";", Punctuator.TERMINATOR);
+//		default:
+//			lexicalError(ch);
+//			return(NullToken.make(ch));
+//		}
+//	}
 
 	
 

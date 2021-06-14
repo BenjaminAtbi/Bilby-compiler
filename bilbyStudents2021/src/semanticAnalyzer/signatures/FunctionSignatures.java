@@ -6,10 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import asmCodeGenerator.codeStorage.ASMOpcode;
-import asmCodeGenerator.operators.GreaterCodeGenerator;
+import asmCodeGenerator.operators.CompareCodeGenerator;
+import asmCodeGenerator.operators.DivideCodeGenerator;
+import asmCodeGenerator.operators.NotEqualCodeGenerator;
 import lexicalAnalyzer.Punctuator;
 import semanticAnalyzer.types.Type;
 import static semanticAnalyzer.types.PrimitiveType.*;
+import static asmCodeGenerator.runtime.RunTime.INTEGER_DIVIDE_BY_ZERO_RUNTIME_ERROR;
+import static asmCodeGenerator.runtime.RunTime.FLOAT_DIVIDE_BY_ZERO_RUNTIME_ERROR;
 
 public class FunctionSignatures extends ArrayList<FunctionSignature> {
 	private static final long serialVersionUID = -4907792488209670697L;
@@ -83,10 +87,57 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 		    new FunctionSignature(ASMOpcode.Subtract, INTEGER, INTEGER, INTEGER),
 		    new FunctionSignature(ASMOpcode.FSubtract, FLOAT, FLOAT, FLOAT)
 		);
-		    
+		
+		new FunctionSignatures(Punctuator.MULTIPLY,
+			new FunctionSignature(ASMOpcode.Nop, INTEGER, INTEGER),
+			new FunctionSignature(ASMOpcode.Nop, FLOAT, FLOAT),
+			new FunctionSignature(ASMOpcode.Multiply, INTEGER, INTEGER, INTEGER),
+		    new FunctionSignature(ASMOpcode.FMultiply, FLOAT, FLOAT, FLOAT)
+		); 
+		
+		new FunctionSignatures(Punctuator.DIVIDE,
+			new FunctionSignature(ASMOpcode.Nop, INTEGER, INTEGER),
+			new FunctionSignature(ASMOpcode.Nop, FLOAT, FLOAT),
+			new FunctionSignature(new DivideCodeGenerator(ASMOpcode.Divide, ASMOpcode.JumpFalse, INTEGER_DIVIDE_BY_ZERO_RUNTIME_ERROR), INTEGER, INTEGER, INTEGER),
+		    new FunctionSignature(new DivideCodeGenerator(ASMOpcode.FDivide, ASMOpcode.JumpFZero, FLOAT_DIVIDE_BY_ZERO_RUNTIME_ERROR), FLOAT, FLOAT, FLOAT)
+		); 
+		
 		new FunctionSignatures(Punctuator.GREATER,
-			new FunctionSignature(new GreaterCodeGenerator(ASMOpcode.Subtract, ASMOpcode.JumpPos), INTEGER, INTEGER, BOOLEAN),
-			new FunctionSignature(new GreaterCodeGenerator(ASMOpcode.FSubtract, ASMOpcode.JumpFPos), FLOAT, FLOAT, BOOLEAN)
+			new FunctionSignature(new CompareCodeGenerator(ASMOpcode.Subtract, ASMOpcode.JumpPos), INTEGER, INTEGER, BOOLEAN),
+			new FunctionSignature(new CompareCodeGenerator(ASMOpcode.FSubtract, ASMOpcode.JumpFPos), FLOAT, FLOAT, BOOLEAN),
+			new FunctionSignature(new CompareCodeGenerator(ASMOpcode.Subtract, ASMOpcode.JumpPos), CHAR, CHAR, BOOLEAN)
+		);
+		
+		new FunctionSignatures(Punctuator.LESS,
+			new FunctionSignature(new CompareCodeGenerator(ASMOpcode.Subtract, ASMOpcode.JumpNeg), INTEGER, INTEGER, BOOLEAN),
+			new FunctionSignature(new CompareCodeGenerator(ASMOpcode.FSubtract, ASMOpcode.JumpFNeg), FLOAT, FLOAT, BOOLEAN),
+			new FunctionSignature(new CompareCodeGenerator(ASMOpcode.Subtract, ASMOpcode.JumpNeg), CHAR, CHAR, BOOLEAN)
+		);
+		
+		new FunctionSignatures(Punctuator.GREATER_EQUAL,
+				new FunctionSignature(new CompareCodeGenerator(ASMOpcode.Subtract, ASMOpcode.JumpPos, ASMOpcode.JumpFalse), INTEGER, INTEGER, BOOLEAN),
+				new FunctionSignature(new CompareCodeGenerator(ASMOpcode.FSubtract, ASMOpcode.JumpFPos, ASMOpcode.JumpFZero), FLOAT, FLOAT, BOOLEAN),
+				new FunctionSignature(new CompareCodeGenerator(ASMOpcode.Subtract, ASMOpcode.JumpPos, ASMOpcode.JumpFalse), CHAR, CHAR, BOOLEAN)
+		);
+			
+		new FunctionSignatures(Punctuator.LESS_EQUAL,
+			new FunctionSignature(new CompareCodeGenerator(ASMOpcode.Subtract, ASMOpcode.JumpNeg, ASMOpcode.JumpFalse), INTEGER, INTEGER, BOOLEAN),
+			new FunctionSignature(new CompareCodeGenerator(ASMOpcode.FSubtract, ASMOpcode.JumpFNeg, ASMOpcode.JumpFZero), FLOAT, FLOAT, BOOLEAN),
+			new FunctionSignature(new CompareCodeGenerator(ASMOpcode.Subtract, ASMOpcode.JumpNeg, ASMOpcode.JumpFalse), CHAR, CHAR, BOOLEAN)
+		);
+		
+		new FunctionSignatures(Punctuator.EQUAL,
+				new FunctionSignature(new CompareCodeGenerator(ASMOpcode.Subtract, ASMOpcode.Nop, ASMOpcode.JumpFalse), INTEGER, INTEGER, BOOLEAN),
+				new FunctionSignature(new CompareCodeGenerator(ASMOpcode.FSubtract, ASMOpcode.Nop, ASMOpcode.JumpFZero), FLOAT, FLOAT, BOOLEAN),
+				new FunctionSignature(new CompareCodeGenerator(ASMOpcode.Subtract, ASMOpcode.Nop, ASMOpcode.JumpFalse), CHAR, CHAR, BOOLEAN),
+				new FunctionSignature(new CompareCodeGenerator(ASMOpcode.Subtract, ASMOpcode.Nop, ASMOpcode.JumpFalse), BOOLEAN, BOOLEAN, BOOLEAN)
+		);
+		
+		new FunctionSignatures(Punctuator.NOT_EQUAL,
+				new FunctionSignature(new NotEqualCodeGenerator(ASMOpcode.Subtract, ASMOpcode.JumpFalse), INTEGER, INTEGER, BOOLEAN),
+				new FunctionSignature(new NotEqualCodeGenerator(ASMOpcode.FSubtract, ASMOpcode.JumpFZero), FLOAT, FLOAT, BOOLEAN),
+				new FunctionSignature(new NotEqualCodeGenerator(ASMOpcode.Subtract, ASMOpcode.JumpFalse), CHAR, CHAR, BOOLEAN),
+				new FunctionSignature(new NotEqualCodeGenerator(ASMOpcode.Subtract, ASMOpcode.JumpFalse), BOOLEAN, BOOLEAN, BOOLEAN)
 		);
 		// First, we use the operator itself (in this case the Punctuator ADD) as the key.
 		// Then, we give that key two signatures: one an (INT x INT -> INT) and the other
