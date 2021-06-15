@@ -5,3 +5,4 @@
 /parseTree/
 /asmCodeGenerator/
 /semanticAnalyzer/
+/symbolTable/

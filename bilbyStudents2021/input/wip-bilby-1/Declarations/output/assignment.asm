@@ -118,7 +118,7 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        5                         
+        DataZ        8                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
@@ -126,21 +126,17 @@
         PushI        5                         
         StoreI                                 
         PushD        $global-memory-block      
-        PushI        0                         
+        PushI        4                         
         Add                                    %% val
-        LoadI                                  
-        PushD        $print-format-integer     
-        Printf                                 
-        PushI        10                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% val
-        PushI        6                         
+        PushI        4                         
         StoreI                                 
         PushD        $global-memory-block      
-        PushI        0                         
+        PushI        4                         
+        Add                                    %% val
+        PushI        3                         
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        4                         
         Add                                    %% val
         LoadI                                  
         PushD        $print-format-integer     
@@ -149,29 +145,10 @@
         PushD        $print-format-char        
         Printf                                 
         PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% cha
-        PushI        55                        
-        StoreC                                 
-        PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% cha
-        LoadC                                  
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        10                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% cha
-        PushI        56                        
-        StoreC                                 
-        PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% cha
-        LoadC                                  
-        PushD        $print-format-char        
+        PushI        0                         
+        Add                                    %% val
+        LoadI                                  
+        PushD        $print-format-integer     
         Printf                                 
         PushI        10                        
         PushD        $print-format-char        
