@@ -164,13 +164,13 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 				lexicalError(firstChar, "char value out of integer bounds");
 				return findNextToken();
 			}
-			if(isPrintableChar((char)val)) {
+//			if(isPrintableChar((char)val)) {
 				return CharToken.make(firstChar, buffer.toString(), (char)val);
-			}
-			else {
-				lexicalError(firstChar, "char value not printable");
-				return findNextToken();
-			}
+//			}
+//			else {
+//				lexicalError(firstChar, "char value not printable");
+//				return findNextToken();
+//			}
 		}
 		else if(isPrintableChar(input.peek().getCharacter())){
 			LocatedChar next = input.next();

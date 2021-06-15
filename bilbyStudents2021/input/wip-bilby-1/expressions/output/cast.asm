@@ -120,56 +120,151 @@
         DLabel       $global-memory-block      
         DataZ        0                         
         Label        $$main                    
-        PushI        115                       
+        PushI        1                         
+        Nop                                    
+        JumpTrue     -print-boolean-1-true     
+        PushD        $boolean-false-string     
+        Jump         -print-boolean-1-join     
+        Label        -print-boolean-1-true     
+        PushD        $boolean-true-string      
+        Label        -print-boolean-1-join     
+        PushD        $print-format-boolean     
+        Printf                                 
+        PushI        10                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushI        97                        
+        Nop                                    
         PushD        $print-format-char        
         Printf                                 
         PushI        10                        
         PushD        $print-format-char        
         Printf                                 
-        PushI        65                        
+        PushI        97                        
+        Nop                                    
+        PushD        $print-format-integer     
+        Printf                                 
+        PushI        10                        
+        PushD        $print-format-char        
+        Printf                                 
+        Label        -convert-2-start          
+        PushI        97                        
+        JumpFalse    -convert-2-false          
+        PushI        1                         
+        Jump         -convert-2-join           
+        Label        -convert-2-false          
+        PushI        0                         
+        Label        -convert-2-join           
+        JumpTrue     -print-boolean-3-true     
+        PushD        $boolean-false-string     
+        Jump         -print-boolean-3-join     
+        Label        -print-boolean-3-true     
+        PushD        $boolean-true-string      
+        Label        -print-boolean-3-join     
+        PushD        $print-format-boolean     
+        Printf                                 
+        PushI        10                        
+        PushD        $print-format-char        
+        Printf                                 
+        Label        -convert-4-start          
+        PushI        0                         
+        JumpFalse    -convert-4-false          
+        PushI        1                         
+        Jump         -convert-4-join           
+        Label        -convert-4-false          
+        PushI        0                         
+        Label        -convert-4-join           
+        JumpTrue     -print-boolean-5-true     
+        PushD        $boolean-false-string     
+        Jump         -print-boolean-5-join     
+        Label        -print-boolean-5-true     
+        PushD        $boolean-true-string      
+        Label        -print-boolean-5-join     
+        PushD        $print-format-boolean     
+        Printf                                 
+        PushI        10                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushI        3                         
+        Nop                                    
+        PushD        $print-format-integer     
+        Printf                                 
+        PushI        10                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushI        3                         
+        ConvertF                               
+        PushD        $print-format-floating    
+        Printf                                 
+        PushI        10                        
+        PushD        $print-format-char        
+        Printf                                 
+        Label        -convert-6-start          
+        PushI        97                        
+        PushI        127                       
+        BTAnd                                  
         PushD        $print-format-char        
         Printf                                 
         PushI        10                        
         PushD        $print-format-char        
         Printf                                 
-        PushI        35                        
+        Label        -convert-7-start          
+        PushI        61537                     
+        PushI        127                       
+        BTAnd                                  
         PushD        $print-format-char        
         Printf                                 
         PushI        10                        
         PushD        $print-format-char        
         Printf                                 
-        PushI        51                        
-        PushD        $print-format-char        
+        Label        -convert-8-start          
+        PushI        3                         
+        JumpFalse    -convert-8-false          
+        PushI        1                         
+        Jump         -convert-8-join           
+        Label        -convert-8-false          
+        PushI        0                         
+        Label        -convert-8-join           
+        JumpTrue     -print-boolean-9-true     
+        PushD        $boolean-false-string     
+        Jump         -print-boolean-9-join     
+        Label        -print-boolean-9-true     
+        PushD        $boolean-true-string      
+        Label        -print-boolean-9-join     
+        PushD        $print-format-boolean     
         Printf                                 
         PushI        10                        
         PushD        $print-format-char        
         Printf                                 
-        PushI        57                        
-        PushD        $print-format-char        
+        Label        -convert-10-start         
+        PushI        0                         
+        JumpFalse    -convert-10-false         
+        PushI        1                         
+        Jump         -convert-10-join          
+        Label        -convert-10-false         
+        PushI        0                         
+        Label        -convert-10-join          
+        JumpTrue     -print-boolean-11-true    
+        PushD        $boolean-false-string     
+        Jump         -print-boolean-11-join    
+        Label        -print-boolean-11-true    
+        PushD        $boolean-true-string      
+        Label        -print-boolean-11-join    
+        PushD        $print-format-boolean     
         Printf                                 
         PushI        10                        
         PushD        $print-format-char        
         Printf                                 
-        PushI        115                       
+        PushF        3.000000                  
+        Nop                                    
+        PushD        $print-format-floating    
+        Printf                                 
+        PushI        10                        
         PushD        $print-format-char        
         Printf                                 
-        PushI        32                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        65                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        32                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        35                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        32                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        51                        
-        PushD        $print-format-char        
+        PushF        3.000000                  
+        ConvertI                               
+        PushD        $print-format-integer     
         Printf                                 
         PushI        10                        
         PushD        $print-format-char        

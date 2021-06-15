@@ -120,13 +120,8 @@
         DLabel       $global-memory-block      
         DataZ        0                         
         Label        $$main                    
-        Label        -compare-1-start          
-        PushF        1.000000                  
-        PushF        0.000000                  
-        Duplicate                              
-        JumpFZero    $$f-divide-by-zero        
-        FDivide                                
-        PushD        $print-format-floating    
+        PushI        32                        
+        PushD        $print-format-char        
         Printf                                 
         PushI        10                        
         PushD        $print-format-char        

@@ -1,0 +1,13 @@
+true
+a
+97
+true
+false
+3
+3.000000
+a
+a
+true
+false
+3.000000
+3

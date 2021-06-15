@@ -120,56 +120,13 @@
         DLabel       $global-memory-block      
         DataZ        0                         
         Label        $$main                    
-        PushI        115                       
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        10                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        65                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        10                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        35                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        10                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        51                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        10                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        57                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        10                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        115                       
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        32                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        65                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        32                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        35                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        32                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        51                        
-        PushD        $print-format-char        
+        Label        -compare-1-start          
+        PushF        1.000000                  
+        PushF        0.000000                  
+        Duplicate                              
+        JumpFZero    $$f-divide-by-zero        
+        FDivide                                
+        PushD        $print-format-floating    
         Printf                                 
         PushI        10                        
         PushD        $print-format-char        

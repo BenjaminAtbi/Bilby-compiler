@@ -1,0 +1,3 @@
+main {
+	print [[[97 as float] as int] as char]  $n;
+}

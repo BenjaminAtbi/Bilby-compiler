@@ -5,25 +5,20 @@ import tokens.LextantToken;
 import tokens.Token;
 
 
-public enum Keyword implements Lextant {
-	IMM("imm"),
+public enum Type implements Lextant {
+	BOOLEAN("bool"),
 	PRINT("print"),
 	TRUE("true"),
 	FALSE("false"),
 	MAIN("main"),
 	AS("as"),
-	BOOL("bool"),
-	CHAR("char"),
-	STRING("string"),
-	INT("int"),
-	FLOAT("float"),
 	NULL_KEYWORD("");
 
 	private String lexeme;
 	private Token prototype;
 	
 	
-	private Keyword(String lexeme) {
+	private Type(String lexeme) {
 		this.lexeme = lexeme;
 		this.prototype = LextantToken.make(TextLocation.nullInstance(), lexeme, this);
 	}
@@ -34,8 +29,8 @@ public enum Keyword implements Lextant {
 		return prototype;
 	}
 	
-	public static Keyword forLexeme(String lexeme) {
-		for(Keyword keyword: values()) {
+	public static Type forLexeme(String lexeme) {
+		for(Type keyword: values()) {
 			if(keyword.lexeme.equals(lexeme)) {
 				return keyword;
 			}

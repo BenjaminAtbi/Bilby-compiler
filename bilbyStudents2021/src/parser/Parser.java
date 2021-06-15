@@ -18,6 +18,7 @@ import parseTree.nodeTypes.PrintStatementNode;
 import parseTree.nodeTypes.ProgramNode;
 import parseTree.nodeTypes.SpaceNode;
 import parseTree.nodeTypes.StringConstantNode;
+import parseTree.nodeTypes.TypeNode;
 import tokens.*;
 import lexicalAnalyzer.Keyword;
 import lexicalAnalyzer.Lextant;
@@ -317,10 +318,13 @@ public class Parser {
 		if(startsUnaryExpression(nowReading)) {
 			return parseUnaryExpression();
 		}
+		if(startsCastExpression(nowReading)) {
+			return parseCastExpression();
+		}
 		return parseLiteral();
 	}
 	private boolean startsAtomicExpression(Token token) {
-		return startsLiteral(token) || startsUnaryExpression(token) || startsParantheticExpression(token) ;
+		return startsLiteral(token) || startsUnaryExpression(token) || startsParantheticExpression(token) || startsCastExpression(token);
 	}
 	
 	private ParseNode parseParantheticExpression() {
@@ -337,6 +341,42 @@ public class Parser {
 		return token.isLextant(Punctuator.OPEN_BRACKET);
 	}
 	
+	private ParseNode parseCastExpression() {
+		if(!startsCastExpression(nowReading)) {
+			return syntaxErrorNode("Cast Expression");
+		}
+		expect(Punctuator.OPEN_SQUARE);
+		ParseNode expression = parseExpression();
+		if(!nowReading.isLextant(Keyword.AS)) {
+			return syntaxErrorNode("Cast keyword");
+		}
+		Token castToken = nowReading;
+		readToken();
+		if(!startsType(nowReading)) {
+			return syntaxErrorNode("Type keyword: got"+nowReading.getLexeme());
+		}
+		ParseNode type = parseType();
+		expect(Punctuator.CLOSE_SQUARE);
+		return OperatorNode.withChildren(castToken,expression,type);
+	}
+	
+	private boolean startsCastExpression(Token token) {
+		return token.isLextant(Punctuator.OPEN_SQUARE);
+	}
+
+	
+	private ParseNode parseType() {
+		if(!startsType(nowReading)) {
+			return syntaxErrorNode("type keyword");
+		}
+		readToken();
+		return new TypeNode(previouslyRead);
+	}
+	
+	private boolean startsType(Token token) {
+		return token.isLextant(Keyword.BOOL, Keyword.CHAR, Keyword.STRING, Keyword.INT, Keyword.FLOAT);
+	}
+	
 	// unaryExpression			-> UNARYOP atomicExpression
 	private ParseNode parseUnaryExpression() {
 		if(!startsUnaryExpression(nowReading)) {
@@ -348,6 +388,7 @@ public class Parser {
 		
 		return OperatorNode.withChildren(operatorToken, child);
 	}
+	
 	private boolean startsUnaryExpression(Token token) {
 		return token.isLextant(Punctuator.SUBTRACT, Punctuator.ADD);
 	}

@@ -23,6 +23,7 @@ import parseTree.nodeTypes.PrintStatementNode;
 import parseTree.nodeTypes.ProgramNode;
 import parseTree.nodeTypes.SpaceNode;
 import parseTree.nodeTypes.StringConstantNode;
+import parseTree.nodeTypes.TypeNode;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
 import symbolTable.Binding;
@@ -201,8 +202,7 @@ public class ASMCodeGenerator {
 			newVoidCode(node);
 			code.add(PushD, RunTime.SPACE_PRINT_FORMAT);
 			code.add(Printf);
-		}
-		
+		}	
 
 		public void visitLeave(DeclarationNode node) {
 			newVoidCode(node);
@@ -307,6 +307,9 @@ public class ASMCodeGenerator {
 			code.add(DataS,node.getValue());
 			code.add(PushD, label);
 		}
+		public void visit(TypeNode node) {
+			newValueCode(node);
+		}	
 	}
 
 }

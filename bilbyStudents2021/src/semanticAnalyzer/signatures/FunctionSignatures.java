@@ -9,6 +9,9 @@ import asmCodeGenerator.codeStorage.ASMOpcode;
 import asmCodeGenerator.operators.CompareCodeGenerator;
 import asmCodeGenerator.operators.DivideCodeGenerator;
 import asmCodeGenerator.operators.NotEqualCodeGenerator;
+import asmCodeGenerator.operators.IntToBoolCodeGenerator;
+import asmCodeGenerator.operators.IntToCharCodeGenerator;
+import lexicalAnalyzer.Keyword;
 import lexicalAnalyzer.Punctuator;
 import semanticAnalyzer.types.Type;
 import static semanticAnalyzer.types.PrimitiveType.*;
@@ -139,6 +142,21 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 				new FunctionSignature(new NotEqualCodeGenerator(ASMOpcode.Subtract, ASMOpcode.JumpFalse), CHAR, CHAR, BOOLEAN),
 				new FunctionSignature(new NotEqualCodeGenerator(ASMOpcode.Subtract, ASMOpcode.JumpFalse), BOOLEAN, BOOLEAN, BOOLEAN)
 		);
+		
+		// Casting signatures
+		new FunctionSignatures(Keyword.AS,
+				new FunctionSignature(ASMOpcode.Nop, BOOLEAN, BOOLEAN, BOOLEAN),
+				new FunctionSignature(ASMOpcode.Nop, CHAR, CHAR, CHAR),
+				new FunctionSignature(ASMOpcode.Nop, CHAR, INTEGER, INTEGER),
+				new FunctionSignature(new IntToBoolCodeGenerator(), CHAR, BOOLEAN, BOOLEAN),
+				new FunctionSignature(ASMOpcode.Nop, INTEGER, INTEGER, INTEGER),
+				new FunctionSignature(new IntToCharCodeGenerator(), INTEGER, CHAR, CHAR),
+				new FunctionSignature(ASMOpcode.ConvertF, INTEGER, FLOAT, FLOAT),
+				new FunctionSignature(new IntToBoolCodeGenerator(), INTEGER, BOOLEAN, BOOLEAN),
+				new FunctionSignature(ASMOpcode.Nop, FLOAT, FLOAT, FLOAT),
+				new FunctionSignature(ASMOpcode.ConvertI, FLOAT, INTEGER, INTEGER)
+		);
+		
 		// First, we use the operator itself (in this case the Punctuator ADD) as the key.
 		// Then, we give that key two signatures: one an (INT x INT -> INT) and the other
 		// a (FLOAT x FLOAT -> FLOAT).  Each signature has a "whichVariant" parameter where

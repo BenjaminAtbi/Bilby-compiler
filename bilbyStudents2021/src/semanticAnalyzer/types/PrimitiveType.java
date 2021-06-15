@@ -1,5 +1,7 @@
 package semanticAnalyzer.types;
 
+import tokens.LextantToken;
+import tokens.TypeToken;
 
 public enum PrimitiveType implements Type {
 	BOOLEAN(1),
@@ -26,5 +28,16 @@ public enum PrimitiveType implements Type {
 	}
 	public String infoString() {
 		return infoString;
+	}
+	
+	public static PrimitiveType fromToken(LextantToken token) {
+		switch(token.getLextant().getLexeme()) {
+			case "bool": return PrimitiveType.BOOLEAN;
+			case "char": return PrimitiveType.CHAR;
+			case "string": return PrimitiveType.STRING;
+			case "int": return PrimitiveType.INTEGER;
+			case "float": return PrimitiveType.FLOAT;
+		}
+		return null;
 	}
 }

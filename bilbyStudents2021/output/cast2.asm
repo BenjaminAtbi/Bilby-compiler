@@ -120,56 +120,16 @@
         DLabel       $global-memory-block      
         DataZ        0                         
         Label        $$main                    
-        PushI        115                       
+        PushI        97                        
+        Nop                                    
         PushD        $print-format-char        
         Printf                                 
         PushI        10                        
         PushD        $print-format-char        
         Printf                                 
-        PushI        65                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        10                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        35                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        10                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        51                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        10                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        57                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        10                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        115                       
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        32                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        65                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        32                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        35                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        32                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        51                        
-        PushD        $print-format-char        
+        PushI        97                        
+        Nop                                    
+        PushD        $print-format-integer     
         Printf                                 
         PushI        10                        
         PushD        $print-format-char        

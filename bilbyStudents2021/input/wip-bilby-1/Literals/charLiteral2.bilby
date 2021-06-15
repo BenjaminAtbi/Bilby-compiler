@@ -1,4 +1,4 @@
 main {
-	imm char := #9;
-	print char $n;
+	imm ch := #9;
+	print ch $n;
 }

@@ -21,6 +21,7 @@ import parseTree.nodeTypes.PrintStatementNode;
 import parseTree.nodeTypes.ProgramNode;
 import parseTree.nodeTypes.SpaceNode;
 import parseTree.nodeTypes.StringConstantNode;
+import parseTree.nodeTypes.TypeNode;
 import semanticAnalyzer.signatures.FunctionSignature;
 import semanticAnalyzer.signatures.FunctionSignatures;
 import semanticAnalyzer.types.PrimitiveType;
@@ -46,8 +47,10 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		leaveScope(node);
 	}
 	public void visitEnter(BlockNode node) {
+		enterSubscope(node);
 	}
 	public void visitLeave(BlockNode node) {
+		leaveScope(node);
 	}
 	
 	
@@ -57,6 +60,7 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		Scope scope = Scope.createProgramScope();
 		node.setScope(scope);
 	}	
+	
 	@SuppressWarnings("unused")
 	private void enterSubscope(ParseNode node) {
 		Scope baseScope = node.getLocalScope();
@@ -151,6 +155,9 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	}
 	@Override
 	public void visit(SpaceNode node) {
+	}
+	public void visit(TypeNode node) {
+		node.setType(PrimitiveType.fromToken(node.LextantToken()));
 	}
 	///////////////////////////////////////////////////////////////////////////
 	// IdentifierNodes, with helper methods
