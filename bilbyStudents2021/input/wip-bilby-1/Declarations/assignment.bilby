@@ -1,0 +1,9 @@
+main {
+	mut val := 5;
+	{
+		mut val := 4;
+		val := 3;
+		print val $n;
+	}
+	print val $n;
+}

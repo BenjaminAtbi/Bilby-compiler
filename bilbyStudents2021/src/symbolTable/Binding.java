@@ -10,16 +10,17 @@ public class Binding {
 	private TextLocation textLocation;
 	private MemoryLocation memoryLocation;
 	private String lexeme;
+	private boolean mutable;
 	
-	public Binding(Type type, TextLocation location, MemoryLocation memoryLocation, String lexeme) {
+	public Binding(Type type, TextLocation location, MemoryLocation memoryLocation, String lexeme, boolean mutable) {
 		super();
 		this.type = type;
 		this.textLocation = location;
 		this.memoryLocation = memoryLocation;
 		this.lexeme = lexeme;
+		this.mutable = mutable;
 	}
 	
-
 	public String toString() {
 		return "[" + lexeme +
 				" " + type +  // " " + textLocation +	
@@ -31,6 +32,9 @@ public class Binding {
 	}
 	public Type getType() {
 		return type;
+	}
+	public boolean getMutable() {
+		return mutable;
 	}
 	public TextLocation getLocation() {
 		return textLocation;
@@ -55,7 +59,7 @@ public class Binding {
 			super(PrimitiveType.ERROR,
 					TextLocation.nullInstance(),
 					MemoryLocation.nullInstance(),
-					"the-null-binding");
+					"the-null-binding", false);
 		}
 		public static NullBinding getInstance() {
 			if(instance==null)

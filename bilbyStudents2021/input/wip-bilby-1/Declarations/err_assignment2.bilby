@@ -1,0 +1,6 @@
+main {
+	
+	mut val := 4;
+	val := 3.0;
+	print val $n;
+}

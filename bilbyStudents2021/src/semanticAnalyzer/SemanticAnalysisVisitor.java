@@ -3,12 +3,14 @@ package semanticAnalyzer;
 import java.util.Arrays;
 import java.util.List;
 
+import lexicalAnalyzer.Keyword;
 import lexicalAnalyzer.Lextant;
 import logging.BilbyLogger;
 import parseTree.ParseNode;
 import parseTree.ParseNodeVisitor;
 import parseTree.nodeTypes.BooleanConstantNode;
 import parseTree.nodeTypes.CharConstantNode;
+import parseTree.nodeTypes.AssignmentNode;
 import parseTree.nodeTypes.BlockNode;
 import parseTree.nodeTypes.DeclarationNode;
 import parseTree.nodeTypes.ErrorNode;
@@ -85,7 +87,25 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		node.setType(declarationType);
 		
 		identifier.setType(declarationType);
-		addBinding(identifier, declarationType);
+		if(node.lextantToken().isLextant(Keyword.MUT)) {
+			addBinding(identifier, declarationType, true);
+		} else {
+			addBinding(identifier, declarationType, false);
+		}
+	}
+	
+	@Override
+	public void visitLeave(AssignmentNode node) {
+		IdentifierNode identifier = (IdentifierNode) node.child(0);
+		ParseNode value = node.child(1);
+
+		assert(identifier.getBinding().getMutable());
+		
+		Type declarationType = identifier.getType();
+		assert(declarationType == value.getType());
+		node.setType(declarationType);
+		identifier.setType(declarationType);
+		
 	}
 
 	///////////////////////////////////////////////////////////////////////////
@@ -175,9 +195,9 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		ParseNode parent = node.getParent();
 		return (parent instanceof DeclarationNode) && (node == parent.child(0));
 	}
-	private void addBinding(IdentifierNode identifierNode, Type type) {
+	private void addBinding(IdentifierNode identifierNode, Type type, boolean mutable) {
 		Scope scope = identifierNode.getLocalScope();
-		Binding binding = scope.createBinding(identifierNode, type);
+		Binding binding = scope.createBinding(identifierNode, type, mutable);
 		identifierNode.setBinding(binding);
 	}
 	

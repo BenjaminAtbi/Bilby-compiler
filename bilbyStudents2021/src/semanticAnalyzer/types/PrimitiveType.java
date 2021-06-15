@@ -1,7 +1,6 @@
 package semanticAnalyzer.types;
 
 import tokens.LextantToken;
-import tokens.TypeToken;
 
 public enum PrimitiveType implements Type {
 	BOOLEAN(1),

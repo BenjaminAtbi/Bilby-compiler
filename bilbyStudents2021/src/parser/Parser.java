@@ -6,6 +6,7 @@ import logging.BilbyLogger;
 import parseTree.*;
 import parseTree.nodeTypes.BooleanConstantNode;
 import parseTree.nodeTypes.CharConstantNode;
+import parseTree.nodeTypes.AssignmentNode;
 import parseTree.nodeTypes.BlockNode;
 import parseTree.nodeTypes.DeclarationNode;
 import parseTree.nodeTypes.ErrorNode;
@@ -87,14 +88,18 @@ public class Parser {
 		if(startsBlockStatement(nowReading)) {
 			return parseBlockStatement();
 		}
+		if(startsAssignmentStatement(nowReading)) {
+			return parseAssignmentStatement();
+		}
 		return syntaxErrorNode("statement");
 	}
 	private boolean startsStatement(Token token) {
 		return startsPrintStatement(token) ||
 			   startsDeclaration(token) ||
-			   startsBlockStatement(token);
+			   startsBlockStatement(token)||
+			   startsAssignmentStatement(token);
 	}
-
+	
 /////////////////////////////////////////////////// Print Statement ///////////////////////////////////////////////////	
 	
 	// printStmt -> PRINT printExpressionList TERMINATOR
@@ -194,8 +199,33 @@ public class Parser {
 		return DeclarationNode.withChildren(declarationToken, identifier, initializer);
 	}
 	private boolean startsDeclaration(Token token) {
-		return token.isLextant(Keyword.IMM);
+		return token.isLextant(Keyword.IMM, Keyword.MUT);
 	}
+	
+	
+/////////////////////////////////////////////////// Assignment Statement ///////////////////////////////////////////////
+	
+	private ParseNode parseAssignmentStatement() {
+		if(!startsAssignmentStatement(nowReading)) {
+			return syntaxErrorNode("assignment statement");
+		}
+		ParseNode identifier = parseIdentifier();
+		
+		if(!nowReading.isLextant(Punctuator.ASSIGN)) {
+			return syntaxErrorNode("assignment statement");
+		}
+		Token assignmentToken = nowReading;
+		readToken();
+		ParseNode value = parseExpression();
+		expect(Punctuator.TERMINATOR);
+		
+		return AssignmentNode.withChildren(assignmentToken, identifier, value);
+	}
+	
+	private boolean startsAssignmentStatement(Token token) {
+		return token.getClass() == IdentifierToken.class;
+	}
+
 
 /////////////////////////////////////////////////// Block Statement ///////////////////////////////////////////////////	
 	
