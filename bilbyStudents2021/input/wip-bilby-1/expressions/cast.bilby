@@ -3,7 +3,6 @@ main {
 	print [#a as char] $n;		%a
 	print [#a as int ] $n;		%97
 	print [#a as bool] $n;		%true
-	print [#0 as bool] $n;		%false
 	print [3 as int  ] $n;		%3
 	print [3 as float] $n;		%3.0
 	print [97 as char ] $n;		%a

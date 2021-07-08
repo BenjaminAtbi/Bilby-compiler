@@ -1,4 +1,4 @@
 main {
-	imm fl := 2.36;
+	imm fl := 5;
 	print fl $n;
 }

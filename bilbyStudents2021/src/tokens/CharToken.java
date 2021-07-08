@@ -16,6 +16,7 @@ public class CharToken extends TokenImp {
 	}
 	
 	public static CharToken make(Locator locator, String lexeme, char ch) {
+
 		CharToken result = new CharToken(locator, lexeme);
 		result.setValue(ch);
 		return result;

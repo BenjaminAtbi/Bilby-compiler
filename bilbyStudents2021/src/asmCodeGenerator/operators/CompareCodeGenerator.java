@@ -4,6 +4,7 @@ import static asmCodeGenerator.codeStorage.ASMOpcode.Duplicate;
 import static asmCodeGenerator.codeStorage.ASMOpcode.Jump;
 import static asmCodeGenerator.codeStorage.ASMOpcode.Label;
 import static asmCodeGenerator.codeStorage.ASMOpcode.PushI;
+import static asmCodeGenerator.codeStorage.ASMOpcode.Pop;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class CompareCodeGenerator implements SimpleCodeGenerator {
 
 		String startLabel = labeller.newLabel("start");
 		String subLabel   = labeller.newLabel("sub");
+		String equatedLabel  = labeller.newLabel("equate");
 		String trueLabel  = labeller.newLabel("true");
 		String falseLabel = labeller.newLabel("false");
 		String joinLabel  = labeller.newLabel("join");
@@ -54,7 +56,7 @@ public class CompareCodeGenerator implements SimpleCodeGenerator {
 
 		if(equateJumpOpcode != null) {
 			code.add(Duplicate);
-			code.add(equateJumpOpcode, trueLabel);
+			code.add(equateJumpOpcode, equatedLabel);
 		}
 		if(jumpOpcode.takesString()) {
 			code.add(jumpOpcode, trueLabel);
@@ -62,6 +64,10 @@ public class CompareCodeGenerator implements SimpleCodeGenerator {
 			code.add(jumpOpcode);
 		}
 		code.add(Jump, falseLabel);
+		if(equateJumpOpcode != null) {
+			code.add(Label, equatedLabel);
+			code.add(Pop);
+		}
 		code.add(Label, trueLabel);
 		code.add(PushI, 1);
 		code.add(Jump, joinLabel);

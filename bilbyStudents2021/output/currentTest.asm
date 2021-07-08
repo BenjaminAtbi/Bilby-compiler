@@ -118,32 +118,39 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        4                         
+        DataZ        1                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% val
-        PushI        5                         
-        StoreI                                 
+        Add                                    %% result
+        Label        -compare-1-start          
+        PushI        0                         
+        PushI        0                         
+        Label        -compare-1-sub            
+        Subtract                               
+        Duplicate                              
+        JumpFalse    -compare-1-true           
+        Nop                                    
+        Jump         -compare-1-false          
+        Label        -compare-1-true           
+        PushI        1                         
+        Jump         -compare-1-join           
+        Label        -compare-1-false          
+        PushI        0                         
+        Jump         -compare-1-join           
+        Label        -compare-1-join           
+        StoreC                                 
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% val
-        LoadI                                  
-        PushD        $print-format-integer     
-        Printf                                 
-        PushI        10                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% val
-        PushI        6                         
-        StoreI                                 
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% val
-        LoadI                                  
-        PushD        $print-format-integer     
+        Add                                    %% result
+        LoadC                                  
+        JumpTrue     -print-boolean-2-true     
+        PushD        $boolean-false-string     
+        Jump         -print-boolean-2-join     
+        Label        -print-boolean-2-true     
+        PushD        $boolean-true-string      
+        Label        -print-boolean-2-join     
+        PushD        $print-format-boolean     
         Printf                                 
         PushI        10                        
         PushD        $print-format-char        

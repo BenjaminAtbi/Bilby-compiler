@@ -23,7 +23,7 @@ public class StringToken extends TokenImp {
 	
 	@Override
 	protected String rawString() {
-		return "char, " + value;
+		return "string, " + value;
 	}
 
 }

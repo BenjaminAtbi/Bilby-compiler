@@ -118,20 +118,11 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        8                         
+        DataZ        4                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% fl
-        PushF        2.360000                  
-        StoreF                                 
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% fl
-        LoadF                                  
-        PushD        $print-format-floating    
-        Printf                                 
-        PushI        10                        
-        PushD        $print-format-char        
-        Printf                                 
+        PushI        5                         
+        StoreI                                 
         Halt                                   

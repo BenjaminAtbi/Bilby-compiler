@@ -126,9 +126,11 @@
         Label        -compare-1-sub            
         Subtract                               
         Duplicate                              
-        JumpFalse    -compare-1-true           
+        JumpFalse    -compare-1-equate         
         JumpPos      -compare-1-true           
         Jump         -compare-1-false          
+        Label        -compare-1-equate         
+        Pop                                    
         Label        -compare-1-true           
         PushI        1                         
         Jump         -compare-1-join           
@@ -153,9 +155,11 @@
         Label        -compare-3-sub            
         FSubtract                              
         Duplicate                              
-        JumpFZero    -compare-3-true           
+        JumpFZero    -compare-3-equate         
         JumpFPos     -compare-3-true           
         Jump         -compare-3-false          
+        Label        -compare-3-equate         
+        Pop                                    
         Label        -compare-3-true           
         PushI        1                         
         Jump         -compare-3-join           
@@ -180,9 +184,11 @@
         Label        -compare-5-sub            
         Subtract                               
         Duplicate                              
-        JumpFalse    -compare-5-true           
+        JumpFalse    -compare-5-equate         
         JumpPos      -compare-5-true           
         Jump         -compare-5-false          
+        Label        -compare-5-equate         
+        Pop                                    
         Label        -compare-5-true           
         PushI        1                         
         Jump         -compare-5-join           
@@ -207,9 +213,11 @@
         Label        -compare-7-sub            
         Subtract                               
         Duplicate                              
-        JumpFalse    -compare-7-true           
+        JumpFalse    -compare-7-equate         
         JumpPos      -compare-7-true           
         Jump         -compare-7-false          
+        Label        -compare-7-equate         
+        Pop                                    
         Label        -compare-7-true           
         PushI        1                         
         Jump         -compare-7-join           
@@ -234,9 +242,11 @@
         Label        -compare-9-sub            
         FSubtract                              
         Duplicate                              
-        JumpFZero    -compare-9-true           
+        JumpFZero    -compare-9-equate         
         JumpFPos     -compare-9-true           
         Jump         -compare-9-false          
+        Label        -compare-9-equate         
+        Pop                                    
         Label        -compare-9-true           
         PushI        1                         
         Jump         -compare-9-join           
@@ -261,9 +271,11 @@
         Label        -compare-11-sub           
         Subtract                               
         Duplicate                              
-        JumpFalse    -compare-11-true          
+        JumpFalse    -compare-11-equate        
         JumpPos      -compare-11-true          
         Jump         -compare-11-false         
+        Label        -compare-11-equate        
+        Pop                                    
         Label        -compare-11-true          
         PushI        1                         
         Jump         -compare-11-join          
@@ -288,9 +300,11 @@
         Label        -compare-13-sub           
         Subtract                               
         Duplicate                              
-        JumpFalse    -compare-13-true          
+        JumpFalse    -compare-13-equate        
         JumpPos      -compare-13-true          
         Jump         -compare-13-false         
+        Label        -compare-13-equate        
+        Pop                                    
         Label        -compare-13-true          
         PushI        1                         
         Jump         -compare-13-join          
@@ -315,9 +329,11 @@
         Label        -compare-15-sub           
         Subtract                               
         Duplicate                              
-        JumpFalse    -compare-15-true          
+        JumpFalse    -compare-15-equate        
         JumpPos      -compare-15-true          
         Jump         -compare-15-false         
+        Label        -compare-15-equate        
+        Pop                                    
         Label        -compare-15-true          
         PushI        1                         
         Jump         -compare-15-join          
@@ -342,9 +358,11 @@
         Label        -compare-17-sub           
         FSubtract                              
         Duplicate                              
-        JumpFZero    -compare-17-true          
+        JumpFZero    -compare-17-equate        
         JumpFPos     -compare-17-true          
         Jump         -compare-17-false         
+        Label        -compare-17-equate        
+        Pop                                    
         Label        -compare-17-true          
         PushI        1                         
         Jump         -compare-17-join          

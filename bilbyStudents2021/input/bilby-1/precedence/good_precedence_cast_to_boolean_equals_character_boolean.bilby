@@ -1,0 +1,43 @@
+main {
+
+  print [ #. as bool ] == true $n;
+  print [ #h as bool ] == true $n;
+  print [ #o as bool ] == true $n;
+  print [ #_ as bool ] == true $n;
+  print [ #X as bool ] == true $n;
+  print [ #v as bool ] == true $n;
+  print [ #k as bool ] == true $n;
+  print [ #( as bool ] == true $n;
+  print [ #= as bool ] == true $n;
+  print [ #K as bool ] == true $n;
+  print [ #l as bool ] == true $n;
+  print [ #x as bool ] == true $n;
+
+  print true == [ #O as bool ] $n;
+  print true == [ #m as bool ] $n;
+  print true == [ #{ as bool ] $n;
+  print true == [ #r as bool ] $n;
+  print true == [ #- as bool ] $n;
+  print true == [ #^ as bool ] $n;
+  print true == [ #R as bool ] $n;
+  print true == [ #x as bool ] $n;
+  print true == [ #A as bool ] $n;
+  print true == [ #[ as bool ] $n;
+  print true == [ #k as bool ] $n;
+  print true == [ #P as bool ] $n;
+
+  print [ #& as bool ] == [ #i as bool ] $n;
+  print [ #( as bool ] == [ #b as bool ] $n;
+  print [ #O as bool ] == [ #, as bool ] $n;
+  print [ #] as bool ] == [ #r as bool ] $n;
+  print [ #+ as bool ] == [ #d as bool ] $n;
+  print [ #Q as bool ] == [ #  as bool ] $n;
+  print [ #  as bool ] == [ #I as bool ] $n;
+  print [ #G as bool ] == [ #S as bool ] $n;
+  print [ #p as bool ] == [ #x as bool ] $n;
+  print [ #( as bool ] == [ #L as bool ] $n;
+  print [ #b as bool ] == [ #P as bool ] $n;
+  print [ #* as bool ] == [ #u as bool ] $n;
+
+}
+

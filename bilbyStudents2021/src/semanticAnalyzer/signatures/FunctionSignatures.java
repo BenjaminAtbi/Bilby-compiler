@@ -130,17 +130,19 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 		);
 		
 		new FunctionSignatures(Punctuator.EQUAL,
-				new FunctionSignature(new CompareCodeGenerator(ASMOpcode.Subtract, ASMOpcode.Nop, ASMOpcode.JumpFalse), INTEGER, INTEGER, BOOLEAN),
-				new FunctionSignature(new CompareCodeGenerator(ASMOpcode.FSubtract, ASMOpcode.Nop, ASMOpcode.JumpFZero), FLOAT, FLOAT, BOOLEAN),
-				new FunctionSignature(new CompareCodeGenerator(ASMOpcode.Subtract, ASMOpcode.Nop, ASMOpcode.JumpFalse), CHAR, CHAR, BOOLEAN),
-				new FunctionSignature(new CompareCodeGenerator(ASMOpcode.Subtract, ASMOpcode.Nop, ASMOpcode.JumpFalse), BOOLEAN, BOOLEAN, BOOLEAN)
+				new FunctionSignature(new CompareCodeGenerator(ASMOpcode.Subtract, ASMOpcode.Pop, ASMOpcode.JumpFalse), INTEGER, INTEGER, BOOLEAN),
+				new FunctionSignature(new CompareCodeGenerator(ASMOpcode.FSubtract, ASMOpcode.Pop, ASMOpcode.JumpFZero), FLOAT, FLOAT, BOOLEAN),
+				new FunctionSignature(new CompareCodeGenerator(ASMOpcode.Subtract, ASMOpcode.Pop, ASMOpcode.JumpFalse), CHAR, CHAR, BOOLEAN),
+				new FunctionSignature(new CompareCodeGenerator(ASMOpcode.Subtract, ASMOpcode.Pop, ASMOpcode.JumpFalse), BOOLEAN, BOOLEAN, BOOLEAN),
+				new FunctionSignature(new CompareCodeGenerator(ASMOpcode.Subtract, ASMOpcode.Pop, ASMOpcode.JumpFalse), STRING, STRING, BOOLEAN)
 		);
 		
 		new FunctionSignatures(Punctuator.NOT_EQUAL,
 				new FunctionSignature(new NotEqualCodeGenerator(ASMOpcode.Subtract, ASMOpcode.JumpFalse), INTEGER, INTEGER, BOOLEAN),
 				new FunctionSignature(new NotEqualCodeGenerator(ASMOpcode.FSubtract, ASMOpcode.JumpFZero), FLOAT, FLOAT, BOOLEAN),
 				new FunctionSignature(new NotEqualCodeGenerator(ASMOpcode.Subtract, ASMOpcode.JumpFalse), CHAR, CHAR, BOOLEAN),
-				new FunctionSignature(new NotEqualCodeGenerator(ASMOpcode.Subtract, ASMOpcode.JumpFalse), BOOLEAN, BOOLEAN, BOOLEAN)
+				new FunctionSignature(new NotEqualCodeGenerator(ASMOpcode.Subtract, ASMOpcode.JumpFalse), BOOLEAN, BOOLEAN, BOOLEAN),
+				new FunctionSignature(new NotEqualCodeGenerator(ASMOpcode.Subtract, ASMOpcode.JumpFalse), STRING, STRING, BOOLEAN)
 		);
 		
 		// Casting signatures
@@ -154,7 +156,8 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 				new FunctionSignature(ASMOpcode.ConvertF, INTEGER, FLOAT, FLOAT),
 				new FunctionSignature(new IntToBoolCodeGenerator(), INTEGER, BOOLEAN, BOOLEAN),
 				new FunctionSignature(ASMOpcode.Nop, FLOAT, FLOAT, FLOAT),
-				new FunctionSignature(ASMOpcode.ConvertI, FLOAT, INTEGER, INTEGER)
+				new FunctionSignature(ASMOpcode.ConvertI, FLOAT, INTEGER, INTEGER),
+				new FunctionSignature(ASMOpcode.Nop, STRING, STRING, STRING)
 		);
 		
 		// First, we use the operator itself (in this case the Punctuator ADD) as the key.

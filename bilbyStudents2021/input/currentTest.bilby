@@ -1,10 +1,45 @@
 main {
-	mut val := 5;
-	print val $n;
-	val := 6;
-	print val $n;
-	mut cha := ##7;
-	print cha $n;
-	cha := ##8;
-	print cha $n;
+
+  print true == false != false $n;
+  print false == true != true $n;
+  print true == true != false $n;
+  print true == false != true $n;
+  print false == true != false $n;
+  print false == false != true $n;
+  print true == true != true $n;
+  print false == true != true $n;
+  print true == false != true $n;
+  print true == false != true $n;
+  print true == false != true $n;
+  print true == true != false $n;
+
+  print false != false == false $n;
+  print false != false == false $n;
+  print false != false == false $n;
+  print true != true == true $n;
+  print false != false == true $n;
+  print true != false == false $n;
+  print false != true == false $n;
+  print false != true == true $n;
+  print false != true == true $n;
+  print false != true == false $n;
+  print true != true == true $n;
+  print true != true == false $n;
+
+  print false == true != true == true $n;
+  print true == true != true == false $n;
+  print true == true != false == false $n;
+  print true == true != true == true $n;
+  print true == false != true == true $n;
+  print true == true != true == false $n;
+  print true == false != false == false $n;
+  print true == true != false == false $n;
+  print false == false != false == false $n;
+  print false == false != true == false $n;
+  print true == true != false == false $n;
+  print true == false != false == false $n;
+
+
+
 }
+

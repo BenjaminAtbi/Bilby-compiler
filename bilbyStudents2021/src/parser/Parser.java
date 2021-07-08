@@ -255,13 +255,7 @@ public class Parser {
 	
 	///////////////////////////////////////////////////////////
 	// expressions
-	// expr                     -> comparisonExpression
-	// comparisonExpression     -> additiveExpression [> additiveExpression]?
-	// additiveExpression       -> multiplicativeExpression [+ multiplicativeExpression]*  (left-assoc)
-	// multiplicativeExpression -> atomicExpression [MULT atomicExpression]*  (left-assoc)
-	// atomicExpression         -> unaryExpression | literal
-	// unaryExpression			-> UNARYOP atomicExpression
-	// literal                  -> intNumber | identifier | booleanConstant
+	
 
 	// expr  -> comparisonExpression
 	private ParseNode parseExpression() {		
@@ -275,6 +269,9 @@ public class Parser {
 	}
 
 	
+	
+	
+	
 	// comparisonExpression -> additiveExpression [> additiveExpression]?
 	private ParseNode parseComparisonExpression() {
 		if(!startsComparisonExpression(nowReading)) {
@@ -282,16 +279,22 @@ public class Parser {
 		}
 		
 		ParseNode left = parseAdditiveExpression();
+		return parseComparisonContinuedExpression(left);
+
+	}
+	
+	private ParseNode parseComparisonContinuedExpression(ParseNode left) {
 		if(nowReading.isLextant(Punctuator.GREATER, Punctuator.LESS, Punctuator.LESS_EQUAL, Punctuator.GREATER_EQUAL, Punctuator.NOT_EQUAL, Punctuator.EQUAL)) {
 			Token compareToken = nowReading;
 			readToken();
 			ParseNode right = parseAdditiveExpression();
+			ParseNode compareNode = OperatorNode.withChildren(compareToken, left, right);
 			
-			return OperatorNode.withChildren(compareToken, left, right);
+			return parseComparisonContinuedExpression(compareNode);
 		}
 		return left;
-
 	}
+	
 	private boolean startsComparisonExpression(Token token) {
 		return startsAdditiveExpression(token);
 	}
