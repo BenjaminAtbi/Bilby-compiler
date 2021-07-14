@@ -17,6 +17,8 @@ public enum Punctuator implements Lextant {
 	EQUAL("=="),
 	NOT_EQUAL("!="),
 	ASSIGN(":="),
+	AND("&&"),
+	OR("||"),
 	PRINT_SEPARATOR("$"),
 	PRINT_SPACE("$s"),
 	PRINT_TAB("$t"),
@@ -28,6 +30,7 @@ public enum Punctuator implements Lextant {
 	CLOSE_BRACKET(")"),
 	OPEN_SQUARE("["),
 	CLOSE_SQUARE("]"),
+	INDEXING(""),
 	NULL_PUNCTUATOR("");
 
 	private String lexeme;

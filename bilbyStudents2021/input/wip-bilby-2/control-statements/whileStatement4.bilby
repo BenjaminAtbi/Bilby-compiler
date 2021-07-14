@@ -1,0 +1,9 @@
+main {
+	mut val := 1;
+	while(val < 10)
+	{
+		val := val + 1;
+		print val $s;
+		mut breaker := 10;
+	}
+}

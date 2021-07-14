@@ -16,6 +16,7 @@ import parseTree.nodeTypes.DeclarationNode;
 import parseTree.nodeTypes.ErrorNode;
 import parseTree.nodeTypes.FloatConstantNode;
 import parseTree.nodeTypes.IdentifierNode;
+import parseTree.nodeTypes.IfStatementNode;
 import parseTree.nodeTypes.IntegerConstantNode;
 import parseTree.nodeTypes.NewlineNode;
 import parseTree.nodeTypes.OperatorNode;
@@ -24,8 +25,10 @@ import parseTree.nodeTypes.ProgramNode;
 import parseTree.nodeTypes.SpaceNode;
 import parseTree.nodeTypes.StringConstantNode;
 import parseTree.nodeTypes.TypeNode;
+import parseTree.nodeTypes.WhileStatementNode;
 import semanticAnalyzer.signatures.FunctionSignature;
 import semanticAnalyzer.signatures.FunctionSignatures;
+import semanticAnalyzer.types.Array;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
 import symbolTable.Binding;
@@ -78,6 +81,20 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	@Override
 	public void visitLeave(PrintStatementNode node) {
 	}
+	
+	
+	///////////////////////////////////////////////////////////////////////////
+	
+	@Override
+	public void visitLeave(IfStatementNode node) {
+		assert(node.child(0).getType() == PrimitiveType.BOOLEAN);
+	}
+	
+	@Override
+	public void visitLeave(WhileStatementNode node) {
+		assert(node.child(0).getType() == PrimitiveType.BOOLEAN);
+	}
+	
 	@Override
 	public void visitLeave(DeclarationNode node) {
 		IdentifierNode identifier = (IdentifierNode) node.child(0);
@@ -130,7 +147,7 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		FunctionSignature signature = FunctionSignatures.signature(operator, childTypes);
 		
 		if(signature.accepts(childTypes)) {
-			node.setType(signature.resultType());
+			node.setType(signature.resultType().concreteType());
 			node.setSignature(signature);
 		}
 		else {
@@ -177,8 +194,15 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	public void visit(SpaceNode node) {
 	}
 	public void visit(TypeNode node) {
-		node.setType(PrimitiveType.fromToken(node.LextantToken()));
+		if(node.isArray()) {
+			Type subtype = node.child(0).getType();
+			Type arrayType = new Array(subtype); 
+			node.setType(arrayType);
+		} else {
+			node.setType(PrimitiveType.fromToken(node.LextantToken()));
+		}
 	}
+	
 	///////////////////////////////////////////////////////////////////////////
 	// IdentifierNodes, with helper methods
 	@Override

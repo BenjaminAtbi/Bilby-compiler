@@ -6,14 +6,21 @@ import java.util.List;
 import java.util.Map;
 
 import asmCodeGenerator.codeStorage.ASMOpcode;
+import asmCodeGenerator.operators.AndCodeGenerator;
+import asmCodeGenerator.operators.ArrayAccessCodeGenerator;
+import asmCodeGenerator.operators.ArrayAllocCodeGenerator;
 import asmCodeGenerator.operators.CompareCodeGenerator;
 import asmCodeGenerator.operators.DivideCodeGenerator;
 import asmCodeGenerator.operators.NotEqualCodeGenerator;
+import asmCodeGenerator.operators.OrCodeGenerator;
 import asmCodeGenerator.operators.IntToBoolCodeGenerator;
 import asmCodeGenerator.operators.IntToCharCodeGenerator;
 import lexicalAnalyzer.Keyword;
 import lexicalAnalyzer.Punctuator;
+import semanticAnalyzer.types.Array;
 import semanticAnalyzer.types.Type;
+import semanticAnalyzer.types.TypeVariable;
+
 import static semanticAnalyzer.types.PrimitiveType.*;
 import static asmCodeGenerator.runtime.RunTime.INTEGER_DIVIDE_BY_ZERO_RUNTIME_ERROR;
 import static asmCodeGenerator.runtime.RunTime.FLOAT_DIVIDE_BY_ZERO_RUNTIME_ERROR;
@@ -145,6 +152,14 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 				new FunctionSignature(new NotEqualCodeGenerator(ASMOpcode.Subtract, ASMOpcode.JumpFalse), STRING, STRING, BOOLEAN)
 		);
 		
+		new FunctionSignatures(Punctuator.AND,
+				new FunctionSignature(new AndCodeGenerator(), BOOLEAN, BOOLEAN, BOOLEAN)
+		);
+		
+		new FunctionSignatures(Punctuator.OR,
+				new FunctionSignature(new OrCodeGenerator(), BOOLEAN, BOOLEAN, BOOLEAN)
+		);
+		
 		// Casting signatures
 		new FunctionSignatures(Keyword.AS,
 				new FunctionSignature(ASMOpcode.Nop, BOOLEAN, BOOLEAN, BOOLEAN),
@@ -160,6 +175,14 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 				new FunctionSignature(ASMOpcode.Nop, STRING, STRING, STRING)
 		);
 		
+		
+		TypeVariable S = new TypeVariable("S");
+		new FunctionSignatures(Keyword.ALLOC,
+				new FunctionSignature(new ArrayAllocCodeGenerator(), new Array(S), INTEGER, new Array(S))	
+		);
+		new FunctionSignatures(Punctuator.INDEXING,
+				new FunctionSignature(new ArrayAccessCodeGenerator(), new Array(S), INTEGER, S)	
+		);
 		// First, we use the operator itself (in this case the Punctuator ADD) as the key.
 		// Then, we give that key two signatures: one an (INT x INT -> INT) and the other
 		// a (FLOAT x FLOAT -> FLOAT).  Each signature has a "whichVariant" parameter where

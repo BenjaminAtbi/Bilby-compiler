@@ -1,0 +1,5 @@
+main {
+	imm val := 3;
+	while(val < 10){ val := val + 1; };
+	print val $s;
+}

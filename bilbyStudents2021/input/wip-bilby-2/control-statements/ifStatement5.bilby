@@ -1,0 +1,9 @@
+main {
+	mut val := 3;
+	imm condition := false;
+	if(condition)
+	{
+		val := 4;
+	}
+	print val $s;
+}

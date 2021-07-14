@@ -1,0 +1,5 @@
+main {
+	mut val := 3;
+	while(val < 10)false{ val := val + 1; }
+	print val $s;
+}

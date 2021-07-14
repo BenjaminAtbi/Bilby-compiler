@@ -1,45 +1,5 @@
 main {
-
-  print true == false != false $n;
-  print false == true != true $n;
-  print true == true != false $n;
-  print true == false != true $n;
-  print false == true != false $n;
-  print false == false != true $n;
-  print true == true != true $n;
-  print false == true != true $n;
-  print true == false != true $n;
-  print true == false != true $n;
-  print true == false != true $n;
-  print true == true != false $n;
-
-  print false != false == false $n;
-  print false != false == false $n;
-  print false != false == false $n;
-  print true != true == true $n;
-  print false != false == true $n;
-  print true != false == false $n;
-  print false != true == false $n;
-  print false != true == true $n;
-  print false != true == true $n;
-  print false != true == false $n;
-  print true != true == true $n;
-  print true != true == false $n;
-
-  print false == true != true == true $n;
-  print true == true != true == false $n;
-  print true == true != false == false $n;
-  print true == true != true == true $n;
-  print true == false != true == true $n;
-  print true == true != true == false $n;
-  print true == false != false == false $n;
-  print true == true != false == false $n;
-  print false == false != false == false $n;
-  print false == false != true == false $n;
-  print true == true != false == false $n;
-  print true == false != false == false $n;
-
-
-
+	imm a := alloc[int](4);
+	%imm b := a[3];
+	%print b $n;
 }
-

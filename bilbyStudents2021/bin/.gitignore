@@ -1,2 +1,6 @@
 /applications/
 /parser/
+/lexicalAnalyzer/
+/semanticAnalyzer/
+/asmCodeGenerator/
+/parseTree/

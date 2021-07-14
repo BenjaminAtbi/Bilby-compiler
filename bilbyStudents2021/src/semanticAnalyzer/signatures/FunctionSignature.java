@@ -1,15 +1,19 @@
-package semanticAnalyzer.signatures;
+ package semanticAnalyzer.signatures;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
+import semanticAnalyzer.types.TypeVariable;
 
 //immutable
 public class FunctionSignature {
 	private static final boolean ALL_TYPES_ACCEPT_ERROR_TYPES = true;
 	private Type resultType;
 	private Type[] paramTypes;
+	private Set<TypeVariable> typeVariables;
 	Object whichVariant;
 	
 	
@@ -21,14 +25,21 @@ public class FunctionSignature {
 		storeParamTypes(types);
 		resultType = types[types.length-1];
 		this.whichVariant = whichVariant;
+		findTypeVariables();
 	}
+	private void findTypeVariables() {
+		typeVariables = new HashSet<TypeVariable>();
+		for(Type type: paramTypes) {
+			typeVariables.addAll(type.getTypeVariables());
+		}
+	}
+	
 	private void storeParamTypes(Type[] types) {
 		paramTypes = new Type[types.length-1];
 		for(int i=0; i<types.length-1; i++) {
 			paramTypes[i] = types[i];
 		}
 	}
-	
 	
 	///////////////////////////////////////////////////////////////
 	// accessors
@@ -43,7 +54,6 @@ public class FunctionSignature {
 		return false;
 	}
 	
-	
 	///////////////////////////////////////////////////////////////
 	// main query
 
@@ -51,6 +61,7 @@ public class FunctionSignature {
 		if(types.size() != paramTypes.length) {
 			return false;
 		}
+		resetTypeVariables(); 
 		
 		for(int i=0; i<paramTypes.length; i++) {
 			if(!assignableTo(paramTypes[i], types.get(i))) {
@@ -59,11 +70,16 @@ public class FunctionSignature {
 		}		
 		return true;
 	}
+	
+	private void resetTypeVariables() {
+		for(TypeVariable t: typeVariables)
+			t.reset();
+	}
 	private boolean assignableTo(Type variableType, Type valueType) {
 		if(valueType == PrimitiveType.ERROR && ALL_TYPES_ACCEPT_ERROR_TYPES) {
 			return true;
 		}	
-		return variableType.equals(valueType);
+		return variableType.equivalent(valueType);
 	}
 	
 	public int getNumArguments() {

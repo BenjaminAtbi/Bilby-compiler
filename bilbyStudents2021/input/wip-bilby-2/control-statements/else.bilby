@@ -1,0 +1,10 @@
+main {
+	mut val := 3;
+	if(true)
+	{
+		val := 4;
+	} else {
+		val := 2;
+	}
+	print val $s;
+}

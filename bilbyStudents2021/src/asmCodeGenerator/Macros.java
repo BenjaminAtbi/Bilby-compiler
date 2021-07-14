@@ -73,6 +73,17 @@ public class Macros {
 		frag.add(StoreC);			// []
 	}
 	
+	/** [... intToWrite baseLocation] -> [...]
+	 * @param frag ASMCodeFragment to add code to
+	 * @param offset amount to add to the base location before writing 
+	 */
+	public static void storeIOffset(ASMCodeFragment frag, String location,  int offset) {
+		frag.add(PushD, location);
+		frag.add(PushI, offset);	// [datum base offset]
+		frag.add(Add);				// [datum base+off]
+		frag.add(Exchange);			// [base+off datum]
+		frag.add(StoreI);			// []
+	}
 	
 	////////////////////////////////////////////////////////////////////
     // debugging aids

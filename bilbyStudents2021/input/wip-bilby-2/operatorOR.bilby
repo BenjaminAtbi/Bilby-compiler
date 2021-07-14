@@ -1,0 +1,11 @@
+main {
+	print true  || false $n;
+	print false || true $n;
+	print true  || true $n;
+	print false || false $n;
+	
+	print false || true || false $n;
+	print true || false || false $n;
+	print false || false || true $n;
+	print false || false || false $n;
+}

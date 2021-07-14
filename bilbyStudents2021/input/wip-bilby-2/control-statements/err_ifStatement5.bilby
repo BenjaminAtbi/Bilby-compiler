@@ -1,0 +1,5 @@
+main {
+	imm val := 3;
+	if(true){ val := 4 };
+	print val $s;
+}

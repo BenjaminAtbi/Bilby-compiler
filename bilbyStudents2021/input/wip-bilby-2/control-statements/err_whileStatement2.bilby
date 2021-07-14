@@ -1,0 +1,5 @@
+main {
+	mut val := 3;
+	while(val){ val := 0; }
+	print val $s;
+}
