@@ -27,6 +27,7 @@ import parseTree.nodeTypes.StringConstantNode;
 import parseTree.nodeTypes.TypeNode;
 import semanticAnalyzer.signatures.FunctionSignature;
 import semanticAnalyzer.signatures.FunctionSignatures;
+import semanticAnalyzer.types.Array;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
 import symbolTable.Binding;
@@ -215,27 +216,6 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 			node.setBinding(binding);
 		}
 
-//		if(node.getToken().isLextant(Punctuator.INDEXING)){
-//			List<Type> childTypes;  
-//			childTypes = Arrays.asList(node.child(0).getType(), node.child(1).getType());
-//			LextantToken punctuator = (LextantToken) node.getToken();
-//			FunctionSignature signature = FunctionSignatures.signature(punctuator, childTypes);
-//			if(signature.accepts(childTypes)) {
-//				node.setType(signature.resultType().concreteType());
-//			}
-//			else {
-//				typeCheckError(node, childTypes);
-//				node.setType(PrimitiveType.ERROR);
-//			}
-//		} else {
-//			IdentifierNode identifier = (IdentifierNode) node.child(0);
-//			assert (identifier.getBinding().getMutable());
-//			Type declarationType = identifier.getType();
-//			assert(declarationType == node.child(1).getType());
-//			node.setType(declarationType);
-//			identifier.setType(declarationType);
-//		}
-		// else parent DeclarationNode does the processing.
 	}
 	private boolean isBeingDeclared(IdentifierNode node) {
 		ParseNode parent = node.getParent();

@@ -29,6 +29,11 @@ public class TypeNode extends ParseNode {
 		return (LextantToken)token;
 	}	
 
+	public static ParseNode withChild(Token token, ParseNode child) {
+		TypeNode node = new TypeNode(token);
+		node.appendChild(child);
+		return node;
+	}
 ///////////////////////////////////////////////////////////
 // accept a visitor
 	

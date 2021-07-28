@@ -46,4 +46,20 @@ public enum PrimitiveType implements Type {
 		}
 		return null;
 	}
+	@Override
+	public boolean equivalent(Type otherType) {
+		return this.equals(otherType);
+	}
+	@Override
+	public boolean isReference() {
+		return this.equals(STRING);
+	}
+	@Override
+	public Collection<TypeVariable> getTypeVariables() {
+		return new ArrayList<TypeVariable>();
+	}
+	@Override
+	public Type concreteType() {
+		return this;
+	}
 }
