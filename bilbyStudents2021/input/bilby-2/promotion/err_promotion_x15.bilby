@@ -1,5 +1,0 @@
-main {
-	mut i := 21;
-	i := 3.24;
-	print i $s 3.24 $n;
-}

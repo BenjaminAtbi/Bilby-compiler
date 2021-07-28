@@ -1,7 +1,0 @@
-main {
-	mut c := alloc[[int]](3);
-	c[0] := alloc[int](3);
-	c[0][0] := 2;
-	
-	print c[0][0] $n;
-}

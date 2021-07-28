@@ -1,5 +1,0 @@
-main {
-	mut i := 24;
-	i := "howdy";
-	print i $s #( $n;
-}

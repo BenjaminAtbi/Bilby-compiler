@@ -5,7 +5,6 @@ import java.util.List;
 
 import lexicalAnalyzer.Keyword;
 import lexicalAnalyzer.Lextant;
-import lexicalAnalyzer.Punctuator;
 import logging.BilbyLogger;
 import parseTree.ParseNode;
 import parseTree.ParseNodeVisitor;
@@ -17,6 +16,7 @@ import parseTree.nodeTypes.DeclarationNode;
 import parseTree.nodeTypes.ErrorNode;
 import parseTree.nodeTypes.FloatConstantNode;
 import parseTree.nodeTypes.IdentifierNode;
+import parseTree.nodeTypes.IfStatementNode;
 import parseTree.nodeTypes.IntegerConstantNode;
 import parseTree.nodeTypes.NewlineNode;
 import parseTree.nodeTypes.OperatorNode;
@@ -25,6 +25,7 @@ import parseTree.nodeTypes.ProgramNode;
 import parseTree.nodeTypes.SpaceNode;
 import parseTree.nodeTypes.StringConstantNode;
 import parseTree.nodeTypes.TypeNode;
+import parseTree.nodeTypes.WhileStatementNode;
 import semanticAnalyzer.signatures.FunctionSignature;
 import semanticAnalyzer.signatures.FunctionSignatures;
 import semanticAnalyzer.types.Array;
@@ -80,10 +81,22 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	@Override
 	public void visitLeave(PrintStatementNode node) {
 	}
+	
+	
+	///////////////////////////////////////////////////////////////////////////
+	
+	@Override
+	public void visitLeave(IfStatementNode node) {
+		assert(node.child(0).getType() == PrimitiveType.BOOLEAN);
+	}
+	
+	@Override
+	public void visitLeave(WhileStatementNode node) {
+		assert(node.child(0).getType() == PrimitiveType.BOOLEAN);
+	}
+	
 	@Override
 	public void visitLeave(DeclarationNode node) {
-		assert(!node.child(0).getToken().isLextant(Punctuator.INDEXING)); //cannot declare into an array
-		
 		IdentifierNode identifier = (IdentifierNode) node.child(0);
 		ParseNode initializer = node.child(1);
 		
@@ -100,20 +113,16 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	
 	@Override
 	public void visitLeave(AssignmentNode node) {
-		
 		IdentifierNode identifier = (IdentifierNode) node.child(0);
 		ParseNode value = node.child(1);
-		Type declaredType = identifier.getType();
-		
-		
-		if(identifier.getToken().isLextant(Punctuator.INDEXING)){
 
-		} else {
-			assert (identifier.getBinding().getMutable());
-			
-			assert(declaredType.equivalent(value.getType()));
-			node.setType(declaredType);
-		}
+		assert(identifier.getBinding().getMutable());
+		
+		Type declarationType = identifier.getType();
+		assert(declarationType == value.getType());
+		node.setType(declarationType);
+		identifier.setType(declarationType);
+		
 	}
 
 	///////////////////////////////////////////////////////////////////////////
@@ -138,7 +147,7 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		FunctionSignature signature = FunctionSignatures.signature(operator, childTypes);
 		
 		if(signature.accepts(childTypes)) {
-			node.setType(signature.resultType());
+			node.setType(signature.resultType().concreteType());
 			node.setSignature(signature);
 		}
 		else {
@@ -152,20 +161,6 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	}
 
 
-	///////////////////////////////////////////////////////////////////////////
-	// types
-	
-	@Override
-	public void visitLeave(TypeNode node) {
-		if(node.getToken().isLextant(Keyword.ARRAY)) {
-			Type subtype = node.child(0).getType();
-			Type arrayType = new Array(subtype); 
-			node.setType(arrayType);
-		} else {
-			node.setType(PrimitiveType.fromToken(node.LextantToken()));
-		}
-	}
-	
 	///////////////////////////////////////////////////////////////////////////
 	// simple leaf nodes 
 	@Override
@@ -198,24 +193,27 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	@Override
 	public void visit(SpaceNode node) {
 	}
+	public void visit(TypeNode node) {
+		if(node.isArray()) {
+			Type subtype = node.child(0).getType();
+			Type arrayType = new Array(subtype); 
+			node.setType(arrayType);
+		} else {
+			node.setType(PrimitiveType.fromToken(node.LextantToken()));
+		}
+	}
+	
 	///////////////////////////////////////////////////////////////////////////
 	// IdentifierNodes, with helper methods
 	@Override
-	public void visitLeave(IdentifierNode node) {
-		if(node.getToken().isLextant(Punctuator.INDEXING)) {
-			
-			IdentifierNode childIdentifier = (IdentifierNode)node.child(0);
-			Array childType = (Array)childIdentifier.getType();
-			node.setType(childType.getSubtype());
-			node.setBinding(Binding.nullInstance());
-		}
-		else if(!isBeingDeclared(node)) {		
+	public void visit(IdentifierNode node) {
+		if(!isBeingDeclared(node)) {		
 			Binding binding = node.findVariableBinding();
 			
 			node.setType(binding.getType());
 			node.setBinding(binding);
 		}
-
+		// else parent DeclarationNode does the processing.
 	}
 	private boolean isBeingDeclared(IdentifierNode node) {
 		ParseNode parent = node.getParent();

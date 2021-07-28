@@ -1,8 +1,0 @@
-main {
-	imm a := [1, 4];
-	while (a) {
-		print "then" $n;
-	}
-	print "after" $n;
-}
-

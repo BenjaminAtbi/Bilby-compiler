@@ -1,5 +1,0 @@
-main {
-	mut s := "howdy";
-	s := true;
-	print s $s true $n;
-}

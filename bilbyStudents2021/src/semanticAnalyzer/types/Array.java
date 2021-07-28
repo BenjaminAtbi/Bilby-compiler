@@ -21,7 +21,7 @@ public class Array implements Type {
 	
 	@Override
 	public String infoString() {
-		return "[" + getSubtype().infoString() + "]";
+		return "[" + getSubtype() + "]";
 	}
 	
 	public boolean equivalent(Type otherType) {

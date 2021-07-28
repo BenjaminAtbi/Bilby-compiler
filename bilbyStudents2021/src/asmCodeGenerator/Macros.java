@@ -77,11 +77,6 @@ public class Macros {
 	 * @param frag ASMCodeFragment to add code to
 	 * @param offset amount to add to the base location before writing 
 	 */
-	/**
-	 * @param frag
-	 * @param location
-	 * @param offset
-	 */
 	public static void storeIOffset(ASMCodeFragment frag, String location,  int offset) {
 		frag.add(PushD, location);
 		frag.add(PushI, offset);	// [datum base offset]
@@ -89,41 +84,6 @@ public class Macros {
 		frag.add(Exchange);			// [base+off datum]
 		frag.add(StoreI);			// []
 	}
-	
-	
-	////////////////////////////////////////////////////////////////////
-	// array record aids
-	
-	
-	/** [ .. arrayLength ] -> [ .. memLength ]
-	 * @param frag ASMCodeFragment to add code to
-	 * @param byte length of array subtype 
-	 */
-	public static void generateLength(ASMCodeFragment frag, int typeSize) {
-		frag.add(PushI, typeSize);
-		frag.add(Multiply);
-		frag.add(PushI, 16);
-		frag.add(Add);
-	}
-	
-	/** [ .. addr ] -> [ .. value ]
-	 * @param frag ASMCodeFragment to add code to
-	 * @param byte length of array subtype 
-	 */
-	public static void getRecordField(ASMCodeFragment frag, int fieldIndex) {
-		frag.add(PushI, 4 * fieldIndex);
-		frag.add(Add);
-		frag.add(LoadI);				
-	}
-	
-	/** [ .. addr index ] -> [ .. value ]
-	 * @param frag ASMCodeFragment to add code to
-	 * @param index to insert value into
-	 */
-	public static void setElement(ASMCodeFragment code, int index) { 
-		
-	}
-	
 	
 	////////////////////////////////////////////////////////////////////
     // debugging aids

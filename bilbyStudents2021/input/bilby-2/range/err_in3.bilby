@@ -1,3 +1,0 @@
-main {
-	print 43.3 in <40..50> $s false $n;
-}

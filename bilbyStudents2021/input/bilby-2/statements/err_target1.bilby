@@ -1,6 +1,0 @@
-main {
-	imm i := 10.1;
-	print i $n;
-	(i) := -7.5;
-	print i $n;
-}

@@ -1,5 +1,0 @@
-main {
-	mut c := #x;
-	c := 324;
-	print c $s 324 $n;
-}

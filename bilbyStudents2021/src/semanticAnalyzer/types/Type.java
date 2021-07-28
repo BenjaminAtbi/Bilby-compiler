@@ -1,9 +1,6 @@
 package semanticAnalyzer.types;
 
-
 import java.util.Collection;
-
-import asmCodeGenerator.codeStorage.ASMCodeFragment;
 
 public interface Type {
 	/** returns the size of an instance of this type, in bytes.
@@ -27,5 +24,6 @@ public interface Type {
 	public Collection<TypeVariable>  getTypeVariables();
 
 	public Type concreteType();
+	
 	
 }

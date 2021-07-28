@@ -1,3 +1,0 @@
-main {
-	print high <#a..#c> $n;
-}

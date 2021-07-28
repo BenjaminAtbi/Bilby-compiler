@@ -7,7 +7,7 @@ import java.util.Map;
 
 import asmCodeGenerator.codeStorage.ASMOpcode;
 import asmCodeGenerator.operators.AndCodeGenerator;
-import asmCodeGenerator.operators.ArrayIndexCodeGenerator;
+import asmCodeGenerator.operators.ArrayAccessCodeGenerator;
 import asmCodeGenerator.operators.ArrayAllocCodeGenerator;
 import asmCodeGenerator.operators.CompareCodeGenerator;
 import asmCodeGenerator.operators.DivideCodeGenerator;
@@ -160,8 +160,6 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 				new FunctionSignature(new OrCodeGenerator(), BOOLEAN, BOOLEAN, BOOLEAN)
 		);
 		
-		TypeVariable S = new TypeVariable("S");
-		
 		// Casting signatures
 		new FunctionSignatures(Keyword.AS,
 				new FunctionSignature(ASMOpcode.Nop, BOOLEAN, BOOLEAN, BOOLEAN),
@@ -174,16 +172,16 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 				new FunctionSignature(new IntToBoolCodeGenerator(), INTEGER, BOOLEAN, BOOLEAN),
 				new FunctionSignature(ASMOpcode.Nop, FLOAT, FLOAT, FLOAT),
 				new FunctionSignature(ASMOpcode.ConvertI, FLOAT, INTEGER, INTEGER),
-				new FunctionSignature(ASMOpcode.Nop, STRING, STRING, STRING),
-				new FunctionSignature(ASMOpcode.Nop, new Array(S), new Array(S), new Array(S))
+				new FunctionSignature(ASMOpcode.Nop, STRING, STRING, STRING)
 		);
 		
 		
+		TypeVariable S = new TypeVariable("S");
 		new FunctionSignatures(Keyword.ALLOC,
 				new FunctionSignature(new ArrayAllocCodeGenerator(), new Array(S), INTEGER, new Array(S))	
 		);
 		new FunctionSignatures(Punctuator.INDEXING,
-				new FunctionSignature(new ArrayIndexCodeGenerator(), new Array(S), INTEGER, S)	
+				new FunctionSignature(new ArrayAccessCodeGenerator(), new Array(S), INTEGER, S)	
 		);
 		// First, we use the operator itself (in this case the Punctuator ADD) as the key.
 		// Then, we give that key two signatures: one an (INT x INT -> INT) and the other

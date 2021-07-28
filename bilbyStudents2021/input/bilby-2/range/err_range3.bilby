@@ -1,3 +1,0 @@
-main {
-	print <"b"..97> $s false $n;
-}

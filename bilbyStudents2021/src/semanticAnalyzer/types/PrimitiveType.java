@@ -3,10 +3,6 @@ package semanticAnalyzer.types;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import asmCodeGenerator.codeStorage.ASMCodeFragment;
-import asmCodeGenerator.codeStorage.ASMCodeFragment.CodeType;
-import static asmCodeGenerator.codeStorage.ASMOpcode.*;
-
 import tokens.LextantToken;
 
 public enum PrimitiveType implements Type {
@@ -46,14 +42,12 @@ public enum PrimitiveType implements Type {
 		}
 		return null;
 	}
-	@Override
+	
 	public boolean equivalent(Type otherType) {
 		return this.equals(otherType);
 	}
-	@Override
-	public boolean isReference() {
-		return this.equals(STRING);
-	}
+	
+	
 	@Override
 	public Collection<TypeVariable> getTypeVariables() {
 		return new ArrayList<TypeVariable>();
@@ -61,5 +55,9 @@ public enum PrimitiveType implements Type {
 	@Override
 	public Type concreteType() {
 		return this;
+	}
+	@Override
+	public boolean isReference() {
+		return this.equals(STRING);
 	}
 }

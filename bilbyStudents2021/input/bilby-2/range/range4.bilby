@@ -1,4 +1,0 @@
-main {
-	imm r := <#a..#c>;
-	print r $n;
-}

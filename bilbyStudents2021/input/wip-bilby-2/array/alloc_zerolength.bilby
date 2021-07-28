@@ -1,3 +1,0 @@
-main {
-	imm a := alloc[char](0);
-}

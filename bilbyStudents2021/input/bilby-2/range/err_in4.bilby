@@ -1,3 +1,0 @@
-main {
-	print "hello" in <4.0..5.0> $s false $n;
-}

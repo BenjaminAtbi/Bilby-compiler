@@ -1,8 +1,0 @@
-main {
-	mut a := alloc[int](3);
-	a[0] := 1;
-	a[1] := 2;
-	a[2] := 3;
-	
-	print a[0] $s a[1] $s a[2] $n;
-}

@@ -1,5 +1,0 @@
-main {
-	mut c := #!;
-	c := true;
-	print c $s true $n;
-}

@@ -1,3 +1,0 @@
-main {
-	print 43 in <#a..#b> $s false $n;
-}

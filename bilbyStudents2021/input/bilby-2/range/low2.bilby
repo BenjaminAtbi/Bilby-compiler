@@ -1,3 +1,0 @@
-main {
-	print low <11..33> $n;
-}

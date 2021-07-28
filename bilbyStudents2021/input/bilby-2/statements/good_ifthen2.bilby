@@ -1,7 +1,0 @@
-main {
-	if (false)  {
-		print "then" $n;
-	}
-	print "after" $n;
-}
-

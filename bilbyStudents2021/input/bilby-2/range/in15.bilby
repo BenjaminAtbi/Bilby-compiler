@@ -1,3 +1,0 @@
-main {
-	print 6 in <2..8> $s true $n;
-}

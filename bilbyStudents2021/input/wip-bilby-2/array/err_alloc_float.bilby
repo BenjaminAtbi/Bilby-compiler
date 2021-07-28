@@ -1,3 +1,0 @@
-main {
-	imm a := alloc[int](4.1);
-}

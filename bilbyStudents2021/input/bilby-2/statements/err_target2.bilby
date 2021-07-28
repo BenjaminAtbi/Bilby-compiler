@@ -1,6 +1,0 @@
-main {
-	imm i := [#A, #z];
-	print i $n;
-	length i := 12;
-	print i $n;
-}

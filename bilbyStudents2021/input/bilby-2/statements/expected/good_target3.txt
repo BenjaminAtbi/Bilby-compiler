@@ -1,1 +1,0 @@
-Couldn't read file "D:\Projects\Bilby-compiler\bilbyStudents2021\input\bilby-2\statements/output/good_target3.asm"
