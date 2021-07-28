@@ -10,8 +10,13 @@ import static asmCodeGenerator.Macros.*;
 import asmCodeGenerator.codeStorage.ASMCodeFragment;
 import asmCodeGenerator.codeStorage.ASMCodeFragment.CodeType;
 import static asmCodeGenerator.codeStorage.ASMOpcode.*;
+import static asmCodeGenerator.runtime.RunTime.ARRAY_NEGATIVE_LENGTH_ERROR;
+
 import asmCodeGenerator.runtime.MemoryManager;
+import asmCodeGenerator.runtime.RunTime;
 import parseTree.ParseNode;
+import semanticAnalyzer.types.Array;
+import semanticAnalyzer.types.Type;
 
 public class ArrayAllocCodeGenerator implements SimpleCodeGenerator {
 
@@ -26,76 +31,75 @@ public class ArrayAllocCodeGenerator implements SimpleCodeGenerator {
 		
 		//code.add(PushI, node.getType().isReference() ? 2 : 0); //set bit 1 if reference type
 		
-		ASMCodeFragment length = args.get(1);
-		
 		Labeller labeller = new Labeller("alloc-array");
 		String startLabel = labeller.newLabel("start");
-		String endLabel = labeller.newLabel("end");
+		String loopHead = labeller.newLabel("loop");
 		
 		
 		ASMCodeFragment code = new ASMCodeFragment(CodeType.GENERATES_VALUE);
 		
 		code.add(Label, startLabel);
-		generateLength(node,code, length);			// [.. memlength ] 
-		
-		code.add(Duplicate);						//length sit under everything the whole time
-		code.add(Call, MemoryManager.MEM_MANAGER_ALLOCATE); // [.. addr ]		{ .. }
-//		declareI(code, Addr);	
-//		storeITo(code, Addr);	// [.. ]  mem(addr) <- addr 
-//		
-//		code.add(PushI, 7);										// [.. 7 ]		{ .. }
-//		storeITo(code, Addr);									// [.. ] 		{ 7, ..}
-//		code.add(PushI, node.getType().isReference() ? 2 : 0); 
-//		storeIOffset(code, Addr, 4);		
-//		code.add(PushI, node.getType().getSize()); 
-//		storeIOffset(code, Addr, 8);
-//		code.append(generateLength(node, args));
-//		storeIOffset(code, Addr, 12); 							// [.. ] 		{ 7, status, size, length, ... }
+		code.append(args.get(1));					// [.. arrayLength ]
 		
 		code.add(Duplicate);
+		code.add(JumpNeg, ARRAY_NEGATIVE_LENGTH_ERROR); // check length is positive
+		
+		code.add(Duplicate); 						// [.. arrayLength arrayLength ]
+		storeITo(code, RunTime.REF_SPACE1);			// [.. arrayLength ] 	MEM(ref_space1) <- arrayLength
+		
+		Array nodeType = (Array)node.getType();		
+		generateLength(code, nodeType.getSubtype().getSize());			// [.. memlength ] 
+		
+		code.add(Call, MemoryManager.MEM_MANAGER_ALLOCATE); // [.. addr ]
+		
+		storeITo(code, RunTime.REF_SPACE2);			// [.. ]	MEM(ref_space2) <- arrayAddr 
+		
+		loadIFrom(code, RunTime.REF_SPACE2);
 		code.add(PushI, 7);
-		code.add(StoreI);
+		code.add(StoreI);							// array{ type_identifier, .. } 
 		
-		code.add(Duplicate);
-		code.add(PushI, 4);
-		code.add(Add);
 		code.add(PushI, node.getType().isReference() ? 2 : 0);
-		code.add(StoreI);
+		loadIFrom(code, RunTime.REF_SPACE2);
+		writeIOffset(code, 4);						// array{ type_identifier, status, .. } 
 		
+		code.add(PushI, nodeType.getSubtype().getSize());
+		loadIFrom(code, RunTime.REF_SPACE2);
+		writeIOffset(code, 8);						// array{ type_identifier, status, subtype_size, .. } 
+		
+		loadIFrom(code, RunTime.REF_SPACE1);
+		loadIFrom(code, RunTime.REF_SPACE2);
+		writeIOffset(code, 12);						// array{ type_identifier, status, subtype_size, length .. } 
+		
+	
+		code.add(PushI, 0);
+		storeITo(code, RunTime.REF_I);
+		loadIFrom(code, RunTime.REF_SPACE2);		// [.. arrayAddr ]
+		code.add(Label, loopHead);
 		code.add(Duplicate);
-		code.add(PushI, 8);
-		code.add(Add);
-		code.add(PushI, node.getType().getSize());
-		code.add(StoreI);
+		code.add(Duplicate);
+		getRecordField(code, 2);					// [.. arrayAddr arrayAddr subtypeLength ]
+		loadIFrom(code, RunTime.REF_I);				
+		code.add(Multiply); 						// [.. arrayAddr arrayAddr indexOffset ]
+		code.add(Add); 								// [.. arrayAddr elementIndex ]
+		generatePush(code, node.getType());
+		code.add(Exchange);
+		writeIOffset(code, 16);						// [.. arrayAddr ]
 		
-		code.add(PushI, 12);
-		code.add(Add);
-		code.add(PushI, 4);
-		code.add(StoreI);
+		incrementInteger(code, RunTime.REF_I);
+		loadIFrom(code, RunTime.REF_I);
+		loadIFrom(code, RunTime.REF_SPACE1); // array length
+		code.add(Subtract);
+		code.add(JumpNeg, loopHead);
 		
-		code.add(PStack);
 		return code;
 	}
-
-	private void generateLength(ParseNode node, ASMCodeFragment frag, ASMCodeFragment length) {
-		frag.add(PushI, node.getType().getSize()); 
-		frag.append(length); 	// [.. typesize length ]
-		frag.add(Multiply);
-		frag.add(PushI, 16);
-		frag.add(Add);				// [.. memlength ] 
+	
+	private void generatePush(ASMCodeFragment code, Type type) {
+		switch(type.getSize()) {
+		case 1: code.add(PushI, 0); return;
+		case 4: code.add(PushI, 0); return;
+		case 8: code.add(PushF, 0); return;
+		}
+		return;
 	}
 }
-
-
-
-//public void visit(StringConstantNode node) {
-//	newValueCode(node);
-//	
-//	String label = new Labeller("string-constant").newLabel("");
-//	code.add(DLabel, label);
-//	code.add(DataI,3);
-//	code.add(DataI,9);
-//	code.add(DataI,node.getValue().length());
-//	code.add(DataS,node.getValue());
-//	code.add(PushD, label);
-//}

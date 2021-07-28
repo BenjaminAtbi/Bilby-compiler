@@ -1,0 +1,9 @@
+main {
+	mut i := 0;
+	imm a := alloc[int](7);
+	while(i<7){
+		print a[i] $s;
+		i := i + 1;
+	}
+	print $n;
+}

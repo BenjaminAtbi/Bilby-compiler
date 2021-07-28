@@ -86,6 +86,39 @@ public class Macros {
 	}
 	
 	////////////////////////////////////////////////////////////////////
+	// array record aids
+	
+	
+	/** [ .. arrayLength ] -> [ .. memLength ]
+	 * @param frag ASMCodeFragment to add code to
+	 * @param byte length of array subtype 
+	 */
+	public static void generateLength(ASMCodeFragment frag, int typeSize) {
+		frag.add(PushI, typeSize);
+		frag.add(Multiply);
+		frag.add(PushI, 16);
+		frag.add(Add);
+	}
+	
+	/** [ .. addr ] -> [ .. value ]
+	 * @param frag ASMCodeFragment to add code to
+	 * @param byte length of array subtype 
+	 */
+	public static void getRecordField(ASMCodeFragment frag, int fieldIndex) {
+		frag.add(PushI, 4 * fieldIndex);
+		frag.add(Add);
+		frag.add(LoadI);				
+	}
+	
+	/** [ .. addr index ] -> [ .. value ]
+	 * @param frag ASMCodeFragment to add code to
+	 * @param index to insert value into
+	 */
+	public static void setElement(ASMCodeFragment code, int index) { 
+		
+	}
+	
+	////////////////////////////////////////////////////////////////////
     // debugging aids
 
 	// does not disturb accumulator.  Takes a format string - no %'s!

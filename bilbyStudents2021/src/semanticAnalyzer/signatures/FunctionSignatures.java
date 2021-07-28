@@ -7,7 +7,7 @@ import java.util.Map;
 
 import asmCodeGenerator.codeStorage.ASMOpcode;
 import asmCodeGenerator.operators.AndCodeGenerator;
-import asmCodeGenerator.operators.ArrayAccessCodeGenerator;
+import asmCodeGenerator.operators.ArrayIndexCodeGenerator;
 import asmCodeGenerator.operators.ArrayAllocCodeGenerator;
 import asmCodeGenerator.operators.CompareCodeGenerator;
 import asmCodeGenerator.operators.DivideCodeGenerator;
@@ -181,7 +181,7 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 				new FunctionSignature(new ArrayAllocCodeGenerator(), new Array(S), INTEGER, new Array(S))	
 		);
 		new FunctionSignatures(Punctuator.INDEXING,
-				new FunctionSignature(new ArrayAccessCodeGenerator(), new Array(S), INTEGER, S)	
+				new FunctionSignature(new ArrayIndexCodeGenerator(), new Array(S), INTEGER, S)	
 		);
 		// First, we use the operator itself (in this case the Punctuator ADD) as the key.
 		// Then, we give that key two signatures: one an (INT x INT -> INT) and the other

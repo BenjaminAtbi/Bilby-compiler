@@ -12,6 +12,7 @@ import asmCodeGenerator.runtime.MemoryManager;
 import asmCodeGenerator.runtime.RunTime;
 import asmCodeGenerator.statements.IfStatementGenerator;
 import asmCodeGenerator.statements.WhileStatementGenerator;
+
 import parseTree.*;
 import parseTree.nodeTypes.BooleanConstantNode;
 import parseTree.nodeTypes.CharConstantNode;
@@ -37,6 +38,7 @@ import semanticAnalyzer.types.Type;
 import symbolTable.Binding;
 import symbolTable.Scope;
 
+import static asmCodeGenerator.CodeGeneratorAids.*;
 import static asmCodeGenerator.Macros.declareI;
 import static asmCodeGenerator.codeStorage.ASMCodeFragment.CodeType.*;
 import static asmCodeGenerator.codeStorage.ASMOpcode.*;
@@ -57,8 +59,8 @@ public class ASMCodeGenerator {
 	public ASMCodeFragment makeASM() {
 		ASMCodeFragment code = new ASMCodeFragment(GENERATES_VOID);
 		
-		code.append( RunTime.getEnvironment() );
 		code.append( MemoryManager.codeForInitialization() );
+		code.append( RunTime.getEnvironment() );
 		code.append( globalVariableBlockASM() );
 		code.append( programASM() );
 		code.append( MemoryManager.codeForAfterApplication() );
@@ -263,29 +265,6 @@ public class ASMCodeGenerator {
 			
 			Type type = node.getType();
 			code.add(opcodeForStore(type));
-		}
-		
-		private ASMOpcode opcodeForStore(Type type) {
-			if(type == PrimitiveType.CHAR) {
-				return StoreC;
-			}
-			if(type == PrimitiveType.INTEGER) {
-				return StoreI;
-			}
-			if(type == PrimitiveType.FLOAT) {
-				return StoreF;
-			}
-			if(type == PrimitiveType.STRING) {
-				return StoreI;
-			}
-			if(type == PrimitiveType.BOOLEAN) {
-				return StoreC;
-			}
-			if(type instanceof Array) {
-				return StoreI;
-			}
-			assert false: "Type " + type + " unimplemented in opcodeForStore()";
-			return null;
 		}
 		
 		
