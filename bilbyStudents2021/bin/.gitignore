@@ -9,3 +9,7 @@
 /parser/
 /lexicalAnalyzer/
 >>>>>>> Stashed changes
+/inputHandler/
+/logging/
+/symbolTable/
+/tokens/
