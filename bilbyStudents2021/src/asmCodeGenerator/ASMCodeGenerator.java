@@ -12,6 +12,7 @@ import asmCodeGenerator.runtime.MemoryManager;
 import asmCodeGenerator.runtime.RunTime;
 import asmCodeGenerator.statements.IfStatementGenerator;
 import asmCodeGenerator.statements.WhileStatementGenerator;
+import static asmCodeGenerator.CodeGeneratorAids.*;
 import parseTree.*;
 import parseTree.nodeTypes.BooleanConstantNode;
 import parseTree.nodeTypes.CharConstantNode;
@@ -56,9 +57,8 @@ public class ASMCodeGenerator {
 	
 	public ASMCodeFragment makeASM() {
 		ASMCodeFragment code = new ASMCodeFragment(GENERATES_VOID);
-		
-		code.append( RunTime.getEnvironment() );
 		code.append( MemoryManager.codeForInitialization() );
+		code.append( RunTime.getEnvironment() );
 		code.append( globalVariableBlockASM() );
 		code.append( programASM() );
 		code.append( MemoryManager.codeForAfterApplication() );
@@ -265,30 +265,6 @@ public class ASMCodeGenerator {
 			code.add(opcodeForStore(type));
 		}
 		
-		private ASMOpcode opcodeForStore(Type type) {
-			if(type == PrimitiveType.CHAR) {
-				return StoreC;
-			}
-			if(type == PrimitiveType.INTEGER) {
-				return StoreI;
-			}
-			if(type == PrimitiveType.FLOAT) {
-				return StoreF;
-			}
-			if(type == PrimitiveType.STRING) {
-				return StoreI;
-			}
-			if(type == PrimitiveType.BOOLEAN) {
-				return StoreC;
-			}
-			if(type instanceof Array) {
-				return StoreI;
-			}
-			assert false: "Type " + type + " unimplemented in opcodeForStore()";
-			return null;
-		}
-		
-		
 
 
 		///////////////////////////////////////////////////////////////////////////
@@ -322,7 +298,11 @@ public class ASMCodeGenerator {
 			}
 		}
 		
-
+		
+		public void visitLeave(TypeNode node) {
+			newValueCode(node);
+		}	
+		
 		///////////////////////////////////////////////////////////////////////////
 		// leaf nodes (ErrorNode not necessary)
 		public void visit(BooleanConstantNode node) {
@@ -361,9 +341,6 @@ public class ASMCodeGenerator {
 			code.add(DataS,node.getValue());
 			code.add(PushD, label);
 		}
-		public void visit(TypeNode node) {
-			newValueCode(node);
-		}	
 	}
 
 }

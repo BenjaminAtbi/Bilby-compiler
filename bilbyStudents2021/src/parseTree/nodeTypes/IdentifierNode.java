@@ -2,6 +2,7 @@ package parseTree.nodeTypes;
 
 import parseTree.ParseNode;
 import parseTree.ParseNodeVisitor;
+import lexicalAnalyzer.Punctuator;
 import logging.BilbyLogger;
 import symbolTable.Binding;
 import symbolTable.Scope;
@@ -14,7 +15,7 @@ public class IdentifierNode extends ParseNode {
 
 	public IdentifierNode(Token token) {
 		super(token);
-		assert(token instanceof IdentifierToken);
+		assert(token instanceof IdentifierToken || token.isLextant(Punctuator.INDEXING));
 		this.binding = null;
 	}
 	public IdentifierNode(ParseNode node) {
@@ -28,6 +29,14 @@ public class IdentifierNode extends ParseNode {
 		}
 	}
 	
+	
+	public static ParseNode withChildren(Token token, ParseNode ...children) {
+		IdentifierNode node = new IdentifierNode(token);
+		for(ParseNode child: children) {
+			node.appendChild(child);
+		}
+		return node;
+	}
 ////////////////////////////////////////////////////////////
 // attributes
 	
@@ -72,6 +81,8 @@ public class IdentifierNode extends ParseNode {
 // accept a visitor
 		
 	public void accept(ParseNodeVisitor visitor) {
-		visitor.visit(this);
+		visitor.visitEnter(this);
+		visitChildren(visitor);
+		visitor.visitLeave(this);
 	}
 }

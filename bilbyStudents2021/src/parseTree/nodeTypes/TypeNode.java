@@ -13,7 +13,7 @@ import tokens.TypeToken;
 public class TypeNode extends ParseNode {
 	public TypeNode(Token token) {
 		super(token);
-		assert(token.isLextant(Keyword.BOOL, Keyword.CHAR, Keyword.STRING, Keyword.INT, Keyword.FLOAT, Punctuator.OPEN_SQUARE));
+		assert(token.isLextant(Keyword.BOOL, Keyword.CHAR, Keyword.STRING, Keyword.INT, Keyword.FLOAT, Keyword.ARRAY));
 	}
 	public TypeNode(ParseNode node) {
 		super(node);
@@ -29,10 +29,6 @@ public class TypeNode extends ParseNode {
 	public LextantToken LextantToken() {
 		return (LextantToken)token;
 	}	
-	
-	public boolean isArray() {
-		return getToken().isLextant(Punctuator.OPEN_SQUARE);
-	}
 
 //////////////////////////////////////////////////////
 // factory
@@ -46,8 +42,11 @@ public class TypeNode extends ParseNode {
 // accept a visitor
 	
 	public void accept(ParseNodeVisitor visitor) {
-		visitor.visit(this);
+		visitor.visitEnter(this);
+		visitChildren(visitor);
+		visitor.visitLeave(this);
 	}
+	
 	public static ParseNode makePrimitive(Token typeToken) {
 		TypeNode node = new TypeNode(typeToken);
 		node.setType(PrimitiveType.fromToken((LextantToken)typeToken));

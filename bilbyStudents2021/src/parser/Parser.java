@@ -261,6 +261,7 @@ public class Parser {
 		if(!startsAssignmentStatement(nowReading)) {
 			return syntaxErrorNode("assignment statement");
 		}
+		
 		ParseNode identifier = parseIdentifier();
 		
 		if(!nowReading.isLextant(Punctuator.ASSIGN)) {
@@ -473,6 +474,7 @@ public class Parser {
 		return startsAtomicExpression(token);
 	}
 	
+	
 	// atomicExpression         -> unaryExpression | literal
 	private ParseNode parseAtomicExpression() {
 		if(!startsAtomicExpression(nowReading)) {
@@ -510,6 +512,7 @@ public class Parser {
 			expect(Punctuator.OPEN_BRACKET);
 			ParseNode expression = parseExpression();
 			expect(Punctuator.CLOSE_BRACKET);
+			
 			return OperatorNode.withChildren(allocToken, type, expression);
 		}
 		return syntaxErrorNode("bracketed expression not implemented");
@@ -552,6 +555,7 @@ public class Parser {
 		if(typeToken.isLextant(Punctuator.OPEN_SQUARE)) {
 			ParseNode child = parseType();
 			expect(Punctuator.CLOSE_SQUARE);
+			typeToken = LextantToken.make(typeToken, typeToken.getLexeme(), Keyword.ARRAY);
 			return TypeNode.withChild(typeToken, child);
 		}
 		else {
@@ -653,7 +657,18 @@ public class Parser {
 			return syntaxErrorNode("identifier");
 		}
 		readToken();
-		return new IdentifierNode(previouslyRead);
+		ParseNode identifier = new IdentifierNode(previouslyRead);
+		
+		while(nowReading.isLextant(Punctuator.OPEN_SQUARE)) {
+			Token bracketToken = nowReading;
+			readToken();
+			ParseNode index = parseIntLiteral();
+			expect(Punctuator.CLOSE_SQUARE);
+			Token indexingToken = LextantToken.make(bracketToken, bracketToken.getLexeme(), Punctuator.INDEXING);
+			identifier = IdentifierNode.withChildren(indexingToken, identifier, index);
+		}
+		
+		return identifier;
 	}
 	private boolean startsIdentifier(Token token) {
 		return token instanceof IdentifierToken;

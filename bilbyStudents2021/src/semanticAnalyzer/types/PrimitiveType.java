@@ -3,6 +3,10 @@ package semanticAnalyzer.types;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import asmCodeGenerator.codeStorage.ASMCodeFragment;
+import asmCodeGenerator.codeStorage.ASMCodeFragment.CodeType;
+import static asmCodeGenerator.codeStorage.ASMOpcode.*;
+
 import tokens.LextantToken;
 
 public enum PrimitiveType implements Type {

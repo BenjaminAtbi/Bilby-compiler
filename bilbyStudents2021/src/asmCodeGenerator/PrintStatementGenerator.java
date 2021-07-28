@@ -6,6 +6,7 @@ import parseTree.ParseNode;
 import parseTree.nodeTypes.NewlineNode;
 import parseTree.nodeTypes.PrintStatementNode;
 import parseTree.nodeTypes.SpaceNode;
+import semanticAnalyzer.types.Array;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
 import asmCodeGenerator.ASMCodeGenerator.CodeVisitor;
@@ -40,9 +41,16 @@ public class PrintStatementGenerator {
 		code.append(visitor.removeValueCode(node));
 		convertToStringIfBoolean(node);
 		convertToCStringIfString(node);
+		convertToCStringIfArray(node);
 		code.add(PushD, format);
 		code.add(Printf);
 	}
+	private void convertToCStringIfArray(ParseNode node) {
+		if(!(node.getType() instanceof Array)) {
+			return;
+		}
+	}
+
 	private void convertToCStringIfString(ParseNode node) {
 		if(node.getType() != PrimitiveType.STRING) {
 			return;

@@ -1,0 +1,3 @@
+main {
+	imm b := alloc[int](-4);
+}

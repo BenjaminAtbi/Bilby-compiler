@@ -1,6 +1,6 @@
-/applications/
+/asmCodeGenerator/
+/.gitignore
+/semanticAnalyzer/
+/parseTree/
 /parser/
 /lexicalAnalyzer/
-/semanticAnalyzer/
-/asmCodeGenerator/
-/parseTree/

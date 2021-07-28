@@ -1,4 +1,0 @@
-main {
-	imm a := alloc[int](4);
-	imm b := a[3];
-}

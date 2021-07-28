@@ -1,3 +1,26 @@
+        Label        -mem-manager-initialize   
+        DLabel       $heap-start-ptr           
+        DataZ        4                         
+        DLabel       $heap-after-ptr           
+        DataZ        4                         
+        DLabel       $heap-first-free          
+        DataZ        4                         
+        DLabel       $mmgr-newblock-block      
+        DataZ        4                         
+        DLabel       $mmgr-newblock-size       
+        DataZ        4                         
+        PushD        $heap-memory              
+        Duplicate                              
+        PushD        $heap-start-ptr           
+        Exchange                               
+        StoreI                                 
+        PushD        $heap-after-ptr           
+        Exchange                               
+        StoreI                                 
+        PushI        0                         
+        PushD        $heap-first-free          
+        Exchange                               
+        StoreI                                 
         Jump         $$main                    
         DLabel       $eat-location-zero        
         DataZ        8                         
@@ -116,98 +139,95 @@
         Label        $$f-divide-by-zero        
         PushD        $errors-float-divide-by-zero 
         Jump         $$general-runtime-error   
+        DLabel       $reference-space-1        
+        DataZ        4                         
+        DLabel       $reference-space-2        
+        DataZ        4                         
+        DLabel       $reference-space-Iter     
         DLabel       $usable-memory-start      
-        Label        -mem-manager-initialize   
-        DLabel       $heap-start-ptr           
-        DataZ        4                         
-        DLabel       $heap-after-ptr           
-        DataZ        4                         
-        DLabel       $heap-first-free          
-        DataZ        4                         
-        DLabel       $mmgr-newblock-block      
-        DataZ        4                         
-        DLabel       $mmgr-newblock-size       
-        DataZ        4                         
-        PushD        $heap-memory              
-        Duplicate                              
-        PushD        $heap-start-ptr           
-        Exchange                               
-        StoreI                                 
-        PushD        $heap-after-ptr           
-        Exchange                               
-        StoreI                                 
-        PushI        0                         
-        PushD        $heap-first-free          
-        Exchange                               
-        StoreI                                 
         DLabel       $global-memory-block      
         DataZ        4                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% a
+        Add                                    %% b
         Label        -alloc-array-1-start      
         PushI        4                         
-        PushI        4                         
-        Multiply                               
-        PushI        16                        
-        Add                                    
-        PushI        4                         
-        Multiply                               
-        PushI        16                        
-        Add                                    
+        Negate                                 
         PStack                                 
         Duplicate                              
+        PushD        $reference-space-1        
+        Exchange                               
+        StoreI                                 
+        PushI        4                         
+        Multiply                               
+        PushI        16                        
+        Add                                    
         Call         -mem-manager-allocate     
-        Duplicate                              
+        PushD        $reference-space-2        
+        Exchange                               
+        StoreI                                 
+        PushD        $reference-space-2        
+        LoadI                                  
         PushI        7                         
         StoreI                                 
-        Duplicate                              
+        PushI        2                         
+        PushD        $reference-space-2        
+        LoadI                                  
         PushI        4                         
         Add                                    
-        PushI        2                         
+        Exchange                               
         StoreI                                 
+        PushI        4                         
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        8                         
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushD        $reference-space-1        
+        LoadI                                  
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        12                        
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushI        0                         
+        PushD        $reference-space-Iter     
+        Exchange                               
+        StoreI                                 
+        PushD        $reference-space-2        
+        LoadI                                  
+        Label        -alloc-array-1-loop       
+        Duplicate                              
         Duplicate                              
         PushI        8                         
         Add                                    
-        PushI        4                         
-        StoreI                                 
-        PushI        12                        
-        Add                                    
-        PushI        4                         
-        StoreI                                 
-        PStack                                 
-        StoreI                                 
-        Halt                                   
-        PushI        4                         
+        LoadI                                  
+        PushD        $reference-space-Iter     
+        LoadI                                  
         Multiply                               
+        Add                                    
+        PushI        0                         
+        Exchange                               
         PushI        16                        
         Add                                    
-        PushI        4                         
-        Multiply                               
-        PushI        16                        
-        Add                                    
-        PStack                                 
-        Duplicate                              
-        Call         -mem-manager-allocate     
-        Duplicate                              
-        PushI        7                         
+        Exchange                               
         StoreI                                 
-        Duplicate                              
-        PushI        4                         
+        PushI        1                         
+        PushD        $reference-space-Iter     
+        LoadI                                  
         Add                                    
-        PushI        2                         
+        PushD        $reference-space-Iter     
+        Exchange                               
         StoreI                                 
-        Duplicate                              
-        PushI        8                         
-        Add                                    
-        PushI        4                         
-        StoreI                                 
-        PushI        12                        
-        Add                                    
-        PushI        4                         
-        StoreI                                 
-        PStack                                 
+        PushD        $reference-space-Iter     
+        LoadI                                  
+        PushD        $reference-space-1        
+        LoadI                                  
+        Subtract                               
+        JumpNeg      -alloc-array-1-loop       
         StoreI                                 
         Halt                                   
         Label        -mem-manager-make-tags    
