@@ -12,7 +12,7 @@ public class AssignmentNode extends ParseNode {
 
 	public AssignmentNode(Token token) {
 		super(token);
-		assert(token.isLextant(Punctuator.ASSIGN));
+		assert(token.isLextant(Punctuator.ASSIGN, Punctuator.OPEN_SQUARE));
 	}
 
 	public AssignmentNode(ParseNode node) {
@@ -35,6 +35,14 @@ public class AssignmentNode extends ParseNode {
 	public static AssignmentNode withChildren(Token token, ParseNode assignedName, ParseNode initializer) {
 		AssignmentNode node = new AssignmentNode(token);
 		node.appendChild(assignedName);
+		node.appendChild(initializer);
+		return node;
+	}
+	
+	public static AssignmentNode withChildren(Token token, ParseNode assignedName, ParseNode index, ParseNode initializer) {
+		AssignmentNode node = new AssignmentNode(token);
+		node.appendChild(assignedName);
+		node.appendChild(index);
 		node.appendChild(initializer);
 		return node;
 	}

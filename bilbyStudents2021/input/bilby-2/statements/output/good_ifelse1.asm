@@ -1,3 +1,26 @@
+        Label        -mem-manager-initialize   
+        DLabel       $heap-start-ptr           
+        DataZ        4                         
+        DLabel       $heap-after-ptr           
+        DataZ        4                         
+        DLabel       $heap-first-free          
+        DataZ        4                         
+        DLabel       $mmgr-newblock-block      
+        DataZ        4                         
+        DLabel       $mmgr-newblock-size       
+        DataZ        4                         
+        PushD        $heap-memory              
+        Duplicate                              
+        PushD        $heap-start-ptr           
+        Exchange                               
+        StoreI                                 
+        PushD        $heap-after-ptr           
+        Exchange                               
+        StoreI                                 
+        PushI        0                         
+        PushD        $heap-first-free          
+        Exchange                               
+        StoreI                                 
         Jump         $$main                    
         DLabel       $eat-location-zero        
         DataZ        8                         
@@ -116,99 +139,129 @@
         Label        $$f-divide-by-zero        
         PushD        $errors-float-divide-by-zero 
         Jump         $$general-runtime-error   
+        DLabel       $array-out-of-bounds      
+        DataC        97                        %% "array out of bounds"
+        DataC        114                       
+        DataC        114                       
+        DataC        97                        
+        DataC        121                       
+        DataC        32                        
+        DataC        111                       
+        DataC        117                       
+        DataC        116                       
+        DataC        32                        
+        DataC        111                       
+        DataC        102                       
+        DataC        32                        
+        DataC        98                        
+        DataC        111                       
+        DataC        117                       
+        DataC        110                       
+        DataC        100                       
+        DataC        115                       
+        DataC        0                         
+        Label        $$array-out-of-bounds     
+        PushD        $array-out-of-bounds      
+        Jump         $$general-runtime-error   
+        DLabel       $array-negative-length    
+        DataC        97                        %% "array has negative length"
+        DataC        114                       
+        DataC        114                       
+        DataC        97                        
+        DataC        121                       
+        DataC        32                        
+        DataC        104                       
+        DataC        97                        
+        DataC        115                       
+        DataC        32                        
+        DataC        110                       
+        DataC        101                       
+        DataC        103                       
+        DataC        97                        
+        DataC        116                       
+        DataC        105                       
+        DataC        118                       
+        DataC        101                       
+        DataC        32                        
+        DataC        108                       
+        DataC        101                       
+        DataC        110                       
+        DataC        103                       
+        DataC        116                       
+        DataC        104                       
+        DataC        0                         
+        Label        $$array-negative-length   
+        PushD        $array-negative-length    
+        Jump         $$general-runtime-error   
+        DLabel       $reference-space-1        
+        DataZ        4                         
+        DLabel       $reference-space-2        
+        DataZ        4                         
+        DLabel       $reference-space-Iter     
+        DataZ        4                         
         DLabel       $usable-memory-start      
-        Label        -mem-manager-initialize   
-        DLabel       $heap-start-ptr           
-        DataZ        4                         
-        DLabel       $heap-after-ptr           
-        DataZ        4                         
-        DLabel       $heap-first-free          
-        DataZ        4                         
-        DLabel       $mmgr-newblock-block      
-        DataZ        4                         
-        DLabel       $mmgr-newblock-size       
-        DataZ        4                         
-        PushD        $heap-memory              
-        Duplicate                              
-        PushD        $heap-start-ptr           
-        Exchange                               
-        StoreI                                 
-        PushD        $heap-after-ptr           
-        Exchange                               
-        StoreI                                 
-        PushI        0                         
-        PushD        $heap-first-free          
-        Exchange                               
-        StoreI                                 
         DLabel       $global-memory-block      
-        DataZ        4                         
+        DataZ        0                         
         Label        $$main                    
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% a
-        Label        -alloc-array-1-start      
-        PushI        4                         
-        PushI        4                         
-        Multiply                               
-        PushI        16                        
-        Add                                    
-        PushI        4                         
-        Multiply                               
-        PushI        16                        
-        Add                                    
-        PStack                                 
-        Duplicate                              
-        Call         -mem-manager-allocate     
-        Duplicate                              
-        PushI        7                         
-        StoreI                                 
-        Duplicate                              
-        PushI        4                         
-        Add                                    
-        PushI        2                         
-        StoreI                                 
-        Duplicate                              
-        PushI        8                         
-        Add                                    
-        PushI        4                         
-        StoreI                                 
+        Label        -if-statement-3-start     
+        PushI        1                         
+        JumpFalse    -if-statement-3-end       
+        Label        -if-statement-3-block     
+        DLabel       -string-constant-1-       
+        DataI        3                         
+        DataI        9                         
+        DataI        4                         
+        DataC        116                       %% "then"
+        DataC        104                       
+        DataC        101                       
+        DataC        110                       
+        DataC        0                         
+        PushD        -string-constant-1-       
         PushI        12                        
         Add                                    
-        PushI        4                         
-        StoreI                                 
-        PStack                                 
-        StoreI                                 
-        Halt                                   
-        PushI        4                         
-        Multiply                               
-        PushI        16                        
-        Add                                    
-        PushI        4                         
-        Multiply                               
-        PushI        16                        
-        Add                                    
-        PStack                                 
-        Duplicate                              
-        Call         -mem-manager-allocate     
-        Duplicate                              
-        PushI        7                         
-        StoreI                                 
-        Duplicate                              
-        PushI        4                         
-        Add                                    
-        PushI        2                         
-        StoreI                                 
-        Duplicate                              
-        PushI        8                         
-        Add                                    
-        PushI        4                         
-        StoreI                                 
+        PushD        $print-format-string      
+        Printf                                 
+        PushI        10                        
+        PushD        $print-format-char        
+        Printf                                 
+        Jump         -if-statement-3-else-end  
+        Label        -if-statement-3-end       
+        DLabel       -string-constant-2-       
+        DataI        3                         
+        DataI        9                         
+        DataI        4                         
+        DataC        101                       %% "else"
+        DataC        108                       
+        DataC        115                       
+        DataC        101                       
+        DataC        0                         
+        PushD        -string-constant-2-       
         PushI        12                        
         Add                                    
-        PushI        4                         
-        StoreI                                 
-        PStack                                 
-        StoreI                                 
+        PushD        $print-format-string      
+        Printf                                 
+        PushI        10                        
+        PushD        $print-format-char        
+        Printf                                 
+        Label        -if-statement-3-else-end  
+        DLabel       -string-constant-4-       
+        DataI        3                         
+        DataI        9                         
+        DataI        5                         
+        DataC        97                        %% "after"
+        DataC        102                       
+        DataC        116                       
+        DataC        101                       
+        DataC        114                       
+        DataC        0                         
+        PushD        -string-constant-4-       
+        PushI        12                        
+        Add                                    
+        PushD        $print-format-string      
+        Printf                                 
+        PushI        10                        
+        PushD        $print-format-char        
+        Printf                                 
         Halt                                   
         Label        -mem-manager-make-tags    
         DLabel       $mmgr-tags-size           

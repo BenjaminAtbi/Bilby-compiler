@@ -1,5 +1,57 @@
 main {
-	imm a := alloc[int](4);
-	%imm b := a[3];
-	%print b $n;
+<<<<<<< Updated upstream
+
+  print true == false != false $n;
+  print false == true != true $n;
+  print true == true != false $n;
+  print true == false != true $n;
+  print false == true != false $n;
+  print false == false != true $n;
+  print true == true != true $n;
+  print false == true != true $n;
+  print true == false != true $n;
+  print true == false != true $n;
+  print true == false != true $n;
+  print true == true != false $n;
+
+  print false != false == false $n;
+  print false != false == false $n;
+  print false != false == false $n;
+  print true != true == true $n;
+  print false != false == true $n;
+  print true != false == false $n;
+  print false != true == false $n;
+  print false != true == true $n;
+  print false != true == true $n;
+  print false != true == false $n;
+  print true != true == true $n;
+  print true != true == false $n;
+
+  print false == true != true == true $n;
+  print true == true != true == false $n;
+  print true == true != false == false $n;
+  print true == true != true == true $n;
+  print true == false != true == true $n;
+  print true == true != true == false $n;
+  print true == false != false == false $n;
+  print true == true != false == false $n;
+  print false == false != false == false $n;
+  print false == false != true == false $n;
+  print true == true != false == false $n;
+  print true == false != false == false $n;
+
+
+
 }
+
+=======
+	mut c := alloc[[[int]]](3);
+	c[1][1][1] := 2;
+	mut d := 2;
+	d := 1;
+	mut val := c[1][1][1];
+	print val $n;
+	%c[0][0] := 3;
+	%print c[0][0] $n;
+}
+>>>>>>> Stashed changes

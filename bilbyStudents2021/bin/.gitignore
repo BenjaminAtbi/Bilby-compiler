@@ -1,6 +1,11 @@
+<<<<<<< Updated upstream
 /applications/
 /parser/
-/lexicalAnalyzer/
-/semanticAnalyzer/
+=======
 /asmCodeGenerator/
+/.gitignore
+/semanticAnalyzer/
 /parseTree/
+/parser/
+/lexicalAnalyzer/
+>>>>>>> Stashed changes

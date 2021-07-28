@@ -1,0 +1,15 @@
+main {
+	mut c := alloc[char](3);
+	c[0] := #a;
+	mut b := alloc[bool](3);
+	b[0] := true;
+	mut i := alloc[int](3);
+	i[0] := 1;
+	mut f := alloc[float](3);
+	f[0] := 2.2;
+	mut s := alloc[string](3);
+	s[0] := "a dream of string";
+	
+	
+	print c[0] $s b[0] $s i[0] $s f[0] $s s[0] $n;
+}

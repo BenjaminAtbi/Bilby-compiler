@@ -12,6 +12,7 @@ import asmCodeGenerator.runtime.MemoryManager;
 import asmCodeGenerator.runtime.RunTime;
 import asmCodeGenerator.statements.IfStatementGenerator;
 import asmCodeGenerator.statements.WhileStatementGenerator;
+import static asmCodeGenerator.CodeGeneratorAids.*;
 import parseTree.*;
 import parseTree.nodeTypes.BooleanConstantNode;
 import parseTree.nodeTypes.CharConstantNode;
@@ -20,7 +21,6 @@ import parseTree.nodeTypes.BlockNode;
 import parseTree.nodeTypes.DeclarationNode;
 import parseTree.nodeTypes.FloatConstantNode;
 import parseTree.nodeTypes.IdentifierNode;
-import parseTree.nodeTypes.IfStatementNode;
 import parseTree.nodeTypes.IntegerConstantNode;
 import parseTree.nodeTypes.NewlineNode;
 import parseTree.nodeTypes.OperatorNode;
@@ -29,15 +29,10 @@ import parseTree.nodeTypes.ProgramNode;
 import parseTree.nodeTypes.SpaceNode;
 import parseTree.nodeTypes.StringConstantNode;
 import parseTree.nodeTypes.TypeNode;
-import parseTree.nodeTypes.WhileStatementNode;
-import semanticAnalyzer.types.Array;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
-
 import symbolTable.Binding;
 import symbolTable.Scope;
-
-import static asmCodeGenerator.Macros.declareI;
 import static asmCodeGenerator.codeStorage.ASMCodeFragment.CodeType.*;
 import static asmCodeGenerator.codeStorage.ASMOpcode.*;
 
@@ -56,12 +51,11 @@ public class ASMCodeGenerator {
 	
 	public ASMCodeFragment makeASM() {
 		ASMCodeFragment code = new ASMCodeFragment(GENERATES_VOID);
-		
-		code.append( RunTime.getEnvironment() );
 		code.append( MemoryManager.codeForInitialization() );
+		code.append( RunTime.getEnvironment() );
 		code.append( globalVariableBlockASM() );
 		code.append( programASM() );
-		code.append( MemoryManager.codeForAfterApplication() );
+//		code.append( MemoryManager.codeForAfterApplication() );
 		
 		return code;
 	}
@@ -166,9 +160,6 @@ public class ASMCodeGenerator {
 			else if(node.getType() == PrimitiveType.BOOLEAN) {
 				code.add(LoadC);
 			}	
-			else if(node.getType() instanceof Array) {
-				code.add(LoadI);
-			}
 			else {
 				assert false : "node " + node;
 			}
@@ -203,29 +194,6 @@ public class ASMCodeGenerator {
 		///////////////////////////////////////////////////////////////////////////
 		// statements and declarations
 
-		public void visitLeave(IfStatementNode node) {
-			newVoidCode(node);
-			
-			List<ASMCodeFragment> args = new ArrayList<>();
-			args.add(removeValueCode(node.child(0)));
-			args.add(removeVoidCode(node.child(1)));
-			if(node.getChildren().size() == 3) {
-				args.add(removeVoidCode(node.child(2)));
-			}
-			SimpleCodeGenerator generator = new IfStatementGenerator();
-			code.append(generator.generate(node, args));
-		}
-		
-		public void visitLeave(WhileStatementNode node) {
-			newVoidCode(node);
-			
-			List<ASMCodeFragment> args = new ArrayList<>();
-			args.add(removeValueCode(node.child(0)));
-			args.add(removeVoidCode(node.child(1)));
-			SimpleCodeGenerator generator = new WhileStatementGenerator();
-			code.append(generator.generate(node, args));
-		}
-		
 		public void visitLeave(PrintStatementNode node) {
 			newVoidCode(node);
 			new PrintStatementGenerator(code, this).generate(node);	
@@ -264,31 +232,6 @@ public class ASMCodeGenerator {
 			Type type = node.getType();
 			code.add(opcodeForStore(type));
 		}
-		
-		private ASMOpcode opcodeForStore(Type type) {
-			if(type == PrimitiveType.CHAR) {
-				return StoreC;
-			}
-			if(type == PrimitiveType.INTEGER) {
-				return StoreI;
-			}
-			if(type == PrimitiveType.FLOAT) {
-				return StoreF;
-			}
-			if(type == PrimitiveType.STRING) {
-				return StoreI;
-			}
-			if(type == PrimitiveType.BOOLEAN) {
-				return StoreC;
-			}
-			if(type instanceof Array) {
-				return StoreI;
-			}
-			assert false: "Type " + type + " unimplemented in opcodeForStore()";
-			return null;
-		}
-		
-		
 
 
 		///////////////////////////////////////////////////////////////////////////
@@ -322,7 +265,11 @@ public class ASMCodeGenerator {
 			}
 		}
 		
-
+		
+		public void visitLeave(TypeNode node) {
+			newValueCode(node);
+		}	
+		
 		///////////////////////////////////////////////////////////////////////////
 		// leaf nodes (ErrorNode not necessary)
 		public void visit(BooleanConstantNode node) {
@@ -361,9 +308,6 @@ public class ASMCodeGenerator {
 			code.add(DataS,node.getValue());
 			code.add(PushD, label);
 		}
-		public void visit(TypeNode node) {
-			newValueCode(node);
-		}	
 	}
 
 }
