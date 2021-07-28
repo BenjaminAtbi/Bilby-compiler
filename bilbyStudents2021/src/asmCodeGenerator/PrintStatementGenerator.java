@@ -6,6 +6,7 @@ import parseTree.ParseNode;
 import parseTree.nodeTypes.NewlineNode;
 import parseTree.nodeTypes.PrintStatementNode;
 import parseTree.nodeTypes.SpaceNode;
+import semanticAnalyzer.types.Array;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
 import asmCodeGenerator.ASMCodeGenerator.CodeVisitor;
@@ -28,11 +29,18 @@ public class PrintStatementGenerator {
 			if(child instanceof NewlineNode || child instanceof SpaceNode) {
 				ASMCodeFragment childCode = visitor.removeVoidCode(child);
 				code.append(childCode);
+			} else if(child.getType() instanceof Array){
+				appendArrayCode(child);
 			}
 			else {
 				appendPrintCode(child);
 			}
 		}
+	}
+
+	private void appendArrayCode(ParseNode child) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void appendPrintCode(ParseNode node) {
