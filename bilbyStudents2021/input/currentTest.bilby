@@ -1,5 +1,12 @@
 main {
-	imm a := alloc[[[int]]](4);
-	a[1][1][1] := 3;
-	print a[1][1][1] $s;
+	imm abcd := 0;
+	print abcd $n;
 }
+
+
+
+%main {
+%	imm a := alloc[[[int]]](4);
+%	a[1][1][1] := 3;
+%	print a[1][1][1] $s;
+%}

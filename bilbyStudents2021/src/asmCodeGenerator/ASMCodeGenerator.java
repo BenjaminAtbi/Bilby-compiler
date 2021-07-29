@@ -301,19 +301,26 @@ public class ASMCodeGenerator {
 			}
 		}
 		
+		///////////////////////////////////////////////////////////////////////////
+		// simple nodes (leaf except for index chains)
+		
+		public void visitLeave(TypeNode node) {
+			newValueCode(node);
+		}	
 
+		public void visitLeave(IdentifierNode node) {
+			newAddressCode(node);
+			Binding binding = node.getBinding();
+			
+			binding.generateAddress(code);
+		}	
+		
 		///////////////////////////////////////////////////////////////////////////
 		// leaf nodes (ErrorNode not necessary)
 		public void visit(BooleanConstantNode node) {
 			newValueCode(node);
 			code.add(PushI, node.getValue() ? 1 : 0);
 		}
-		public void visit(IdentifierNode node) {
-			newAddressCode(node);
-			Binding binding = node.getBinding();
-			
-			binding.generateAddress(code);
-		}	
 		public void visit(CharConstantNode node) {
 			newValueCode(node);
 			
@@ -340,9 +347,6 @@ public class ASMCodeGenerator {
 			code.add(DataS,node.getValue());
 			code.add(PushD, label);
 		}
-		public void visit(TypeNode node) {
-			newValueCode(node);
-		}	
 	}
 
 }
