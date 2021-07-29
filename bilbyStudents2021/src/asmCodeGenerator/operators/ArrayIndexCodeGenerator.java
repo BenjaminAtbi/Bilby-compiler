@@ -33,7 +33,7 @@ public class ArrayIndexCodeGenerator implements SimpleCodeGenerator {
 		String noErrorLabel = labeller.newLabel("noError");
 		String endLabel = labeller.newLabel("end");
 		
-		ASMCodeFragment code = new ASMCodeFragment(CodeType.GENERATES_VALUE);
+		ASMCodeFragment code = new ASMCodeFragment(CodeType.GENERATES_ADDRESS);
 		
 		code.add(Label, startLabel);
 		
@@ -72,7 +72,7 @@ public class ArrayIndexCodeGenerator implements SimpleCodeGenerator {
 		code.add(PushI, 16);
 		code.add(Add);
 		code.add(Add); 								//[.. indexAddr ]
-		code.add(opcodeForLoad(node.getType()));	//[.. indexValue ]
+		//code.add(opcodeForLoad(node.getType()));	//[.. indexValue ]
 		
 		code.add(Label, endLabel);
 		return code;

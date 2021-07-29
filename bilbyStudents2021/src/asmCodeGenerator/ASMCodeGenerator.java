@@ -7,12 +7,13 @@ import java.util.Map;
 
 import asmCodeGenerator.codeStorage.ASMCodeFragment;
 import asmCodeGenerator.codeStorage.ASMOpcode;
+import asmCodeGenerator.operators.ArrayIndexCodeGenerator;
 import asmCodeGenerator.operators.SimpleCodeGenerator;
 import asmCodeGenerator.runtime.MemoryManager;
 import asmCodeGenerator.runtime.RunTime;
 import asmCodeGenerator.statements.IfStatementGenerator;
 import asmCodeGenerator.statements.WhileStatementGenerator;
-
+import lexicalAnalyzer.Punctuator;
 import parseTree.*;
 import parseTree.nodeTypes.BooleanConstantNode;
 import parseTree.nodeTypes.CharConstantNode;
@@ -309,10 +310,24 @@ public class ASMCodeGenerator {
 		}	
 
 		public void visitLeave(IdentifierNode node) {
-			newAddressCode(node);
-			Binding binding = node.getBinding();
 			
-			binding.generateAddress(code);
+			newAddressCode(node);
+			
+			if(node.getToken().isLextant(Punctuator.INDEXING)) {
+				ArrayIndexCodeGenerator generator = new ArrayIndexCodeGenerator();
+				List<ASMCodeFragment> args = new ArrayList<>();
+				for(ParseNode child: node.getChildren()) {
+					ASMCodeFragment arg = removeValueCode(child);
+					args.add(arg);
+				}
+				ASMCodeFragment generated = generator.generate(node, args);
+				code.append(generated);
+			} else {
+				Binding binding = node.getBinding();
+				binding.generateAddress(code);
+			}
+			
+
 		}	
 		
 		///////////////////////////////////////////////////////////////////////////

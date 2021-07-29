@@ -119,11 +119,11 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		ParseNode value = node.child(1);
 		Type declaredType = identifier.getType();	
 		
-		assert(declaredType.equivalent(value.getType()));
+		assert(declaredType.equivalent(value.getType())) : "Assignment node: mismatched types";
 		node.setType(declaredType);
 		
 		if(!identifier.getToken().isLextant(Punctuator.INDEXING)){
-			assert (identifier.getBinding().getMutable());
+			assert (identifier.getBinding().getMutable()) : "Assignment node: binding not mutable";
 		}
 	}
 	
@@ -169,7 +169,7 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 			childTypes = Arrays.asList(child.getType());
 		} 
 		else {
-			assert node.nChildren() == 2;
+			assert node.nChildren() == 2 : "Operator Node: too many children";
 			ParseNode left  = node.child(0);
 			ParseNode right = node.child(1);
 			

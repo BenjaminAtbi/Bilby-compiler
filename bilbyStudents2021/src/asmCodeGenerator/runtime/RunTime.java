@@ -129,7 +129,7 @@ public class RunTime {
 		String errorMessage = "$array-out-of-bounds";
 		
 		frag.add(DLabel, errorMessage);
-		frag.add(DataS, "array out of bounds");
+		frag.add(DataS, "array index out of bounds");
 		
 		frag.add(Label, ARRAY_OUT_OF_BOUNDS_ERROR);
 		frag.add(PushD, errorMessage);
@@ -140,7 +140,7 @@ public class RunTime {
 		String errorMessage = "$array-negative-length";
 		
 		frag.add(DLabel, errorMessage);
-		frag.add(DataS, "array negative length");
+		frag.add(DataS, "negative length given for array");
 		
 		frag.add(Label, ARRAY_NEGATIVE_LENGTH_ERROR);
 		frag.add(PushD, errorMessage);
