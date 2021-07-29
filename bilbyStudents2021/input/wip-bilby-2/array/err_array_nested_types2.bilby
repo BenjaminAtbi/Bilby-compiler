@@ -1,0 +1,7 @@
+main {
+	imm a := alloc[[[char]]](4);
+	a[1] := alloc[[float]](4);
+	a[1][1] := alloc[int](4);
+	a[1][1][1] := 3;
+	print a[1][1][1] $n;
+}
