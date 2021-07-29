@@ -1,0 +1,4 @@
+main {
+	imm a := alloc[int](4);
+	print a $n;
+}

@@ -5,6 +5,7 @@ import java.util.List;
 
 import lexicalAnalyzer.Keyword;
 import lexicalAnalyzer.Lextant;
+import lexicalAnalyzer.Punctuator;
 import logging.BilbyLogger;
 import parseTree.ParseNode;
 import parseTree.ParseNodeVisitor;
@@ -113,16 +114,49 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	
 	@Override
 	public void visitLeave(AssignmentNode node) {
+		
 		IdentifierNode identifier = (IdentifierNode) node.child(0);
 		ParseNode value = node.child(1);
+		Type declaredType = identifier.getType();	
+		
+		assert(declaredType.equivalent(value.getType()));
+		node.setType(declaredType);
+		
+		if(!identifier.getToken().isLextant(Punctuator.INDEXING)){
+			assert (identifier.getBinding().getMutable());
+		}
+	}
+	
+	///////////////////////////////////////////////////////////////////////////
+	// IdentifierNodes, with helper methods
 
-		assert(identifier.getBinding().getMutable());
+	@Override
+	public void visitLeave(IdentifierNode node) {
 		
-		Type declarationType = identifier.getType();
-		assert(declarationType == value.getType());
-		node.setType(declarationType);
-		identifier.setType(declarationType);
-		
+		if(node.getToken().isLextant(Punctuator.INDEXING)) {
+			
+			IdentifierNode childIdentifier = (IdentifierNode)node.child(0);
+			Array childType = (Array)childIdentifier.getType();
+			node.setType(childType.getSubtype());
+			node.setBinding(Binding.nullInstance());
+		}
+		else if(!isBeingDeclared(node)) {		
+			Binding binding = node.findVariableBinding();
+			
+			node.setType(binding.getType());
+			node.setBinding(binding);
+		}
+		// else parent DeclarationNode does the processing.
+	}
+	
+	private boolean isBeingDeclared(IdentifierNode node) {
+		ParseNode parent = node.getParent();
+		return (parent instanceof DeclarationNode) && (node == parent.child(0));
+	}
+	private void addBinding(IdentifierNode identifierNode, Type type, boolean mutable) {
+		Scope scope = identifierNode.getLocalScope();
+		Binding binding = scope.createBinding(identifierNode, type, mutable);
+		identifierNode.setBinding(binding);
 	}
 
 	///////////////////////////////////////////////////////////////////////////
@@ -160,6 +194,19 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		return token.getLextant();
 	}
 
+	///////////////////////////////////////////////////////////////////////////
+	// types
+	
+	@Override
+	public void visitLeave(TypeNode node) {
+		if(node.isArray()) {
+			Type subtype = node.child(0).getType();
+			Type arrayType = new Array(subtype); 
+			node.setType(arrayType);
+		} else {
+			node.setType(PrimitiveType.fromToken(node.LextantToken()));
+		}
+	}
 
 	///////////////////////////////////////////////////////////////////////////
 	// simple leaf nodes 
@@ -193,37 +240,8 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	@Override
 	public void visit(SpaceNode node) {
 	}
-	public void visit(TypeNode node) {
-		if(node.isArray()) {
-			Type subtype = node.child(0).getType();
-			Type arrayType = new Array(subtype); 
-			node.setType(arrayType);
-		} else {
-			node.setType(PrimitiveType.fromToken(node.LextantToken()));
-		}
-	}
 	
-	///////////////////////////////////////////////////////////////////////////
-	// IdentifierNodes, with helper methods
-	@Override
-	public void visit(IdentifierNode node) {
-		if(!isBeingDeclared(node)) {		
-			Binding binding = node.findVariableBinding();
-			
-			node.setType(binding.getType());
-			node.setBinding(binding);
-		}
-		// else parent DeclarationNode does the processing.
-	}
-	private boolean isBeingDeclared(IdentifierNode node) {
-		ParseNode parent = node.getParent();
-		return (parent instanceof DeclarationNode) && (node == parent.child(0));
-	}
-	private void addBinding(IdentifierNode identifierNode, Type type, boolean mutable) {
-		Scope scope = identifierNode.getLocalScope();
-		Binding binding = scope.createBinding(identifierNode, type, mutable);
-		identifierNode.setBinding(binding);
-	}
+
 	
 	///////////////////////////////////////////////////////////////////////////
 	// error logging/printing

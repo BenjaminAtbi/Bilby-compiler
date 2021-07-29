@@ -552,12 +552,12 @@ public class Parser {
 		if(typeToken.isLextant(Punctuator.OPEN_SQUARE)) {
 			ParseNode child = parseType();
 			expect(Punctuator.CLOSE_SQUARE);
+			typeToken = LextantToken.make(typeToken, typeToken.getLexeme(), Keyword.ARRAY);
 			return TypeNode.withChild(typeToken, child);
 		}
 		else {
 			return TypeNode.makePrimitive(typeToken);
 		}
-	
 	} 
 	
 	private boolean startsType(Token token) {
@@ -653,7 +653,18 @@ public class Parser {
 			return syntaxErrorNode("identifier");
 		}
 		readToken();
-		return new IdentifierNode(previouslyRead);
+		ParseNode identifier = new IdentifierNode(previouslyRead);
+		
+		while(nowReading.isLextant(Punctuator.OPEN_SQUARE)) {
+			Token bracketToken = nowReading;
+			readToken();
+			ParseNode index = parseIntLiteral();
+			expect(Punctuator.CLOSE_SQUARE);
+			Token indexingToken = LextantToken.make(bracketToken, bracketToken.getLexeme(), Punctuator.INDEXING);
+			identifier = IdentifierNode.withChildren(indexingToken, identifier, index);
+		}
+		
+		return identifier;
 	}
 	private boolean startsIdentifier(Token token) {
 		return token instanceof IdentifierToken;

@@ -223,14 +223,89 @@
         DataZ        4                         
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        0                         
+        DataZ        4                         
         Label        $$main                    
-        PushI        56                        
-        PushD        $print-format-integer     
-        Printf                                 
-        PushI        10                        
-        PushD        $print-format-char        
-        Printf                                 
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% a
+        Label        -alloc-array-1-start      
+        PushI        4                         
+        Duplicate                              
+        JumpNeg      $$array-negative-length   
+        Duplicate                              
+        PushD        $reference-space-1        
+        Exchange                               
+        StoreI                                 
+        PushI        0                         
+        Multiply                               
+        PushI        16                        
+        Add                                    
+        Call         -mem-manager-allocate     
+        PushD        $reference-space-2        
+        Exchange                               
+        StoreI                                 
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        7                         
+        StoreI                                 
+        PushI        2                         
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        4                         
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushI        0                         
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        8                         
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushD        $reference-space-1        
+        LoadI                                  
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        12                        
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushI        0                         
+        PushD        $reference-space-Iter     
+        Exchange                               
+        StoreI                                 
+        PushD        $reference-space-2        
+        LoadI                                  
+        Label        -alloc-array-1-loop       
+        Duplicate                              
+        Duplicate                              
+        PushI        8                         
+        Add                                    
+        LoadI                                  
+        PushD        $reference-space-Iter     
+        LoadI                                  
+        Multiply                               
+        Add                                    
+        PushI        0                         
+        Exchange                               
+        PushI        16                        
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushI        1                         
+        PushD        $reference-space-Iter     
+        LoadI                                  
+        Add                                    
+        PushD        $reference-space-Iter     
+        Exchange                               
+        StoreI                                 
+        PushD        $reference-space-Iter     
+        LoadI                                  
+        PushD        $reference-space-1        
+        LoadI                                  
+        Subtract                               
+        JumpNeg      -alloc-array-1-loop       
+        StoreI                                 
         Halt                                   
         Label        -mem-manager-make-tags    
         DLabel       $mmgr-tags-size           
