@@ -1,3 +1,26 @@
+        Label        -mem-manager-initialize   
+        DLabel       $heap-start-ptr           
+        DataZ        4                         
+        DLabel       $heap-after-ptr           
+        DataZ        4                         
+        DLabel       $heap-first-free          
+        DataZ        4                         
+        DLabel       $mmgr-newblock-block      
+        DataZ        4                         
+        DLabel       $mmgr-newblock-size       
+        DataZ        4                         
+        PushD        $heap-memory              
+        Duplicate                              
+        PushD        $heap-start-ptr           
+        Exchange                               
+        StoreI                                 
+        PushD        $heap-after-ptr           
+        Exchange                               
+        StoreI                                 
+        PushI        0                         
+        PushD        $heap-first-free          
+        Exchange                               
+        StoreI                                 
         Jump         $$main                    
         DLabel       $eat-location-zero        
         DataZ        8                         
@@ -116,30 +139,105 @@
         Label        $$f-divide-by-zero        
         PushD        $errors-float-divide-by-zero 
         Jump         $$general-runtime-error   
+        DLabel       $array-out-of-bounds      
+        DataC        97                        %% "array index out of bounds"
+        DataC        114                       
+        DataC        114                       
+        DataC        97                        
+        DataC        121                       
+        DataC        32                        
+        DataC        105                       
+        DataC        110                       
+        DataC        100                       
+        DataC        101                       
+        DataC        120                       
+        DataC        32                        
+        DataC        111                       
+        DataC        117                       
+        DataC        116                       
+        DataC        32                        
+        DataC        111                       
+        DataC        102                       
+        DataC        32                        
+        DataC        98                        
+        DataC        111                       
+        DataC        117                       
+        DataC        110                       
+        DataC        100                       
+        DataC        115                       
+        DataC        0                         
+        Label        $$array-out-of-bounds     
+        PushD        $array-out-of-bounds      
+        Jump         $$general-runtime-error   
+        DLabel       $array-negative-length    
+        DataC        110                       %% "negative length given for array"
+        DataC        101                       
+        DataC        103                       
+        DataC        97                        
+        DataC        116                       
+        DataC        105                       
+        DataC        118                       
+        DataC        101                       
+        DataC        32                        
+        DataC        108                       
+        DataC        101                       
+        DataC        110                       
+        DataC        103                       
+        DataC        116                       
+        DataC        104                       
+        DataC        32                        
+        DataC        103                       
+        DataC        105                       
+        DataC        118                       
+        DataC        101                       
+        DataC        110                       
+        DataC        32                        
+        DataC        102                       
+        DataC        111                       
+        DataC        114                       
+        DataC        32                        
+        DataC        97                        
+        DataC        114                       
+        DataC        114                       
+        DataC        97                        
+        DataC        121                       
+        DataC        0                         
+        Label        $$array-negative-length   
+        PushD        $array-negative-length    
+        Jump         $$general-runtime-error   
+        DLabel       $array-not-initialized    
+        DataC        97                        %% "array not initialized"
+        DataC        114                       
+        DataC        114                       
+        DataC        97                        
+        DataC        121                       
+        DataC        32                        
+        DataC        110                       
+        DataC        111                       
+        DataC        116                       
+        DataC        32                        
+        DataC        105                       
+        DataC        110                       
+        DataC        105                       
+        DataC        116                       
+        DataC        105                       
+        DataC        97                        
+        DataC        108                       
+        DataC        105                       
+        DataC        122                       
+        DataC        101                       
+        DataC        100                       
+        DataC        0                         
+        Label        $$array-not-initialized   
+        PushD        $array-not-initialized    
+        Jump         $$general-runtime-error   
+        DLabel       $reference-space-1        
+        DataZ        4                         
+        DLabel       $reference-space-2        
+        DataZ        4                         
+        DLabel       $reference-space-Iter     
+        DataZ        4                         
         DLabel       $usable-memory-start      
-        Label        -mem-manager-initialize   
-        DLabel       $heap-start-ptr           
-        DataZ        4                         
-        DLabel       $heap-after-ptr           
-        DataZ        4                         
-        DLabel       $heap-first-free          
-        DataZ        4                         
-        DLabel       $mmgr-newblock-block      
-        DataZ        4                         
-        DLabel       $mmgr-newblock-size       
-        DataZ        4                         
-        PushD        $heap-memory              
-        Duplicate                              
-        PushD        $heap-start-ptr           
-        Exchange                               
-        StoreI                                 
-        PushD        $heap-after-ptr           
-        Exchange                               
-        StoreI                                 
-        PushI        0                         
-        PushD        $heap-first-free          
-        Exchange                               
-        StoreI                                 
         DLabel       $global-memory-block      
         DataZ        8                         
         Label        $$main                    

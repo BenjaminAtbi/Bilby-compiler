@@ -115,15 +115,19 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	@Override
 	public void visitLeave(AssignmentNode node) {
 		
-		IdentifierNode identifier = (IdentifierNode) node.child(0);
+		ParseNode identifier = node.child(0);
 		ParseNode value = node.child(1);
 		Type declaredType = identifier.getType();	
 		
+		assert(identifier instanceof IdentifierNode || 
+			  (identifier instanceof OperatorNode && 
+			   identifier.getToken().isLextant(Punctuator.INDEXING))) : "Assignment node: left node is not identifier or indexing expression";
 		assert(declaredType.equivalent(value.getType())) : "Assignment node: mismatched types";
 		node.setType(declaredType);
 		
-		if(!identifier.getToken().isLextant(Punctuator.INDEXING)){
-			assert (identifier.getBinding().getMutable()) : "Assignment node: binding not mutable";
+		if(identifier instanceof IdentifierNode){
+			
+			assert (((IdentifierNode)identifier).getBinding().getMutable()) : "Assignment node: binding not mutable";
 		}
 	}
 	

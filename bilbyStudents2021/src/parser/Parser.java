@@ -261,7 +261,7 @@ public class Parser {
 		if(!startsAssignmentStatement(nowReading)) {
 			return syntaxErrorNode("assignment statement");
 		}
-		ParseNode identifier = parseIdentifier();
+		ParseNode identifier = parseIndexingExpression();
 		
 		if(!nowReading.isLextant(Punctuator.ASSIGN)) {
 			return syntaxErrorNode("assignment statement");
@@ -655,14 +655,14 @@ public class Parser {
 		readToken();
 		ParseNode identifier = new IdentifierNode(previouslyRead);
 		
-		while(nowReading.isLextant(Punctuator.OPEN_SQUARE)) {
-			Token bracketToken = nowReading;
-			readToken();
-			ParseNode index = parseIntLiteral();
-			expect(Punctuator.CLOSE_SQUARE);
-			Token indexingToken = LextantToken.make(bracketToken, bracketToken.getLexeme(), Punctuator.INDEXING);
-			identifier = IdentifierNode.withChildren(indexingToken, identifier, index);
-		}
+//		while(nowReading.isLextant(Punctuator.OPEN_SQUARE)) {
+//			Token bracketToken = nowReading;
+//			readToken();
+//			ParseNode index = parseIntLiteral();
+//			expect(Punctuator.CLOSE_SQUARE);
+//			Token indexingToken = LextantToken.make(bracketToken, bracketToken.getLexeme(), Punctuator.INDEXING);
+//			identifier = IdentifierNode.withChildren(indexingToken, identifier, index);
+//		}
 		
 		return identifier;
 	}
