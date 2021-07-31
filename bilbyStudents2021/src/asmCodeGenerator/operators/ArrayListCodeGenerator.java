@@ -3,8 +3,9 @@ package asmCodeGenerator.operators;
 import java.util.List;
 
 import asmCodeGenerator.Labeller;
-import static asmCodeGenerator.Macros.*;
+
 import static asmCodeGenerator.CodeGeneratorAids.*;
+import static asmCodeGenerator.Macros.*;
 import asmCodeGenerator.codeStorage.ASMCodeFragment;
 import asmCodeGenerator.codeStorage.ASMCodeFragment.CodeType;
 import static asmCodeGenerator.codeStorage.ASMOpcode.*;
@@ -14,11 +15,10 @@ import asmCodeGenerator.runtime.MemoryManager;
 import asmCodeGenerator.runtime.RunTime;
 import parseTree.ParseNode;
 import semanticAnalyzer.types.Array;
-import semanticAnalyzer.types.Type;
 
-public class ArrayAllocCodeGenerator implements SimpleCodeGenerator {
+public class ArrayListCodeGenerator implements SimpleCodeGenerator {
 
-	public ArrayAllocCodeGenerator() {
+	public ArrayListCodeGenerator() {
 		super();
 	}
 	
@@ -29,14 +29,12 @@ public class ArrayAllocCodeGenerator implements SimpleCodeGenerator {
 		
 		Labeller labeller = new Labeller("alloc-array");
 		String startLabel = labeller.newLabel("start");
-		String loopHead = labeller.newLabel("loop");
 		
 		
 		ASMCodeFragment code = new ASMCodeFragment(CodeType.GENERATES_VALUE);
 		
 		code.add(Label, startLabel);
-		code.append(args.get(1));					// [.. arrayLength ]
-		
+		code.add(PushI, node.nChildren());					// [.. arrayLength ]
 		code.add(Duplicate);
 		code.add(JumpNeg, ARRAY_NEGATIVE_LENGTH_ERROR); // check length is positive
 		
@@ -66,28 +64,17 @@ public class ArrayAllocCodeGenerator implements SimpleCodeGenerator {
 		loadIFrom(code, RunTime.REF_SPACE2);
 		writeIOffset(code, 12);						// array{ type_identifier, status, subtype_size, length .. } 
 		
-	
-		code.add(PushI, 0);
-		storeITo(code, RunTime.REF_I);
-		loadIFrom(code, RunTime.REF_SPACE2);		// [.. arrayAddr ]
-		code.add(Label, loopHead);
-		code.add(Duplicate);
-		code.add(Duplicate);
-		getRecordField(code, 2);					// [.. arrayAddr arrayAddr subtypeLength ]
-		loadIFrom(code, RunTime.REF_I);				
-		code.add(Multiply); 						// [.. arrayAddr arrayAddr indexOffset ]
-		code.add(Add); 								// [.. arrayAddr elementIndex ]
+		loadIFrom(code, RunTime.REF_SPACE2); 	// [.. arrayAddr ]
 		
-		code.add(opcodeForPush(node.getType()), 0); // [.. arrayAddr elementIndex 0 ]
 		
-		code.add(Exchange);							// [.. arrayAddr 0 elementIndex ]
-		writeIOffset(code, 16);						// [.. arrayAddr ]
-		
-		incrementInteger(code, RunTime.REF_I);
-		loadIFrom(code, RunTime.REF_I);
-		loadIFrom(code, RunTime.REF_SPACE1); // array length
-		code.add(Subtract);
-		code.add(JumpNeg, loopHead);
+		for(int i = 0; i < node.nChildren(); i++) {
+			code.add(Duplicate); 					// [.. arrayAddr arrayAddr]
+			code.add(PushI, nodeType.getSubtype().getSize() * i + 16); // [.. arrayAddr arrayAddr Offset ]
+			code.add(Add);							// [.. arrayAddr indexAddr ]
+			code.append(args.get(i));				// [.. arrayAddr indexAddr value ]
+			code.add(opcodeForStore( ((Array)node.getType()).getSubtype()));
+													// [.. arrayAddr]   array[i] <- value
+		}
 		
 		return code;
 	}

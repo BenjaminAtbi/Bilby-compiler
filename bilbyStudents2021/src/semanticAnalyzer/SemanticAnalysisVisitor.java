@@ -11,6 +11,7 @@ import parseTree.ParseNode;
 import parseTree.ParseNodeVisitor;
 import parseTree.nodeTypes.BooleanConstantNode;
 import parseTree.nodeTypes.CharConstantNode;
+import parseTree.nodeTypes.ArrayExpressionListNode;
 import parseTree.nodeTypes.AssignmentNode;
 import parseTree.nodeTypes.BlockNode;
 import parseTree.nodeTypes.DeclarationNode;
@@ -173,7 +174,7 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 			childTypes = Arrays.asList(child.getType());
 		} 
 		else {
-			assert node.nChildren() == 2 : "Operator Node: too many children";
+			assert node.nChildren() == 2 : "Operator Node: less than 1 or more than 2 children";
 			ParseNode left  = node.child(0);
 			ParseNode right = node.child(1);
 			
@@ -198,6 +199,17 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		return token.getLextant();
 	}
 
+	@Override
+	public void visitLeave(ArrayExpressionListNode node) {
+		
+		assert(node.nChildren() > 0) : "ArrayExpressionListNode: no children";
+		Type childType = node.child(0).getType();
+		for(int i = 0; i < node.nChildren(); i++) {
+			assert node.child(i).getType().equivalent(childType) : "child "+i+" is type "+node.child(i).getType().infoString()+", list type set to "+childType.infoString();
+		}
+		node.setType(new Array(childType));
+	}
+	
 	///////////////////////////////////////////////////////////////////////////
 	// types
 	

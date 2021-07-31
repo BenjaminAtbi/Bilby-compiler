@@ -2,7 +2,6 @@ package asmCodeGenerator;
 
 import static asmCodeGenerator.codeStorage.ASMOpcode.*;
 import asmCodeGenerator.codeStorage.ASMOpcode;
-import semanticAnalyzer.types.Array;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
 
@@ -50,6 +49,29 @@ public class CodeGeneratorAids {
 			return LoadC;
 		}
 		assert false: "Type " + type + " unimplemented in opcodeForLoad()";
+		return null;
+	}
+	
+	public static ASMOpcode opcodeForPush(Type type) {
+		if(type.isReference()) {
+			return PushI;
+		}
+		if(type.equals(PrimitiveType.CHAR)) {
+			return PushI;
+		}
+		if(type.equals(PrimitiveType.INTEGER)) {
+			return PushI;
+		}
+		if(type.equals(PrimitiveType.FLOAT)) {
+			return PushF;
+		}
+		if(type.equals(PrimitiveType.STRING)) {
+			return PushI;
+		}
+		if(type.equals(PrimitiveType.BOOLEAN)) {
+			return PushI;
+		}
+		assert false: "Type " + type + " unimplemented in opcodeForPush()";
 		return null;
 	}
 }

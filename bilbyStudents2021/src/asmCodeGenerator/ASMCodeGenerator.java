@@ -8,6 +8,7 @@ import java.util.Map;
 import asmCodeGenerator.codeStorage.ASMCodeFragment;
 import asmCodeGenerator.codeStorage.ASMOpcode;
 import asmCodeGenerator.operators.ArrayIndexCodeGenerator;
+import asmCodeGenerator.operators.ArrayListCodeGenerator;
 import asmCodeGenerator.operators.SimpleCodeGenerator;
 import asmCodeGenerator.runtime.MemoryManager;
 import asmCodeGenerator.runtime.RunTime;
@@ -17,6 +18,7 @@ import lexicalAnalyzer.Punctuator;
 import parseTree.*;
 import parseTree.nodeTypes.BooleanConstantNode;
 import parseTree.nodeTypes.CharConstantNode;
+import parseTree.nodeTypes.ArrayExpressionListNode;
 import parseTree.nodeTypes.AssignmentNode;
 import parseTree.nodeTypes.BlockNode;
 import parseTree.nodeTypes.DeclarationNode;
@@ -302,6 +304,23 @@ public class ASMCodeGenerator {
 			}
 		}
 		
+		
+		public void visitLeave(ArrayExpressionListNode node) {
+			newValueCode(node);
+			
+			List<ASMCodeFragment> args = new ArrayList<>();
+			for(ParseNode child: node.getChildren()) {
+				ASMCodeFragment arg = removeValueCode(child);
+				args.add(arg);
+			}
+			ArrayListCodeGenerator generator = new ArrayListCodeGenerator();
+			ASMCodeFragment generated = generator.generate(node, args);
+			if(generated == null) {
+				throw new RuntimeException("ArrayListCodeGenerator produced null code fragment in ASMCodeGenerator.OperatorNode");
+			}
+			code.append(generated);
+		}
+		
 		///////////////////////////////////////////////////////////////////////////
 		// simple nodes (leaf except for index chains)
 		
@@ -326,8 +345,6 @@ public class ASMCodeGenerator {
 				Binding binding = node.getBinding();
 				binding.generateAddress(code);
 			}
-			
-
 		}	
 		
 		///////////////////////////////////////////////////////////////////////////

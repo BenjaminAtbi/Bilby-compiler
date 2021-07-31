@@ -1,0 +1,4 @@
+main {
+	imm a := alloc[int](7);
+	print a[0] $n;
+}
