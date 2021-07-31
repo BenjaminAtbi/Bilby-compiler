@@ -1,6 +1,7 @@
 package parseTree.nodeTypes;
 
 import lexicalAnalyzer.Keyword;
+import lexicalAnalyzer.Punctuator;
 import parseTree.ParseNode;
 import parseTree.ParseNodeVisitor;
 import tokens.Token;
@@ -9,7 +10,7 @@ public class ArrayExpressionListNode extends ParseNode {
 
 	public ArrayExpressionListNode(Token token) {
 		super(token);
-		assert(token.isLextant(Keyword.ARRAY));
+		assert(token.isLextant(Punctuator.COMMA));
 	}
 	
 	public ArrayExpressionListNode(ParseNode node) {

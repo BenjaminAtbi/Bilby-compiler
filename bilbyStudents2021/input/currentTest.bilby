@@ -1,7 +1,7 @@
 main {
-	imm a := alloc[[[int]]](4);
-	a[1] := alloc[[int]](4);
-	a[1][1] := alloc[int](4);
-	a[1][1][1] := 3;
-	print a[1][1][1] $n;
+	imm a := [1,2,3];
+	print a[2] $s a[1] $s a[0] $n;
+	
+	imm b := [2.1 as int];
+	print b $n;
 }

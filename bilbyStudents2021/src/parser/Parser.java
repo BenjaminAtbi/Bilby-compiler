@@ -6,6 +6,7 @@ import logging.BilbyLogger;
 import parseTree.*;
 import parseTree.nodeTypes.BooleanConstantNode;
 import parseTree.nodeTypes.CharConstantNode;
+import parseTree.nodeTypes.ArrayExpressionListNode;
 import parseTree.nodeTypes.AssignmentNode;
 import parseTree.nodeTypes.BlockNode;
 import parseTree.nodeTypes.DeclarationNode;
@@ -472,6 +473,7 @@ public class Parser {
 	private boolean startsIndexingExpression(Token token) {
 		return startsAtomicExpression(token);
 	}
+
 	
 	// atomicExpression         -> unaryExpression | literal
 	private ParseNode parseAtomicExpression() {
@@ -481,64 +483,108 @@ public class Parser {
 		if(startsParantheticExpression(nowReading)) {
 			return parseParantheticExpression();
 		}
-		if(startsCastExpression(nowReading)) {
-			return parseCastExpression();
+		if(startsSquareBracketExpression(nowReading)) {
+			return parseSquareBracketExpression();
+		}
+		if(startsAllocExpression(nowReading)) {
+			return parseAllocExpression();
 		}
 		return parseLiteral();
 	}
+	
 	private boolean startsAtomicExpression(Token token) {
-		return startsLiteral(token) || startsParantheticExpression(token) || startsCastExpression(token);
+		return startsLiteral(token) || startsParantheticExpression(token) || startsSquareBracketExpression(token) || startsAllocExpression(token);
 	}
 	
 	private ParseNode parseParantheticExpression() {
 		if(!startsParantheticExpression(nowReading)) {
-			return syntaxErrorNode("ParantheticExpression");
+			return syntaxErrorNode("AllocExpression");
 		}
-		if(nowReading.isLextant(Punctuator.OPEN_BRACKET)) {
 			expect(Punctuator.OPEN_BRACKET);
 			ParseNode expression = parseExpression();
 			expect(Punctuator.CLOSE_BRACKET);
 			return expression;
-		}
-		if(nowReading.isLextant(Keyword.ALLOC)) {
-			Token allocToken = nowReading;
-			expect(Keyword.ALLOC);
-			if(!nowReading.isLextant(Punctuator.OPEN_SQUARE)) {
-				return syntaxErrorNode("array type");
-			}
-			ParseNode type = parseType();
-			expect(Punctuator.OPEN_BRACKET);
-			ParseNode expression = parseExpression();
-			expect(Punctuator.CLOSE_BRACKET);
-			return OperatorNode.withChildren(allocToken, type, expression);
-		}
-		return syntaxErrorNode("bracketed expression not implemented");
 	}
 	
 	private boolean startsParantheticExpression(Token token) {
-		return token.isLextant(Punctuator.OPEN_BRACKET, Keyword.ALLOC);
+		return token.isLextant(Punctuator.OPEN_BRACKET);
 	}
 	
-	private ParseNode parseCastExpression() {
-		if(!startsCastExpression(nowReading)) {
-			return syntaxErrorNode("Cast Expression");
+	private ParseNode parseAllocExpression() {
+		if(!startsAllocExpression(nowReading)) {
+			return syntaxErrorNode("AllocExpression");
 		}
-		expect(Punctuator.OPEN_SQUARE);
-		ParseNode expression = parseExpression();
-		if(!nowReading.isLextant(Keyword.AS)) {
-			return syntaxErrorNode("Cast keyword");
-		}
-		Token castToken = nowReading;
-		readToken();
-		if(!startsType(nowReading)) {
-			return syntaxErrorNode("Type keyword: got"+nowReading.getLexeme());
+		Token allocToken = nowReading;
+		expect(Keyword.ALLOC);
+		if(!nowReading.isLextant(Punctuator.OPEN_SQUARE)) {
+			return syntaxErrorNode("array type");
 		}
 		ParseNode type = parseType();
-		expect(Punctuator.CLOSE_SQUARE);
-		return OperatorNode.withChildren(castToken,expression,type);
+		expect(Punctuator.OPEN_BRACKET);
+		ParseNode expression = parseExpression();
+		expect(Punctuator.CLOSE_BRACKET);
+		return OperatorNode.withChildren(allocToken, type, expression);
 	}
 	
-	private boolean startsCastExpression(Token token) {
+	private boolean startsAllocExpression(Token token) {
+		return token.isLextant(Keyword.ALLOC);
+	}
+	
+	
+	private ParseNode parseSquareBracketExpression() {
+		if(!startsSquareBracketExpression(nowReading)) {
+			return syntaxErrorNode("Square Bracket Expression");
+		}
+		expect(Punctuator.OPEN_SQUARE);
+		ParseNode firstExpression = parseExpression();
+		
+		if(nowReading.isLextant(Keyword.AS)) { // cast
+			Token castToken = nowReading;
+			readToken();
+			if(!startsType(nowReading)) {
+				return syntaxErrorNode("Type keyword: got"+nowReading.getLexeme());
+			}
+			ParseNode type = parseType();
+			expect(Punctuator.CLOSE_SQUARE);
+			return OperatorNode.withChildren(castToken,firstExpression,type);
+		}
+		else if(nowReading.isLextant(Punctuator.COMMA)) { // expression list
+			Token listToken = nowReading;
+			readToken();
+			
+			ArrayExpressionListNode list = new ArrayExpressionListNode(listToken);
+			list.appendChild(firstExpression);
+			
+			if(!startsExpression(nowReading)) {
+				return syntaxErrorNode("Expression list contains non-expression");
+			}
+			list.appendChild(parseExpression());
+			
+			while(nowReading.isLextant(Punctuator.COMMA)) {
+				expect(Punctuator.COMMA);
+				if(!startsExpression(nowReading)) {
+					return syntaxErrorNode("Expression list contains non-expression");
+				}
+				list.appendChild(parseExpression());
+			}
+			expect(Punctuator.CLOSE_SQUARE);
+			return list;
+		}
+		else if(nowReading.isLextant(Punctuator.CLOSE_SQUARE)){ // expression list with 1 element
+			Token squareToken = nowReading;
+			readToken();
+			LextantToken token = LextantToken.make(squareToken, squareToken.getLexeme(), Punctuator.COMMA);
+			ArrayExpressionListNode list = new ArrayExpressionListNode(token);
+			list.appendChild(firstExpression);
+
+			return list;
+		}
+		else {
+			return syntaxErrorNode("Square Bracket Expression is neither cast nor expression list");
+		}
+	}
+	
+	private boolean startsSquareBracketExpression(Token token) {
 		return token.isLextant(Punctuator.OPEN_SQUARE);
 	}
 
