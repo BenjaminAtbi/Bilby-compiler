@@ -1,0 +1,7 @@
+main {
+	imm a := [1,2,3];
+	print a[2] $s a[1] $s a[0] $n;
+	
+	imm b := [2.1 as int];
+	print b $n;
+}

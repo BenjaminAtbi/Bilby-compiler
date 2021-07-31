@@ -140,11 +140,17 @@
         PushD        $errors-float-divide-by-zero 
         Jump         $$general-runtime-error   
         DLabel       $array-out-of-bounds      
-        DataC        97                        %% "array out of bounds"
+        DataC        97                        %% "array index out of bounds"
         DataC        114                       
         DataC        114                       
         DataC        97                        
         DataC        121                       
+        DataC        32                        
+        DataC        105                       
+        DataC        110                       
+        DataC        100                       
+        DataC        101                       
+        DataC        120                       
         DataC        32                        
         DataC        111                       
         DataC        117                       
@@ -164,13 +170,7 @@
         PushD        $array-out-of-bounds      
         Jump         $$general-runtime-error   
         DLabel       $array-negative-length    
-        DataC        97                        %% "array negative length"
-        DataC        114                       
-        DataC        114                       
-        DataC        97                        
-        DataC        121                       
-        DataC        32                        
-        DataC        110                       
+        DataC        110                       %% "negative length given for array"
         DataC        101                       
         DataC        103                       
         DataC        97                        
@@ -185,6 +185,22 @@
         DataC        103                       
         DataC        116                       
         DataC        104                       
+        DataC        32                        
+        DataC        103                       
+        DataC        105                       
+        DataC        118                       
+        DataC        101                       
+        DataC        110                       
+        DataC        32                        
+        DataC        102                       
+        DataC        111                       
+        DataC        114                       
+        DataC        32                        
+        DataC        97                        
+        DataC        114                       
+        DataC        114                       
+        DataC        97                        
+        DataC        121                       
         DataC        0                         
         Label        $$array-negative-length   
         PushD        $array-negative-length    
