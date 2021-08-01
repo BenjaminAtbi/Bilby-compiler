@@ -44,4 +44,25 @@ public class Array implements Type {
 		return true;
 	}
 
+	//recursive array functions
+	
+	public Type baseType() {
+		Array nextArray = this;
+		while(nextArray.getSubtype() instanceof Array) {
+			nextArray = (Array)nextArray.getSubtype();
+		}
+		return nextArray.getSubtype();
+	}
+	
+	public int getDepth() {
+		
+		int depth = 0;
+		Array nextArray = this;
+		while(nextArray.getSubtype() instanceof Array) {
+			depth++;
+			nextArray = (Array)nextArray.getSubtype();
+		}
+		return depth;
+	}
+	
 }

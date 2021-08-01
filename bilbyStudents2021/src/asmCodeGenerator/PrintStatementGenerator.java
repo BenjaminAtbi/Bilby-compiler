@@ -12,6 +12,7 @@ import semanticAnalyzer.types.Type;
 import asmCodeGenerator.ASMCodeGenerator.CodeVisitor;
 import asmCodeGenerator.codeStorage.ASMCodeFragment;
 import asmCodeGenerator.runtime.RunTime;
+import asmCodeGenerator.PrintArraySubroutine;
 
 public class PrintStatementGenerator {
 	ASMCodeFragment code;
@@ -39,7 +40,18 @@ public class PrintStatementGenerator {
 	}
 
 	private void appendArrayCode(ParseNode child) {
-		// TODO Auto-generated method stub
+		assert(child.getType() instanceof Array);
+		
+		code.add(PStack);
+		
+		code.append(visitor.removeValueCode(child)); 		//[.. addr ]
+		code.add(PushI, PrintArraySubroutine.getTypeID(child.getType()));	//[.. addr typeID]
+		
+		Array type = (Array)child.getType();
+		code.add(PushI, type.getDepth()); 							//[.. addr typeID depth ]
+		
+		code.add(PStack);
+		//code.add(Call, PrintArraySubroutine.PRINT_ARRAY);
 		
 	}
 

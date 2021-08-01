@@ -11,6 +11,9 @@ public class RunTime {
 	public static final String BOOLEAN_PRINT_FORMAT   = "$print-format-boolean";
 	public static final String NEWLINE_PRINT_FORMAT   = "$print-format-newline";
 	public static final String SPACE_PRINT_FORMAT     = "$print-format-space";
+	public static final String OPEN_SQUARE_PRINT_FORMAT   = "$print-format-open-square";
+	public static final String CLOSE_SQUARE_PRINT_FORMAT  = "$print-format-close-square";
+	public static final String COMMA_PRINT_FORMAT     = "$print-format-comma";
 	public static final String BOOLEAN_TRUE_STRING    = "$boolean-true-string";
 	public static final String BOOLEAN_FALSE_STRING   = "$boolean-false-string";
 	public static final String REF_SPACE1 			  = "$reference-space-1";
@@ -26,6 +29,7 @@ public class RunTime {
 	public static final String ARRAY_OUT_OF_BOUNDS_ERROR = "$$array-out-of-bounds";
 	public static final String ARRAY_NEGATIVE_LENGTH_ERROR = "$$array-negative-length";
 	public static final String ARRAY_NOT_INITIALIZED_ERROR = "$$array-not-initialized";
+	
 
 	private ASMCodeFragment environmentASM() {
 		ASMCodeFragment result = new ASMCodeFragment(GENERATES_VOID);
@@ -61,6 +65,12 @@ public class RunTime {
 		frag.add(DataS, "\n");
 		frag.add(DLabel, SPACE_PRINT_FORMAT);
 		frag.add(DataS, " ");
+		frag.add(DLabel, OPEN_SQUARE_PRINT_FORMAT);
+		frag.add(DataS, "[");
+		frag.add(DLabel, CLOSE_SQUARE_PRINT_FORMAT);
+		frag.add(DataS, "]");
+		frag.add(DLabel, COMMA_PRINT_FORMAT);
+		frag.add(DataS, ",");
 		frag.add(DLabel, BOOLEAN_TRUE_STRING);
 		frag.add(DataS, "true");
 		frag.add(DLabel, BOOLEAN_FALSE_STRING);
