@@ -18,6 +18,7 @@ public class RunTime {
 	public static final String BOOLEAN_FALSE_STRING   = "$boolean-false-string";
 	public static final String REF_SPACE1 			  = "$reference-space-1";
 	public static final String REF_SPACE2 			  = "$reference-space-2";
+	public static final String REF_SPACE_MACRO 		  = "$reference-space-macro";
 	public static final String REF_I				  = "$reference-space-Iter";
 	public static final String GLOBAL_MEMORY_BLOCK    = "$global-memory-block";
 	public static final String USABLE_MEMORY_START    = "$usable-memory-start";
@@ -84,6 +85,8 @@ public class RunTime {
 		frag.add(DLabel, REF_SPACE1);
 		frag.add(DataZ, 4);
 		frag.add(DLabel, REF_SPACE2);
+		frag.add(DataZ, 4);
+		frag.add(DLabel, REF_SPACE_MACRO);
 		frag.add(DataZ, 4);
 		frag.add(DLabel, REF_I);
 		frag.add(DataZ, 4);

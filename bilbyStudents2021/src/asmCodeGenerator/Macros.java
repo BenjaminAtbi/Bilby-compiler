@@ -2,6 +2,7 @@ package asmCodeGenerator;
 
 import static asmCodeGenerator.codeStorage.ASMOpcode.*;
 import asmCodeGenerator.codeStorage.ASMCodeFragment;
+import static asmCodeGenerator.runtime.RunTime.REF_SPACE_MACRO;
 
 public class Macros {
 	
@@ -101,6 +102,7 @@ public class Macros {
 	}
 	
 	/** [ .. addr ] -> [ .. value ]
+	 * 0 indexed
 	 * @param frag ASMCodeFragment to add code to
 	 * @param byte length of array subtype 
 	 */
@@ -110,13 +112,28 @@ public class Macros {
 		frag.add(LoadI);				
 	}
 	
+	/** [ .. index addr ] -> [ .. indexAddr ]
+	 * @param frag ASMCodeFragment to add code to
+	 * @param byte length of array subtype 
+	 */
+	public static void getArrayIndexAddr(ASMCodeFragment frag) {
+		frag.add(Duplicate); 				//[.. index addr addr]
+		storeITo(frag, REF_SPACE_MACRO);	//[.. index addr]
+		getRecordField(frag, 2);			//[.. index typesize]
+		frag.add(Multiply); 				
+		frag.add(PushI, 16); 
+		frag.add(Add); 						//[.. indexOffset]
+		loadIFrom(frag, REF_SPACE_MACRO);   //[.. indexOffset addr]
+		frag.add(Add);
+	}
+	
 	/** [ .. addr index ] -> [ .. value ]
 	 * @param frag ASMCodeFragment to add code to
 	 * @param index to insert value into
 	 */
-	public static void setElement(ASMCodeFragment code, int index) { 
+	//public static void setElement(ASMCodeFragment code, int index) { 
 		
-	}
+	//}
 	
 	////////////////////////////////////////////////////////////////////
     // debugging aids

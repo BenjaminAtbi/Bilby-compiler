@@ -66,6 +66,7 @@ public class ASMCodeGenerator {
 		code.append( RunTime.getEnvironment() );
 		code.append( globalVariableBlockASM() );
 		code.append( programASM() );
+		code.append( PrintSubroutines.codeForGeneration() );
 		code.append( MemoryManager.codeForAfterApplication() );
 		
 		return code;

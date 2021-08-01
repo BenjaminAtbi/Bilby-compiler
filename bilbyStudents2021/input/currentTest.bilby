@@ -1,17 +1,13 @@
 main {
-	imm AA := [#a, #b, #c, #d, #e];
-	imm BB := [10.2, 7.3, 6.4];
-	imm CC := [[1], [6, 2, 1]];
-	imm DD := alloc [float](12);
+	imm C := [#a, #b, #c, #d, #e];
+	imm I := [10, 7, 6];
+	imm F := [6.8, 2.6, 1.2];
+	imm S := ["fuck","shit","bitch"];
+	imm B := [true, false, false, true];
 	
-	AA[0] := #z;
-	BB[1] := 20.4;
-	CC[1] := [7, 8, 9, 10];
-	DD[0] := 1.111;
-	DD[11] := 9.999;
-	
-	print AA $n;
-	print BB $n;
-	print CC $n;
-	print DD $n;
+	print C $n;
+	print I $n;
+	print F $n;
+	print S $n;
+	print B $n;
 }
