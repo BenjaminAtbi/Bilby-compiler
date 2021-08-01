@@ -20,11 +20,14 @@ public class PrintSubroutines {
 	private static final String PRINT_LOOP_INDEX				= "$print-array-index";
 	private static final String PRINT_LOOP_START 				= "$print-array-loop-start";
 	private static final String PRINT_LOOP_END 					= "$print-array-loop-end";
+	private static final String PRINT_ARRAY_VALUE_START 		= "$print-array-value-start";
+	private static final String PRINT_ARRAY_VALUE_END 			= "$print-array-value-end";
 	
 	public static final String PRINT_VALUE 						= "$print-value";
 	private static final String PRINT_VALUE_RETURN_ADDRESS 		= "$print-value-return-address";
 	private static final String PRINT_VALUE_TYPEID 				= "$print-value-typeid";
 	private static final String PRINT_VALUE_ADDRESS 			= "$print-value-address";
+	
 	
 	public static ASMCodeFragment codeForGeneration() {
 		ASMCodeFragment frag = new ASMCodeFragment(GENERATES_VOID);
@@ -51,12 +54,11 @@ public class PrintSubroutines {
 		declareI(frag, PRINT_ARRAY_ADDRESS);
 		declareI(frag, PRINT_LOOP_INDEX);
 		
-		//frag.add(PStack);
-		
 		storeITo(frag, PRINT_ARRAY_RETURN_ADDRESS); // [.. addr typeID depth ]
 		storeITo(frag, PRINT_ARRAY_DEPTH);			// [.. addr typeID  ]
 		storeITo(frag, PRINT_ARRAY_TYPEID);			// [.. addr  ]
 		storeITo(frag, PRINT_ARRAY_ADDRESS);			// [.. ]
+		
 		
 		frag.add(PushD, RunTime.OPEN_SQUARE_PRINT_FORMAT);
 		frag.add(Printf);
@@ -77,15 +79,49 @@ public class PrintSubroutines {
 		
 		// if array depth is > 0, recursive call
 		loadIFrom(frag, PRINT_ARRAY_DEPTH);
-		frag.add(JumpTrue, PRINT_LOOP_END);
+		frag.add(JumpFalse, PRINT_ARRAY_VALUE_START);
+		
+		//push "register" vals to stack
+		loadIFrom(frag, PRINT_LOOP_INDEX);			 
+		loadIFrom(frag, PRINT_ARRAY_ADDRESS);		
+		loadIFrom(frag, PRINT_ARRAY_TYPEID);
+		loadIFrom(frag, PRINT_ARRAY_DEPTH);	
+		loadIFrom(frag, PRINT_ARRAY_RETURN_ADDRESS); // [.. index addr typeID depth returnAddr ]
+		
+		//push args
+		loadIFrom(frag, PRINT_LOOP_INDEX);
+		loadIFrom(frag, PRINT_ARRAY_ADDRESS);
+		getArrayIndexAddr(frag);					// [.. index ]
+		frag.add(LoadI);							// [.. indexAddress ]	
+		loadIFrom(frag, PRINT_ARRAY_TYPEID);		// [.. indexAddress typeID ]
+		loadIFrom(frag, PRINT_ARRAY_DEPTH);			// [.. indexAddress typeID parentDepth ]
+		frag.add(PushI, 1);
+		frag.add(Subtract);							// [.. indexAddress typeID childDepth ]
+		
+		
+		//recursive call
+		frag.add(Call, PRINT_ARRAY);
+		
+		//unload val to "registers"
+		storeITo(frag, PRINT_ARRAY_RETURN_ADDRESS); // [.. index addr typeID depth ]
+		storeITo(frag, PRINT_ARRAY_DEPTH);			
+		storeITo(frag, PRINT_ARRAY_TYPEID);			
+		storeITo(frag, PRINT_ARRAY_ADDRESS);			
+		storeITo(frag, PRINT_LOOP_INDEX);			// [.. ]
+		
+		frag.add(Jump, PRINT_ARRAY_VALUE_END);
 		
 		// else print according to type identifier
+		frag.add(Label, PRINT_ARRAY_VALUE_START);
 		
 		loadIFrom(frag, PRINT_LOOP_INDEX);
-		loadIFrom(frag, PRINT_ARRAY_ADDRESS);		// [.. arrayAddress]
+		loadIFrom(frag, PRINT_ARRAY_ADDRESS);		// [.. index arrayAddress]
 		getArrayIndexAddr(frag);					// [.. indexAddress]
 		loadIFrom(frag, PRINT_ARRAY_TYPEID);		// [.. indexAddress typeID ]
+		
 		frag.add(Call, PRINT_VALUE);
+		
+		frag.add(Label, PRINT_ARRAY_VALUE_END);
 		
 		// increment index
 		incrementInteger(frag, PRINT_LOOP_INDEX);
