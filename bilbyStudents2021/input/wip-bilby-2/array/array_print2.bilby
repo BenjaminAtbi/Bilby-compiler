@@ -1,0 +1,13 @@
+main {
+	imm C := [#a, #b, #c, #d, #e];
+	imm I := [10, 7, 6];
+	imm F := [6.8, 2.6, 1.2];
+	imm S := ["fuck","shit","bitch"];
+	imm B := [true, false, false, true];
+	
+	print C $n;
+	print I $n;
+	print F $n;
+	print S $n;
+	print B $n;
+}

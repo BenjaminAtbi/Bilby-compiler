@@ -250,11 +250,413 @@
         DataZ        4                         
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        0                         
+        DataZ        20                        
         Label        $$main                    
-        PushI        224                       
-        PushD        $print-format-integer     
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% C
+        Label        -alloc-array-1-start      
+        PushI        5                         
+        Duplicate                              
+        JumpNeg      $$array-negative-length   
+        Duplicate                              
+        PushD        $reference-space-1        
+        Exchange                               
+        StoreI                                 
+        PushI        1                         
+        Multiply                               
+        PushI        16                        
+        Add                                    
+        Call         -mem-manager-allocate     
+        PushD        $reference-space-2        
+        Exchange                               
+        StoreI                                 
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        7                         
+        StoreI                                 
+        PushI        2                         
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        4                         
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushI        1                         
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        8                         
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushD        $reference-space-1        
+        LoadI                                  
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        12                        
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushD        $reference-space-2        
+        LoadI                                  
+        Duplicate                              
+        PushI        16                        
+        Add                                    
+        PushI        97                        
+        StoreC                                 
+        Duplicate                              
+        PushI        17                        
+        Add                                    
+        PushI        98                        
+        StoreC                                 
+        Duplicate                              
+        PushI        18                        
+        Add                                    
+        PushI        99                        
+        StoreC                                 
+        Duplicate                              
+        PushI        19                        
+        Add                                    
+        PushI        100                       
+        StoreC                                 
+        Duplicate                              
+        PushI        20                        
+        Add                                    
+        PushI        101                       
+        StoreC                                 
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% I
+        Label        -alloc-array-2-start      
+        PushI        3                         
+        Duplicate                              
+        JumpNeg      $$array-negative-length   
+        Duplicate                              
+        PushD        $reference-space-1        
+        Exchange                               
+        StoreI                                 
+        PushI        4                         
+        Multiply                               
+        PushI        16                        
+        Add                                    
+        Call         -mem-manager-allocate     
+        PushD        $reference-space-2        
+        Exchange                               
+        StoreI                                 
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        7                         
+        StoreI                                 
+        PushI        2                         
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        4                         
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushI        4                         
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        8                         
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushD        $reference-space-1        
+        LoadI                                  
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        12                        
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushD        $reference-space-2        
+        LoadI                                  
+        Duplicate                              
+        PushI        16                        
+        Add                                    
+        PushI        10                        
+        StoreI                                 
+        Duplicate                              
+        PushI        20                        
+        Add                                    
+        PushI        7                         
+        StoreI                                 
+        Duplicate                              
+        PushI        24                        
+        Add                                    
+        PushI        6                         
+        StoreI                                 
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        8                         
+        Add                                    %% F
+        Label        -alloc-array-3-start      
+        PushI        3                         
+        Duplicate                              
+        JumpNeg      $$array-negative-length   
+        Duplicate                              
+        PushD        $reference-space-1        
+        Exchange                               
+        StoreI                                 
+        PushI        8                         
+        Multiply                               
+        PushI        16                        
+        Add                                    
+        Call         -mem-manager-allocate     
+        PushD        $reference-space-2        
+        Exchange                               
+        StoreI                                 
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        7                         
+        StoreI                                 
+        PushI        2                         
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        4                         
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushI        8                         
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        8                         
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushD        $reference-space-1        
+        LoadI                                  
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        12                        
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushD        $reference-space-2        
+        LoadI                                  
+        Duplicate                              
+        PushI        16                        
+        Add                                    
+        PushF        6.800000                  
+        StoreF                                 
+        Duplicate                              
+        PushI        24                        
+        Add                                    
+        PushF        2.600000                  
+        StoreF                                 
+        Duplicate                              
+        PushI        32                        
+        Add                                    
+        PushF        1.200000                  
+        StoreF                                 
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        12                        
+        Add                                    %% S
+        Label        -alloc-array-7-start      
+        PushI        3                         
+        Duplicate                              
+        JumpNeg      $$array-negative-length   
+        Duplicate                              
+        PushD        $reference-space-1        
+        Exchange                               
+        StoreI                                 
+        PushI        4                         
+        Multiply                               
+        PushI        16                        
+        Add                                    
+        Call         -mem-manager-allocate     
+        PushD        $reference-space-2        
+        Exchange                               
+        StoreI                                 
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        7                         
+        StoreI                                 
+        PushI        2                         
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        4                         
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushI        4                         
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        8                         
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushD        $reference-space-1        
+        LoadI                                  
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        12                        
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushD        $reference-space-2        
+        LoadI                                  
+        Duplicate                              
+        PushI        16                        
+        Add                                    
+        DLabel       -string-constant-4-       
+        DataI        3                         
+        DataI        9                         
+        DataI        4                         
+        DataC        102                       %% "fuck"
+        DataC        117                       
+        DataC        99                        
+        DataC        107                       
+        DataC        0                         
+        PushD        -string-constant-4-       
+        StoreI                                 
+        Duplicate                              
+        PushI        20                        
+        Add                                    
+        DLabel       -string-constant-5-       
+        DataI        3                         
+        DataI        9                         
+        DataI        4                         
+        DataC        115                       %% "shit"
+        DataC        104                       
+        DataC        105                       
+        DataC        116                       
+        DataC        0                         
+        PushD        -string-constant-5-       
+        StoreI                                 
+        Duplicate                              
+        PushI        24                        
+        Add                                    
+        DLabel       -string-constant-6-       
+        DataI        3                         
+        DataI        9                         
+        DataI        5                         
+        DataC        98                        %% "bitch"
+        DataC        105                       
+        DataC        116                       
+        DataC        99                        
+        DataC        104                       
+        DataC        0                         
+        PushD        -string-constant-6-       
+        StoreI                                 
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        16                        
+        Add                                    %% B
+        Label        -alloc-array-8-start      
+        PushI        4                         
+        Duplicate                              
+        JumpNeg      $$array-negative-length   
+        Duplicate                              
+        PushD        $reference-space-1        
+        Exchange                               
+        StoreI                                 
+        PushI        1                         
+        Multiply                               
+        PushI        16                        
+        Add                                    
+        Call         -mem-manager-allocate     
+        PushD        $reference-space-2        
+        Exchange                               
+        StoreI                                 
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        7                         
+        StoreI                                 
+        PushI        2                         
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        4                         
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushI        1                         
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        8                         
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushD        $reference-space-1        
+        LoadI                                  
+        PushD        $reference-space-2        
+        LoadI                                  
+        PushI        12                        
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushD        $reference-space-2        
+        LoadI                                  
+        Duplicate                              
+        PushI        16                        
+        Add                                    
+        PushI        1                         
+        StoreC                                 
+        Duplicate                              
+        PushI        17                        
+        Add                                    
+        PushI        0                         
+        StoreC                                 
+        Duplicate                              
+        PushI        18                        
+        Add                                    
+        PushI        0                         
+        StoreC                                 
+        Duplicate                              
+        PushI        19                        
+        Add                                    
+        PushI        1                         
+        StoreC                                 
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% C
+        LoadI                                  
+        PushI        0                         
+        PushI        0                         
+        Call         $print-array              
+        PushI        10                        
+        PushD        $print-format-char        
         Printf                                 
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% I
+        LoadI                                  
+        PushI        1                         
+        PushI        0                         
+        Call         $print-array              
+        PushI        10                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        8                         
+        Add                                    %% F
+        LoadI                                  
+        PushI        2                         
+        PushI        0                         
+        Call         $print-array              
+        PushI        10                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        12                        
+        Add                                    %% S
+        LoadI                                  
+        PushI        3                         
+        PushI        0                         
+        Call         $print-array              
+        PushI        10                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        16                        
+        Add                                    %% B
+        LoadI                                  
+        PushI        4                         
+        PushI        0                         
+        Call         $print-array              
         PushI        10                        
         PushD        $print-format-char        
         Printf                                 
@@ -361,43 +763,43 @@
         PushD        $print-value-address      
         Exchange                               
         StoreI                                 
-        Label        -print-value-1-char       
+        Label        -print-value-9-char       
         PushD        $print-value-typeid       
         LoadI                                  
-        JumpTrue     -print-value-1-int        
+        JumpTrue     -print-value-9-int        
         PushD        $print-value-address      
         LoadI                                  
         LoadC                                  
         PushD        $print-format-char        
         Printf                                 
-        Label        -print-value-1-int        
+        Label        -print-value-9-int        
         PushD        $print-value-typeid       
         LoadI                                  
         PushI        1                         
         Subtract                               
-        JumpTrue     -print-value-1-float      
+        JumpTrue     -print-value-9-float      
         PushD        $print-value-address      
         LoadI                                  
         LoadI                                  
         PushD        $print-format-integer     
         Printf                                 
-        Label        -print-value-1-float      
+        Label        -print-value-9-float      
         PushD        $print-value-typeid       
         LoadI                                  
         PushI        2                         
         Subtract                               
-        JumpTrue     -print-value-1-string     
+        JumpTrue     -print-value-9-string     
         PushD        $print-value-address      
         LoadI                                  
         LoadF                                  
         PushD        $print-format-floating    
         Printf                                 
-        Label        -print-value-1-string     
+        Label        -print-value-9-string     
         PushD        $print-value-typeid       
         LoadI                                  
         PushI        3                         
         Subtract                               
-        JumpTrue     -print-value-1-bool       
+        JumpTrue     -print-value-9-bool       
         PushD        $print-value-address      
         LoadI                                  
         LoadI                                  
@@ -405,24 +807,24 @@
         Add                                    
         PushD        $print-format-string      
         Printf                                 
-        Label        -print-value-1-bool       
+        Label        -print-value-9-bool       
         PushD        $print-value-typeid       
         LoadI                                  
         PushI        4                         
         Subtract                               
-        JumpTrue     -print-value-1-end        
+        JumpTrue     -print-value-9-end        
         PushD        $print-value-address      
         LoadI                                  
         LoadC                                  
-        JumpTrue     -print-value-1-true       
+        JumpTrue     -print-value-9-true       
         PushD        $boolean-false-string     
-        Jump         -print-value-1-pastTrue   
-        Label        -print-value-1-true       
+        Jump         -print-value-9-pastTrue   
+        Label        -print-value-9-true       
         PushD        $boolean-true-string      
-        Label        -print-value-1-pastTrue   
+        Label        -print-value-9-pastTrue   
         PushD        $print-format-string      
         Printf                                 
-        Label        -print-value-1-end        
+        Label        -print-value-9-end        
         PushD        $print-value-return-address 
         LoadI                                  
         Return                                 

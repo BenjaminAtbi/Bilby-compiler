@@ -50,6 +50,15 @@
         DLabel       $print-format-space       
         DataC        32                        %% " "
         DataC        0                         
+        DLabel       $print-format-open-square 
+        DataC        91                        %% "["
+        DataC        0                         
+        DLabel       $print-format-close-square 
+        DataC        93                        %% "]"
+        DataC        0                         
+        DLabel       $print-format-comma       
+        DataC        44                        %% ","
+        DataC        0                         
         DLabel       $boolean-true-string      
         DataC        116                       %% "true"
         DataC        114                       
@@ -234,6 +243,8 @@
         DLabel       $reference-space-1        
         DataZ        4                         
         DLabel       $reference-space-2        
+        DataZ        4                         
+        DLabel       $reference-space-macro    
         DataZ        4                         
         DLabel       $reference-space-Iter     
         DataZ        4                         
@@ -2258,6 +2269,173 @@
         PushD        $print-format-char        
         Printf                                 
         Halt                                   
+        Label        $print-array              
+        DLabel       $print-array-return-address 
+        DataZ        4                         
+        DLabel       $print-array-depth        
+        DataZ        4                         
+        DLabel       $print-array-typeid       
+        DataZ        4                         
+        DLabel       $print-array-address      
+        DataZ        4                         
+        DLabel       $print-array-index        
+        DataZ        4                         
+        PushD        $print-array-return-address 
+        Exchange                               
+        StoreI                                 
+        PushD        $print-array-depth        
+        Exchange                               
+        StoreI                                 
+        PushD        $print-array-typeid       
+        Exchange                               
+        StoreI                                 
+        PushD        $print-array-address      
+        Exchange                               
+        StoreI                                 
+        PushD        $print-format-open-square 
+        Printf                                 
+        PushD        $print-array-address      
+        LoadI                                  
+        PushI        12                        
+        Add                                    
+        LoadI                                  
+        JumpFalse    $print-array-loop-end     
+        PushI        0                         
+        PushD        $print-array-index        
+        Exchange                               
+        StoreI                                 
+        Label        $print-array-loop-start   
+        PushD        $print-array-depth        
+        LoadI                                  
+        JumpTrue     $print-array-loop-end     
+        PushD        $print-array-index        
+        LoadI                                  
+        PushD        $print-array-address      
+        LoadI                                  
+        Duplicate                              
+        PushD        $reference-space-macro    
+        Exchange                               
+        StoreI                                 
+        PushI        8                         
+        Add                                    
+        LoadI                                  
+        Multiply                               
+        PushI        16                        
+        Add                                    
+        PushD        $reference-space-macro    
+        LoadI                                  
+        Add                                    
+        PushD        $print-array-typeid       
+        LoadI                                  
+        Call         $print-value              
+        PushI        1                         
+        PushD        $print-array-index        
+        LoadI                                  
+        Add                                    
+        PushD        $print-array-index        
+        Exchange                               
+        StoreI                                 
+        PushD        $print-array-address      
+        LoadI                                  
+        PushI        12                        
+        Add                                    
+        LoadI                                  
+        PushD        $print-array-index        
+        LoadI                                  
+        Subtract                               
+        JumpFalse    $print-array-loop-end     
+        PushD        $print-format-comma       
+        Printf                                 
+        PushD        $print-format-space       
+        Printf                                 
+        Jump         $print-array-loop-start   
+        Label        $print-array-loop-end     
+        PushD        $print-format-close-square 
+        Printf                                 
+        PushD        $print-array-return-address 
+        LoadI                                  
+        Return                                 
+        Label        $print-value              
+        DLabel       $print-value-return-address 
+        DataZ        4                         
+        DLabel       $print-value-typeid       
+        DataZ        4                         
+        DLabel       $print-value-address      
+        DataZ        4                         
+        PushD        $print-value-return-address 
+        Exchange                               
+        StoreI                                 
+        PushD        $print-value-typeid       
+        Exchange                               
+        StoreI                                 
+        PushD        $print-value-address      
+        Exchange                               
+        StoreI                                 
+        Label        -print-value-169-char     
+        PushD        $print-value-typeid       
+        LoadI                                  
+        JumpTrue     -print-value-169-int      
+        PushD        $print-value-address      
+        LoadI                                  
+        LoadC                                  
+        PushD        $print-format-char        
+        Printf                                 
+        Label        -print-value-169-int      
+        PushD        $print-value-typeid       
+        LoadI                                  
+        PushI        1                         
+        Subtract                               
+        JumpTrue     -print-value-169-float    
+        PushD        $print-value-address      
+        LoadI                                  
+        LoadI                                  
+        PushD        $print-format-integer     
+        Printf                                 
+        Label        -print-value-169-float    
+        PushD        $print-value-typeid       
+        LoadI                                  
+        PushI        2                         
+        Subtract                               
+        JumpTrue     -print-value-169-string   
+        PushD        $print-value-address      
+        LoadI                                  
+        LoadF                                  
+        PushD        $print-format-floating    
+        Printf                                 
+        Label        -print-value-169-string   
+        PushD        $print-value-typeid       
+        LoadI                                  
+        PushI        3                         
+        Subtract                               
+        JumpTrue     -print-value-169-bool     
+        PushD        $print-value-address      
+        LoadI                                  
+        LoadI                                  
+        PushI        12                        
+        Add                                    
+        PushD        $print-format-string      
+        Printf                                 
+        Label        -print-value-169-bool     
+        PushD        $print-value-typeid       
+        LoadI                                  
+        PushI        4                         
+        Subtract                               
+        JumpTrue     -print-value-169-end      
+        PushD        $print-value-address      
+        LoadI                                  
+        LoadC                                  
+        JumpTrue     -print-value-169-true     
+        PushD        $boolean-false-string     
+        Jump         -print-value-169-pastTrue 
+        Label        -print-value-169-true     
+        PushD        $boolean-true-string      
+        Label        -print-value-169-pastTrue 
+        PushD        $print-format-string      
+        Printf                                 
+        Label        -print-value-169-end      
+        PushD        $print-value-return-address 
+        LoadI                                  
+        Return                                 
         Label        -mem-manager-make-tags    
         DLabel       $mmgr-tags-size           
         DataZ        4                         

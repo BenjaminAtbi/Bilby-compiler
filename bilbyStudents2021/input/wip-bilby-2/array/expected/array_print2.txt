@@ -1,0 +1,5 @@
+[a, b, c, d, e]
+[10, 7, 6]
+[6.800000, 2.600000, 1.200000]
+[fuck, shit, bitch]
+[true, false, false, true]
