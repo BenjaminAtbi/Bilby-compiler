@@ -265,6 +265,7 @@
         DataC        72                        
         DataC        0                         
         PushD        -string-constant-1-       
+        Nop                                    
         DLabel       -string-constant-2-       
         DataI        3                         
         DataI        9                         
@@ -274,6 +275,7 @@
         DataC        102                       
         DataC        0                         
         PushD        -string-constant-2-       
+        Nop                                    
         Label        -compare-3-sub            
         Subtract                               
         JumpFalse    -compare-3-false          
@@ -352,7 +354,59 @@
         Label        $print-array-loop-start   
         PushD        $print-array-depth        
         LoadI                                  
-        JumpTrue     $print-array-loop-end     
+        JumpFalse    $print-array-value-start  
+        PushD        $print-array-index        
+        LoadI                                  
+        PushD        $print-array-address      
+        LoadI                                  
+        PushD        $print-array-typeid       
+        LoadI                                  
+        PushD        $print-array-depth        
+        LoadI                                  
+        PushD        $print-array-return-address 
+        LoadI                                  
+        PushD        $print-array-index        
+        LoadI                                  
+        PushD        $print-array-address      
+        LoadI                                  
+        Duplicate                              
+        PushD        $reference-space-macro    
+        Exchange                               
+        StoreI                                 
+        PushI        8                         
+        Add                                    
+        LoadI                                  
+        Multiply                               
+        PushI        16                        
+        Add                                    
+        PushD        $reference-space-macro    
+        LoadI                                  
+        Add                                    
+        LoadI                                  
+        PushD        $print-array-typeid       
+        LoadI                                  
+        PushD        $print-array-depth        
+        LoadI                                  
+        PushI        1                         
+        Subtract                               
+        Call         $print-array              
+        PushD        $print-array-return-address 
+        Exchange                               
+        StoreI                                 
+        PushD        $print-array-depth        
+        Exchange                               
+        StoreI                                 
+        PushD        $print-array-typeid       
+        Exchange                               
+        StoreI                                 
+        PushD        $print-array-address      
+        Exchange                               
+        StoreI                                 
+        PushD        $print-array-index        
+        Exchange                               
+        StoreI                                 
+        Jump         $print-array-value-end    
+        Label        $print-array-value-start  
         PushD        $print-array-index        
         LoadI                                  
         PushD        $print-array-address      
@@ -373,6 +427,7 @@
         PushD        $print-array-typeid       
         LoadI                                  
         Call         $print-value              
+        Label        $print-array-value-end    
         PushI        1                         
         PushD        $print-array-index        
         LoadI                                  

@@ -257,6 +257,7 @@
         Add                                    %% a
         Label        -alloc-array-1-start      
         PushI        4                         
+        Nop                                    
         Duplicate                              
         JumpNeg      $$array-negative-length   
         Duplicate                              
@@ -340,6 +341,7 @@
         PushI        0                         
         Add                                    %% a
         LoadI                                  
+        Nop                                    
         Duplicate                              
         PushD        $reference-space-1        
         Exchange                               
@@ -348,6 +350,7 @@
         Add                                    
         LoadI                                  
         PushI        1                         
+        Nop                                    
         Duplicate                              
         PushD        $reference-space-2        
         Exchange                               
@@ -380,6 +383,7 @@
         Add                                    
         Label        -access-array-2-end       
         LoadI                                  
+        Nop                                    
         Duplicate                              
         PushD        $reference-space-1        
         Exchange                               
@@ -388,6 +392,7 @@
         Add                                    
         LoadI                                  
         PushI        1                         
+        Nop                                    
         Duplicate                              
         PushD        $reference-space-2        
         Exchange                               
@@ -420,6 +425,7 @@
         Add                                    
         Label        -access-array-3-end       
         LoadI                                  
+        Nop                                    
         Duplicate                              
         PushD        $reference-space-1        
         Exchange                               
@@ -428,6 +434,7 @@
         Add                                    
         LoadI                                  
         PushI        1                         
+        Nop                                    
         Duplicate                              
         PushD        $reference-space-2        
         Exchange                               
@@ -460,6 +467,7 @@
         Add                                    
         Label        -access-array-4-end       
         PushI        3                         
+        Nop                                    
         StoreI                                 
         Label        -access-array-7-start     
         Label        -access-array-6-start     
@@ -468,6 +476,7 @@
         PushI        0                         
         Add                                    %% a
         LoadI                                  
+        Nop                                    
         Duplicate                              
         PushD        $reference-space-1        
         Exchange                               
@@ -476,6 +485,7 @@
         Add                                    
         LoadI                                  
         PushI        1                         
+        Nop                                    
         Duplicate                              
         PushD        $reference-space-2        
         Exchange                               
@@ -508,6 +518,7 @@
         Add                                    
         Label        -access-array-5-end       
         LoadI                                  
+        Nop                                    
         Duplicate                              
         PushD        $reference-space-1        
         Exchange                               
@@ -516,6 +527,7 @@
         Add                                    
         LoadI                                  
         PushI        1                         
+        Nop                                    
         Duplicate                              
         PushD        $reference-space-2        
         Exchange                               
@@ -548,6 +560,7 @@
         Add                                    
         Label        -access-array-6-end       
         LoadI                                  
+        Nop                                    
         Duplicate                              
         PushD        $reference-space-1        
         Exchange                               
@@ -556,6 +569,7 @@
         Add                                    
         LoadI                                  
         PushI        1                         
+        Nop                                    
         Duplicate                              
         PushD        $reference-space-2        
         Exchange                               

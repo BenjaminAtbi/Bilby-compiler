@@ -25,6 +25,17 @@ public class PromotedSignature {
 	}
 
 	public int numPromotions() {
+        int numPromotions = 0;
+ 
+        for(Promotion promotion: promotions) {
+                if(promotion != Promotion.NONE) {
+                    numPromotions++;
+                }
+        }
+        return numPromotions;
+	}
+	
+	public int numArgs() {
 		return promotions.size();
 	}
 
@@ -33,6 +44,7 @@ public class PromotedSignature {
 	}
 	
 	public static List<PromotedSignature> makeAll(FunctionSignatures functionSignatures, List<Type> actuals) {
+		
 		List<PromotedSignature> all = new ArrayList<PromotedSignature>();
 		for(FunctionSignature functionSignature: functionSignatures) {
 			all.addAll(makeAll(functionSignature, actuals));;
@@ -41,12 +53,14 @@ public class PromotedSignature {
 	}
 
 	private static List<PromotedSignature> makeAll(FunctionSignature functionSignature, List<Type> actuals) {
+		
 		List<PromotedSignature> result = new ArrayList<PromotedSignature>();
 		if(actuals.size() == 1) {
 			Type actual = actuals.get(0);
 			for(Promotion promotion: Promotion.values()) {
 				if(promotion.applies(actual)) {
-					PromotedSignature promotedSignature = tryTypes(functionSignature, promotion);
+					Type promotedActual = promotion.apply(actual);
+					PromotedSignature promotedSignature = tryTypes(functionSignature, promotion, promotedActual);
 					if(promotedSignature != nullInstance()) {
 						result.add(promotedSignature);
 					}
@@ -62,7 +76,9 @@ public class PromotedSignature {
 				if(promotionFirst.applies(actualFirst)) {
 					for(Promotion promotionSecond : Promotion.values()) {
 						if(promotionSecond.applies(actualSecond)) {
-							PromotedSignature promotedSignature = tryTypes(functionSignature, promotionFirst, promotionSecond);
+							Type promotedActualFirst = promotionFirst.apply(actualFirst);
+							Type promotedActualSecond = promotionSecond.apply(actualSecond);
+							PromotedSignature promotedSignature = tryTypes(functionSignature, promotionFirst, promotionSecond, promotedActualFirst, promotedActualSecond);
 							if(promotedSignature != nullInstance()) {
 								result.add(promotedSignature);
 							}
@@ -78,8 +94,8 @@ public class PromotedSignature {
 		return result;
 	}
 
-	private static PromotedSignature tryTypes(FunctionSignature functionSignature, Promotion promotionFirst, Promotion promotionSecond) {
-		if(functionSignature.accepts(Arrays.asList(promotionFirst.promotedType(), promotionSecond.promotedType()))) {
+	private static PromotedSignature tryTypes(FunctionSignature functionSignature, Promotion promotionFirst, Promotion promotionSecond, Type promotedActualFirst, Type promotedActualSecond) {
+		if(functionSignature.accepts(Arrays.asList(promotedActualFirst, promotedActualSecond))) {
 			return new PromotedSignature(functionSignature, Arrays.asList(promotionFirst, promotionSecond));
 		}
 		else {
@@ -87,8 +103,8 @@ public class PromotedSignature {
 		}
 	}
 
-	private static PromotedSignature tryTypes(FunctionSignature functionSignature, Promotion promotion) {
-		if(functionSignature.accepts(Arrays.asList(promotion.promotedType()))) {
+	private static PromotedSignature tryTypes(FunctionSignature functionSignature, Promotion promotion, Type promotedActual) {
+		if(functionSignature.accepts(Arrays.asList(promotedActual))) {
 			return new PromotedSignature(functionSignature, Arrays.asList(promotion));
 		}
 		else {

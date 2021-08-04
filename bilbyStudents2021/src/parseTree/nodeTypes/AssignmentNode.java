@@ -2,6 +2,7 @@ package parseTree.nodeTypes;
 
 import parseTree.ParseNode;
 import parseTree.ParseNodeVisitor;
+import semanticAnalyzer.signatures.PromotedSignature;
 import lexicalAnalyzer.Keyword;
 import lexicalAnalyzer.Lextant;
 import lexicalAnalyzer.Punctuator;
@@ -9,6 +10,8 @@ import tokens.LextantToken;
 import tokens.Token;
 
 public class AssignmentNode extends ParseNode {
+
+	private PromotedSignature promotedSignature;
 
 	public AssignmentNode(Token token) {
 		super(token);
@@ -47,5 +50,13 @@ public class AssignmentNode extends ParseNode {
 		visitor.visitEnter(this);
 		visitChildren(visitor);
 		visitor.visitLeave(this);
+	}
+
+	public void setPromotedSignature(PromotedSignature promotedSignature) {
+		this.promotedSignature = promotedSignature;
+	}
+
+	public PromotedSignature getPromotedSignature() {
+		return promotedSignature;
 	}
 }

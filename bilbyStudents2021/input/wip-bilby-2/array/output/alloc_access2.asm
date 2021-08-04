@@ -257,6 +257,7 @@
         Add                                    %% a
         Label        -alloc-array-1-start      
         PushI        7                         
+        Nop                                    
         Duplicate                              
         JumpNeg      $$array-negative-length   
         Duplicate                              
@@ -338,6 +339,7 @@
         PushI        0                         
         Add                                    %% a
         LoadI                                  
+        Nop                                    
         Duplicate                              
         PushD        $reference-space-1        
         Exchange                               
@@ -346,6 +348,7 @@
         Add                                    
         LoadI                                  
         PushI        0                         
+        Nop                                    
         Duplicate                              
         PushD        $reference-space-2        
         Exchange                               

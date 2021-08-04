@@ -268,6 +268,7 @@
         PushI        0                         
         Add                                    %% val
         PushI        0                         
+        Nop                                    
         StoreC                                 
         DLabel       -string-constant-1-       
         DataI        3                         

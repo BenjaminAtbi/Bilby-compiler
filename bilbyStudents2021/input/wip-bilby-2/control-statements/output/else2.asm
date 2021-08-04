@@ -265,6 +265,7 @@
         PushI        0                         
         Add                                    %% val
         PushI        4                         
+        Nop                                    
         StoreI                                 
         Jump         -if-statement-1-else-end  
         Label        -if-statement-1-end       
@@ -272,6 +273,7 @@
         PushI        0                         
         Add                                    %% val
         PushI        2                         
+        Nop                                    
         StoreI                                 
         Label        -if-statement-1-else-end  
         PushD        $global-memory-block      

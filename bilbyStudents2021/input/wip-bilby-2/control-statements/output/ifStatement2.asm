@@ -268,8 +268,11 @@
         PushI        0                         
         Add                                    %% val
         LoadI                                  
+        Nop                                    
         PushI        1                         
+        Nop                                    
         Add                                    
+        Nop                                    
         StoreI                                 
         Label        -if-statement-1-end       
         PushD        $global-memory-block      

@@ -34,17 +34,21 @@ public class ArrayAllocCodeGenerator implements SimpleCodeGenerator {
 		
 		ASMCodeFragment code = new ASMCodeFragment(CodeType.GENERATES_VALUE);
 		
+		
 		code.add(Label, startLabel);
 		code.append(args.get(1));					// [.. arrayLength ]
+		
 		
 		code.add(Duplicate);
 		code.add(JumpNeg, ARRAY_NEGATIVE_LENGTH_ERROR); // check length is positive
 		
 		code.add(Duplicate); 						// [.. arrayLength arrayLength ]
-		storeITo(code, RunTime.REF_SPACE1);			// [.. arrayLength ] 	MEM(ref_space1) <- arrayLength
 		
+		storeITo(code, RunTime.REF_SPACE1);			// [.. arrayLength ] 	MEM(ref_space1) <- arrayLength
+
 		Array nodeType = (Array)node.getType();		
 		generateLength(code, nodeType.getSubtype().getSize());			// [.. memlength ] 
+		
 		
 		code.add(Call, MemoryManager.MEM_MANAGER_ALLOCATE); // [.. addr ]
 		
@@ -66,7 +70,7 @@ public class ArrayAllocCodeGenerator implements SimpleCodeGenerator {
 		loadIFrom(code, RunTime.REF_SPACE2);
 		writeIOffset(code, 12);						// array{ type_identifier, status, subtype_size, length .. } 
 		
-	
+		
 		code.add(PushI, 0);
 		storeITo(code, RunTime.REF_I);
 		loadIFrom(code, RunTime.REF_SPACE2);		// [.. arrayAddr ]

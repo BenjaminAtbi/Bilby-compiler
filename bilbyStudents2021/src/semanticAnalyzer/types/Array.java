@@ -10,6 +10,7 @@ public class Array implements Type {
 	public Array(Type subtype) {
 		this.subtype = subtype;
 	}
+	
 	@Override
 	public int getSize() {
 		return REFERENCE_TYPE_SIZE;

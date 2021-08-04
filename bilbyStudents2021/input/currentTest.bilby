@@ -1,5 +1,5 @@
 main {
-	%imm a := 5 + 2;
-	imm b := 2.1 + 2;
-	%imm c := #a + #b;
+	mut a := 4;
+	a := 3;
+	print a $n;
 }

@@ -320,6 +320,7 @@
         PushI        0                         
         Add                                    %% a
         LoadI                                  
+        Nop                                    
         Duplicate                              
         PushD        $reference-space-1        
         Exchange                               
@@ -328,6 +329,7 @@
         Add                                    
         LoadI                                  
         PushI        2                         
+        Nop                                    
         Duplicate                              
         PushD        $reference-space-2        
         Exchange                               
@@ -370,6 +372,7 @@
         PushI        0                         
         Add                                    %% a
         LoadI                                  
+        Nop                                    
         Duplicate                              
         PushD        $reference-space-1        
         Exchange                               
@@ -378,6 +381,7 @@
         Add                                    
         LoadI                                  
         PushI        1                         
+        Nop                                    
         Duplicate                              
         PushD        $reference-space-2        
         Exchange                               
@@ -420,6 +424,7 @@
         PushI        0                         
         Add                                    %% a
         LoadI                                  
+        Nop                                    
         Duplicate                              
         PushD        $reference-space-1        
         Exchange                               
@@ -428,6 +433,7 @@
         Add                                    
         LoadI                                  
         PushI        0                         
+        Nop                                    
         Duplicate                              
         PushD        $reference-space-2        
         Exchange                               
@@ -469,6 +475,8 @@
         PushI        4                         
         Add                                    %% b
         PushF        2.100000                  
+        Nop                                    
+        Nop                                    
         ConvertI                               
         StoreI                                 
         PushD        $global-memory-block      

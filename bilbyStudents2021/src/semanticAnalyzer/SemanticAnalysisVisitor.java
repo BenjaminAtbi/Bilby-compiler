@@ -119,18 +119,39 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		
 		ParseNode identifier = node.child(0);
 		ParseNode value = node.child(1);
-		Type declaredType = identifier.getType();	
+		
 		
 		assert(identifier instanceof IdentifierNode || 
 			  (identifier instanceof OperatorNode && 
 			   identifier.getToken().isLextant(Punctuator.INDEXING))) : "Assignment node: left node is not identifier or indexing expression";
-		assert(declaredType.equivalent(value.getType())) : "Assignment node: mismatched types";
-		node.setType(declaredType);
 		
 		if(identifier instanceof IdentifierNode){
-			
 			assert (((IdentifierNode)identifier).getBinding().getMutable()) : "Assignment node: binding not mutable";
 		}
+		
+		List<Type> childTypes = childTypes(node);
+		FunctionSignatures signatures = FunctionSignatures.signaturesOf(Punctuator.ASSIGN);
+		List<PromotedSignature> promotedSignatures = signatures.leastLevelPromotions(childTypes);
+		if(promotedSignatures.isEmpty()) {
+			typeCheckError(node, childTypes);
+			node.setType(PrimitiveType.ERROR);
+		}
+		else if(promotedSignatures.size() > 1) {
+			multipleInterpretationError(node, childTypes);
+			node.setType(PrimitiveType.ERROR);
+		}
+		else {
+			PromotedSignature promotedSignature = promotedSignatures.get(0);
+			node.setPromotedSignature(promotedSignature);
+			
+			Type declaredType = identifier.getType();
+			assert(declaredType.equivalent(promotedSignature.resultType())) : "Assignment node: mismatched types";
+			node.setType(declaredType);
+		}
+		
+		//
+		
+
 	}
 	
 	///////////////////////////////////////////////////////////////////////////
@@ -190,17 +211,20 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 			node.setPromotedSignature(promotedSignature);
 		}
 	}
+	
+	private Lextant operatorFor(OperatorNode node) {
+		LextantToken token = (LextantToken) node.getToken();
+		return token.getLextant();
+	}
 
-
-
-	private List<Type> childTypes(OperatorNode node) {
+	private List<Type> childTypes(ParseNode node) {
 		List<Type> childTypes;  
 		if(node.nChildren() == 1) {
 			ParseNode child = node.child(0);
 			childTypes = Arrays.asList(child.getType());
 		} 
 		else {
-			assert node.nChildren() == 2 : "Operator Node: less than 1 or more than 2 children";
+			assert node.nChildren() == 2 : "Child Types: less than 1 or more than 2 children";
 			ParseNode left  = node.child(0);
 			ParseNode right = node.child(1);
 			
@@ -209,11 +233,6 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		return childTypes;
 	}
 	
-	private Lextant operatorFor(OperatorNode node) {
-		LextantToken token = (LextantToken) node.getToken();
-		return token.getLextant();
-	}
-
 	@Override
 	public void visitLeave(ArrayExpressionListNode node) {
 		
@@ -284,7 +303,7 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 				 + operandTypes  + " at " + token.getLocation());	
 	}
 	
-	private void multipleInterpretationError(OperatorNode node, List<Type> childTypes) {
+	private void multipleInterpretationError(ParseNode node, List<Type> childTypes) {
 		Token token = node.getToken();
 		logError("operator " + token.getLexeme() + " has multiple promotions for types "
 				+ childTypes + " at " + token.getLocation());

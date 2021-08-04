@@ -30,7 +30,11 @@ public enum Promotion {
 		return promoted;
 	}
 	
-	ASMCodeFragment codeFor() {
+	public Type apply(Type actual) {
+        return (this == NONE) ? actual : promoted;
+	}
+	
+	public ASMCodeFragment codeFor() {
 		ASMCodeFragment result = new ASMCodeFragment(ASMCodeFragment.CodeType.GENERATES_VALUE);
 		result.add(opcode);
 		return result;

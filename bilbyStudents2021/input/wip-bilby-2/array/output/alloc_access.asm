@@ -262,6 +262,7 @@
         Add                                    %% a
         Label        -alloc-array-1-start      
         PushI        7                         
+        Nop                                    
         Duplicate                              
         JumpNeg      $$array-negative-length   
         Duplicate                              
@@ -344,7 +345,9 @@
         PushI        0                         
         Add                                    %% i
         LoadI                                  
+        Nop                                    
         PushI        7                         
+        Nop                                    
         Label        -compare-2-sub            
         Subtract                               
         JumpNeg      -compare-2-true           
@@ -363,6 +366,7 @@
         PushI        4                         
         Add                                    %% a
         LoadI                                  
+        Nop                                    
         Duplicate                              
         PushD        $reference-space-1        
         Exchange                               
@@ -374,6 +378,7 @@
         PushI        0                         
         Add                                    %% i
         LoadI                                  
+        Nop                                    
         Duplicate                              
         PushD        $reference-space-2        
         Exchange                               
@@ -418,8 +423,11 @@
         PushI        0                         
         Add                                    %% i
         LoadI                                  
+        Nop                                    
         PushI        1                         
+        Nop                                    
         Add                                    
+        Nop                                    
         StoreI                                 
         Jump         -while-statement-4-start  
         Label        -while-statement-4-end    

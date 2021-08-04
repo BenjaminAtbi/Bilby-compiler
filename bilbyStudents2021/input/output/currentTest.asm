@@ -250,394 +250,24 @@
         DataZ        4                         
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        0                         
+        DataZ        4                         
         Label        $$main                    
-        Label        -alloc-array-7-start      
-        PushI        2                         
-        Duplicate                              
-        JumpNeg      $$array-negative-length   
-        Duplicate                              
-        PushD        $reference-space-1        
-        Exchange                               
-        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% a
         PushI        4                         
-        Multiply                               
-        PushI        16                        
-        Add                                    
-        Call         -mem-manager-allocate     
-        PushD        $reference-space-2        
-        Exchange                               
         StoreI                                 
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        7                         
-        StoreI                                 
-        PushI        2                         
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        4                         
-        Add                                    
-        Exchange                               
-        StoreI                                 
-        PushI        4                         
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        8                         
-        Add                                    
-        Exchange                               
-        StoreI                                 
-        PushD        $reference-space-1        
-        LoadI                                  
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        12                        
-        Add                                    
-        Exchange                               
-        StoreI                                 
-        PushD        $reference-space-2        
-        LoadI                                  
-        Duplicate                              
-        PushI        16                        
-        Add                                    
-        Label        -alloc-array-3-start      
-        PushI        2                         
-        Duplicate                              
-        JumpNeg      $$array-negative-length   
-        Duplicate                              
-        PushD        $reference-space-1        
-        Exchange                               
-        StoreI                                 
-        PushI        4                         
-        Multiply                               
-        PushI        16                        
-        Add                                    
-        Call         -mem-manager-allocate     
-        PushD        $reference-space-2        
-        Exchange                               
-        StoreI                                 
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        7                         
-        StoreI                                 
-        PushI        2                         
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        4                         
-        Add                                    
-        Exchange                               
-        StoreI                                 
-        PushI        4                         
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        8                         
-        Add                                    
-        Exchange                               
-        StoreI                                 
-        PushD        $reference-space-1        
-        LoadI                                  
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        12                        
-        Add                                    
-        Exchange                               
-        StoreI                                 
-        PushD        $reference-space-2        
-        LoadI                                  
-        Duplicate                              
-        PushI        16                        
-        Add                                    
-        Label        -alloc-array-1-start      
-        PushI        2                         
-        Duplicate                              
-        JumpNeg      $$array-negative-length   
-        Duplicate                              
-        PushD        $reference-space-1        
-        Exchange                               
-        StoreI                                 
-        PushI        4                         
-        Multiply                               
-        PushI        16                        
-        Add                                    
-        Call         -mem-manager-allocate     
-        PushD        $reference-space-2        
-        Exchange                               
-        StoreI                                 
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        7                         
-        StoreI                                 
-        PushI        2                         
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        4                         
-        Add                                    
-        Exchange                               
-        StoreI                                 
-        PushI        4                         
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        8                         
-        Add                                    
-        Exchange                               
-        StoreI                                 
-        PushD        $reference-space-1        
-        LoadI                                  
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        12                        
-        Add                                    
-        Exchange                               
-        StoreI                                 
-        PushD        $reference-space-2        
-        LoadI                                  
-        Duplicate                              
-        PushI        16                        
-        Add                                    
-        PushI        1                         
-        StoreI                                 
-        Duplicate                              
-        PushI        20                        
-        Add                                    
-        PushI        2                         
-        StoreI                                 
-        StoreI                                 
-        Duplicate                              
-        PushI        20                        
-        Add                                    
-        Label        -alloc-array-2-start      
-        PushI        2                         
-        Duplicate                              
-        JumpNeg      $$array-negative-length   
-        Duplicate                              
-        PushD        $reference-space-1        
-        Exchange                               
-        StoreI                                 
-        PushI        4                         
-        Multiply                               
-        PushI        16                        
-        Add                                    
-        Call         -mem-manager-allocate     
-        PushD        $reference-space-2        
-        Exchange                               
-        StoreI                                 
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        7                         
-        StoreI                                 
-        PushI        2                         
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        4                         
-        Add                                    
-        Exchange                               
-        StoreI                                 
-        PushI        4                         
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        8                         
-        Add                                    
-        Exchange                               
-        StoreI                                 
-        PushD        $reference-space-1        
-        LoadI                                  
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        12                        
-        Add                                    
-        Exchange                               
-        StoreI                                 
-        PushD        $reference-space-2        
-        LoadI                                  
-        Duplicate                              
-        PushI        16                        
-        Add                                    
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% a
         PushI        3                         
+        Nop                                    
         StoreI                                 
-        Duplicate                              
-        PushI        20                        
-        Add                                    
-        PushI        4                         
-        StoreI                                 
-        StoreI                                 
-        StoreI                                 
-        Duplicate                              
-        PushI        20                        
-        Add                                    
-        Label        -alloc-array-6-start      
-        PushI        2                         
-        Duplicate                              
-        JumpNeg      $$array-negative-length   
-        Duplicate                              
-        PushD        $reference-space-1        
-        Exchange                               
-        StoreI                                 
-        PushI        4                         
-        Multiply                               
-        PushI        16                        
-        Add                                    
-        Call         -mem-manager-allocate     
-        PushD        $reference-space-2        
-        Exchange                               
-        StoreI                                 
-        PushD        $reference-space-2        
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% a
         LoadI                                  
-        PushI        7                         
-        StoreI                                 
-        PushI        2                         
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        4                         
-        Add                                    
-        Exchange                               
-        StoreI                                 
-        PushI        4                         
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        8                         
-        Add                                    
-        Exchange                               
-        StoreI                                 
-        PushD        $reference-space-1        
-        LoadI                                  
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        12                        
-        Add                                    
-        Exchange                               
-        StoreI                                 
-        PushD        $reference-space-2        
-        LoadI                                  
-        Duplicate                              
-        PushI        16                        
-        Add                                    
-        Label        -alloc-array-4-start      
-        PushI        2                         
-        Duplicate                              
-        JumpNeg      $$array-negative-length   
-        Duplicate                              
-        PushD        $reference-space-1        
-        Exchange                               
-        StoreI                                 
-        PushI        4                         
-        Multiply                               
-        PushI        16                        
-        Add                                    
-        Call         -mem-manager-allocate     
-        PushD        $reference-space-2        
-        Exchange                               
-        StoreI                                 
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        7                         
-        StoreI                                 
-        PushI        2                         
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        4                         
-        Add                                    
-        Exchange                               
-        StoreI                                 
-        PushI        4                         
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        8                         
-        Add                                    
-        Exchange                               
-        StoreI                                 
-        PushD        $reference-space-1        
-        LoadI                                  
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        12                        
-        Add                                    
-        Exchange                               
-        StoreI                                 
-        PushD        $reference-space-2        
-        LoadI                                  
-        Duplicate                              
-        PushI        16                        
-        Add                                    
-        PushI        5                         
-        StoreI                                 
-        Duplicate                              
-        PushI        20                        
-        Add                                    
-        PushI        6                         
-        StoreI                                 
-        StoreI                                 
-        Duplicate                              
-        PushI        20                        
-        Add                                    
-        Label        -alloc-array-5-start      
-        PushI        2                         
-        Duplicate                              
-        JumpNeg      $$array-negative-length   
-        Duplicate                              
-        PushD        $reference-space-1        
-        Exchange                               
-        StoreI                                 
-        PushI        4                         
-        Multiply                               
-        PushI        16                        
-        Add                                    
-        Call         -mem-manager-allocate     
-        PushD        $reference-space-2        
-        Exchange                               
-        StoreI                                 
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        7                         
-        StoreI                                 
-        PushI        2                         
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        4                         
-        Add                                    
-        Exchange                               
-        StoreI                                 
-        PushI        4                         
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        8                         
-        Add                                    
-        Exchange                               
-        StoreI                                 
-        PushD        $reference-space-1        
-        LoadI                                  
-        PushD        $reference-space-2        
-        LoadI                                  
-        PushI        12                        
-        Add                                    
-        Exchange                               
-        StoreI                                 
-        PushD        $reference-space-2        
-        LoadI                                  
-        Duplicate                              
-        PushI        16                        
-        Add                                    
-        PushI        7                         
-        StoreI                                 
-        Duplicate                              
-        PushI        20                        
-        Add                                    
-        PushI        8                         
-        StoreI                                 
-        StoreI                                 
-        StoreI                                 
-        PushI        1                         
-        PushI        2                         
-        Call         $print-array              
-        PushI        32                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        97                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        114                       
-        PushD        $print-format-char        
-        Printf                                 
-        PushI        116                       
-        PushD        $print-format-char        
+        PushD        $print-format-integer     
         Printf                                 
         PushI        10                        
         PushD        $print-format-char        
@@ -798,43 +428,43 @@
         PushD        $print-value-address      
         Exchange                               
         StoreI                                 
-        Label        -print-value-8-char       
+        Label        -print-value-1-char       
         PushD        $print-value-typeid       
         LoadI                                  
-        JumpTrue     -print-value-8-int        
+        JumpTrue     -print-value-1-int        
         PushD        $print-value-address      
         LoadI                                  
         LoadC                                  
         PushD        $print-format-char        
         Printf                                 
-        Label        -print-value-8-int        
+        Label        -print-value-1-int        
         PushD        $print-value-typeid       
         LoadI                                  
         PushI        1                         
         Subtract                               
-        JumpTrue     -print-value-8-float      
+        JumpTrue     -print-value-1-float      
         PushD        $print-value-address      
         LoadI                                  
         LoadI                                  
         PushD        $print-format-integer     
         Printf                                 
-        Label        -print-value-8-float      
+        Label        -print-value-1-float      
         PushD        $print-value-typeid       
         LoadI                                  
         PushI        2                         
         Subtract                               
-        JumpTrue     -print-value-8-string     
+        JumpTrue     -print-value-1-string     
         PushD        $print-value-address      
         LoadI                                  
         LoadF                                  
         PushD        $print-format-floating    
         Printf                                 
-        Label        -print-value-8-string     
+        Label        -print-value-1-string     
         PushD        $print-value-typeid       
         LoadI                                  
         PushI        3                         
         Subtract                               
-        JumpTrue     -print-value-8-bool       
+        JumpTrue     -print-value-1-bool       
         PushD        $print-value-address      
         LoadI                                  
         LoadI                                  
@@ -842,24 +472,24 @@
         Add                                    
         PushD        $print-format-string      
         Printf                                 
-        Label        -print-value-8-bool       
+        Label        -print-value-1-bool       
         PushD        $print-value-typeid       
         LoadI                                  
         PushI        4                         
         Subtract                               
-        JumpTrue     -print-value-8-end        
+        JumpTrue     -print-value-1-end        
         PushD        $print-value-address      
         LoadI                                  
         LoadC                                  
-        JumpTrue     -print-value-8-true       
+        JumpTrue     -print-value-1-true       
         PushD        $boolean-false-string     
-        Jump         -print-value-8-pastTrue   
-        Label        -print-value-8-true       
+        Jump         -print-value-1-pastTrue   
+        Label        -print-value-1-true       
         PushD        $boolean-true-string      
-        Label        -print-value-8-pastTrue   
+        Label        -print-value-1-pastTrue   
         PushD        $print-format-string      
         Printf                                 
-        Label        -print-value-8-end        
+        Label        -print-value-1-end        
         PushD        $print-value-return-address 
         LoadI                                  
         Return                                 

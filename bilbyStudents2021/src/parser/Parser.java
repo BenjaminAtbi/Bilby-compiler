@@ -489,6 +489,9 @@ public class Parser {
 		if(startsAllocExpression(nowReading)) {
 			return parseAllocExpression();
 		}
+		if(startsRangeExpression(nowReading)) {
+			return parseRangeExpression();
+		}
 		return parseLiteral();
 	}
 	
@@ -530,6 +533,25 @@ public class Parser {
 		return token.isLextant(Keyword.ALLOC);
 	}
 	
+	private ParseNode parseRangeExpression() {
+		if(!startsRangeExpression(nowReading)) {
+			return syntaxErrorNode("rangeExpression");
+		}
+		expect(Punctuator.LESS_THAN);
+		ParseNode left = parseExpression();
+		if(!nowReading.isLextant(Punctuator.RANGE)) {
+			return syntaxErrorNode("rangeExpression");
+		}
+		Token rangeToken = nowReading;
+		readToken();
+		ParseNode right = parseExpression();
+		expect(Punctuator.GREATER_THAN);
+		return OperatorNode.withChildren(rangeToken, left, right);
+	}
+	
+	private boolean startsRangeExpression(Token token) {
+		return token.isLextant(Punctuator.LESS_THAN);
+	}
 	
 	private ParseNode parseSquareBracketExpression() {
 		if(!startsSquareBracketExpression(nowReading)) {

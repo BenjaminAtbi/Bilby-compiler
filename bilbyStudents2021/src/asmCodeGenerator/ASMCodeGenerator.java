@@ -35,6 +35,7 @@ import parseTree.nodeTypes.StringConstantNode;
 import parseTree.nodeTypes.TypeNode;
 import parseTree.nodeTypes.WhileStatementNode;
 import semanticAnalyzer.signatures.PromotedSignature;
+import semanticAnalyzer.signatures.Promotion;
 import semanticAnalyzer.types.Array;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
@@ -268,11 +269,11 @@ public class ASMCodeGenerator {
 			code.append(lvalue);
 			code.append(rvalue);
 			
+			Promotion rightPromotion = node.getPromotedSignature().getPromotions().get(1);
+			code.append(rightPromotion.codeFor());
 			Type type = node.getType();
 			code.add(opcodeForStore(type));
 		}
-		
-		
 
 
 		///////////////////////////////////////////////////////////////////////////
@@ -305,11 +306,16 @@ public class ASMCodeGenerator {
 		
 		public List<ASMCodeFragment> getPromotedArgs(OperatorNode node){
 			PromotedSignature promotedSignature = node.getPromotedSignature();
-			System.out.println(promotedSignature.getPromotions());
+			assert node.nChildren() == promotedSignature.numArgs() : "Operator Node: mismatched arg count - "+node.nChildren()+
+																	" child nodes and "+promotedSignature.numArgs()+"promoted signatures";
+			
+			List<Promotion> promotions = promotedSignature.getPromotions();
 			List<ASMCodeFragment> args = new ArrayList<>();
-			for(ParseNode child: node.getChildren()) {
-				ASMCodeFragment arg = removeValueCode(child);
+			for(int i = 0; i < node.nChildren(); i++) {
+				ASMCodeFragment arg = removeValueCode(node.child(i));
+				arg.append(promotions.get(i).codeFor());
 				args.add(arg);
+				
 			}
 			return args;
 		}

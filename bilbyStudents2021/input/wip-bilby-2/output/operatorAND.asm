@@ -254,7 +254,9 @@
         Label        $$main                    
         Label        -compare-1-start          
         PushI        1                         
+        Nop                                    
         PushI        0                         
+        Nop                                    
         Label        -compare-1-sub            
         Exchange                               
         JumpFalse    -compare-1-arg1false      
@@ -279,7 +281,9 @@
         Printf                                 
         Label        -compare-3-start          
         PushI        0                         
+        Nop                                    
         PushI        1                         
+        Nop                                    
         Label        -compare-3-sub            
         Exchange                               
         JumpFalse    -compare-3-arg1false      
@@ -304,7 +308,9 @@
         Printf                                 
         Label        -compare-5-start          
         PushI        0                         
+        Nop                                    
         PushI        0                         
+        Nop                                    
         Label        -compare-5-sub            
         Exchange                               
         JumpFalse    -compare-5-arg1false      
@@ -329,7 +335,9 @@
         Printf                                 
         Label        -compare-7-start          
         PushI        1                         
+        Nop                                    
         PushI        1                         
+        Nop                                    
         Label        -compare-7-sub            
         Exchange                               
         JumpFalse    -compare-7-arg1false      
@@ -355,7 +363,9 @@
         Label        -compare-10-start         
         Label        -compare-9-start          
         PushI        1                         
+        Nop                                    
         PushI        1                         
+        Nop                                    
         Label        -compare-9-sub            
         Exchange                               
         JumpFalse    -compare-9-arg1false      
@@ -367,7 +377,9 @@
         Label        -compare-9-false          
         PushI        0                         
         Label        -compare-9-join           
+        Nop                                    
         PushI        0                         
+        Nop                                    
         Label        -compare-10-sub           
         Exchange                               
         JumpFalse    -compare-10-arg1false     
@@ -393,7 +405,9 @@
         Label        -compare-13-start         
         Label        -compare-12-start         
         PushI        1                         
+        Nop                                    
         PushI        0                         
+        Nop                                    
         Label        -compare-12-sub           
         Exchange                               
         JumpFalse    -compare-12-arg1false     
@@ -405,7 +419,9 @@
         Label        -compare-12-false         
         PushI        0                         
         Label        -compare-12-join          
+        Nop                                    
         PushI        1                         
+        Nop                                    
         Label        -compare-13-sub           
         Exchange                               
         JumpFalse    -compare-13-arg1false     
@@ -431,7 +447,9 @@
         Label        -compare-16-start         
         Label        -compare-15-start         
         PushI        0                         
+        Nop                                    
         PushI        1                         
+        Nop                                    
         Label        -compare-15-sub           
         Exchange                               
         JumpFalse    -compare-15-arg1false     
@@ -443,7 +461,9 @@
         Label        -compare-15-false         
         PushI        0                         
         Label        -compare-15-join          
+        Nop                                    
         PushI        1                         
+        Nop                                    
         Label        -compare-16-sub           
         Exchange                               
         JumpFalse    -compare-16-arg1false     
@@ -469,7 +489,9 @@
         Label        -compare-19-start         
         Label        -compare-18-start         
         PushI        1                         
+        Nop                                    
         PushI        1                         
+        Nop                                    
         Label        -compare-18-sub           
         Exchange                               
         JumpFalse    -compare-18-arg1false     
@@ -481,7 +503,9 @@
         Label        -compare-18-false         
         PushI        0                         
         Label        -compare-18-join          
+        Nop                                    
         PushI        1                         
+        Nop                                    
         Label        -compare-19-sub           
         Exchange                               
         JumpFalse    -compare-19-arg1false     

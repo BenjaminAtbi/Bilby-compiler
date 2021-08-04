@@ -27,6 +27,9 @@ public class ArrayListCodeGenerator implements SimpleCodeGenerator {
 		
 		//code.add(PushI, node.getType().isReference() ? 2 : 0); //set bit 1 if reference type
 		
+		
+		
+		
 		Labeller labeller = new Labeller("alloc-array");
 		String startLabel = labeller.newLabel("start");
 		

@@ -257,6 +257,7 @@
         Add                                    %% a
         Label        -alloc-array-1-start      
         PushI        4                         
+        Nop                                    
         Duplicate                              
         JumpNeg      $$array-negative-length   
         Duplicate                              

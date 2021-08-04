@@ -263,7 +263,9 @@
         PushI        0                         
         Add                                    %% val
         LoadI                                  
+        Nop                                    
         PushI        10                        
+        Nop                                    
         Label        -compare-1-sub            
         Subtract                               
         JumpNeg      -compare-1-true           
@@ -284,8 +286,11 @@
         PushI        0                         
         Add                                    %% val
         LoadI                                  
+        Nop                                    
         PushI        1                         
+        Nop                                    
         Add                                    
+        Nop                                    
         StoreI                                 
         Jump         -while-statement-2-start  
         Label        -while-statement-2-end    

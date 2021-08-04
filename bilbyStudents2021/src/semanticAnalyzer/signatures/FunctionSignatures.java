@@ -62,7 +62,6 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 	public List<PromotedSignature> leastLevelPromotions(List<Type> actuals) {
 		List<PromotedSignature> allPromotions = PromotedSignature.makeAll(this, actuals);
 		
-		//System.out.println(allPromotions.toString());
 		
 		List<List<PromotedSignature>> byNumPromotions = new ArrayList<>();
 		for(int i = 0; i <= actuals.size(); i++) {
@@ -197,7 +196,6 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 				new FunctionSignature(ASMOpcode.Nop, STRING, STRING, STRING)
 		);
 		
-		
 		TypeVariable S = new TypeVariable("S");
 		new FunctionSignatures(Keyword.ALLOC,
 				new FunctionSignature(new ArrayAllocCodeGenerator(), new Array(S), INTEGER, new Array(S))	
@@ -205,6 +203,17 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 		new FunctionSignatures(Punctuator.INDEXING,
 				new FunctionSignature(new ArrayIndexCodeGenerator(), new Array(S), INTEGER, S)	
 		);
+		
+		new FunctionSignatures(Punctuator.ASSIGN,
+				new FunctionSignature(ASMOpcode.Nop, S, S, S)
+		);
+		
+		new FunctionSignatures(Punctuator.RANGE,
+				new FunctionSignature(ASMOpcode.Nop, CHAR, CHAR, new Range(CHAR)),
+				new FunctionSignature(ASMOpcode.Nop, INTEGER, INTEGER, new Range(INTEGER)),
+				new FunctionSignature(ASMOpcode.Nop, FLOAT, FLOAT, new Range(FLOAT))
+		);
+		
 		// First, we use the operator itself (in this case the Punctuator ADD) as the key.
 		// Then, we give that key two signatures: one an (INT x INT -> INT) and the other
 		// a (FLOAT x FLOAT -> FLOAT).  Each signature has a "whichVariant" parameter where
