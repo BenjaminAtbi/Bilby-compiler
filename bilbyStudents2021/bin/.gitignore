@@ -1,2 +1,3 @@
-/asmCodeGenerator/
 /semanticAnalyzer/
+/parseTree/
+/asmCodeGenerator/

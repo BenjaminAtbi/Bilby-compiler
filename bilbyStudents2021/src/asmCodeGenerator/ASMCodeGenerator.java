@@ -34,6 +34,7 @@ import parseTree.nodeTypes.SpaceNode;
 import parseTree.nodeTypes.StringConstantNode;
 import parseTree.nodeTypes.TypeNode;
 import parseTree.nodeTypes.WhileStatementNode;
+import semanticAnalyzer.signatures.PromotedSignature;
 import semanticAnalyzer.types.Array;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
@@ -279,21 +280,18 @@ public class ASMCodeGenerator {
 		public void visitLeave(OperatorNode node) {
 			newValueCode(node);
 			
-			Object variant = node.getSignature().getVariant();
+			Object variant = node.getPromotedSignature().getVariant();
+			List<ASMCodeFragment> args = getPromotedArgs(node);
+			
 			if (variant instanceof ASMOpcode) {
-				for(ParseNode child: node.getChildren()) {
-					ASMCodeFragment arg = removeValueCode(child);
+				
+				for(ASMCodeFragment arg : args) {
 					code.append(arg);
 				}
 				code.add((ASMOpcode)variant);
 			} 
 			else if (variant instanceof SimpleCodeGenerator){
 				SimpleCodeGenerator generator = (SimpleCodeGenerator)variant;
-				List<ASMCodeFragment> args = new ArrayList<>();
-				for(ParseNode child: node.getChildren()) {
-					ASMCodeFragment arg = removeValueCode(child);
-					args.add(arg);
-				}
 				ASMCodeFragment generated = generator.generate(node, args);
 				if(generated == null) {
 					throw new RuntimeException("SimpleCodeGenerator produced null code fragment in ASMCodeGenerator.OperatorNode");
@@ -305,7 +303,17 @@ public class ASMCodeGenerator {
 			}
 		}
 		
-		
+		public List<ASMCodeFragment> getPromotedArgs(OperatorNode node){
+			PromotedSignature promotedSignature = node.getPromotedSignature();
+			System.out.println(promotedSignature.getPromotions());
+			List<ASMCodeFragment> args = new ArrayList<>();
+			for(ParseNode child: node.getChildren()) {
+				ASMCodeFragment arg = removeValueCode(child);
+				args.add(arg);
+			}
+			return args;
+		}
+				
 		public void visitLeave(ArrayExpressionListNode node) {
 			newValueCode(node);
 			
