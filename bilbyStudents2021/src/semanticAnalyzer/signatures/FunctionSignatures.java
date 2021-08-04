@@ -18,6 +18,7 @@ import asmCodeGenerator.operators.IntToCharCodeGenerator;
 import lexicalAnalyzer.Keyword;
 import lexicalAnalyzer.Punctuator;
 import semanticAnalyzer.types.Array;
+import semanticAnalyzer.types.Range;
 import semanticAnalyzer.types.Type;
 import semanticAnalyzer.types.TypeVariable;
 

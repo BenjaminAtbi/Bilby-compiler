@@ -12,38 +12,40 @@ public class Range implements Type {
 	
 	@Override
 	public int getSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return subtype.getSize() * 2;
 	}
 
+	public Type getSubtype() {
+		return subtype;
+	}
+	
 	@Override
 	public String infoString() {
-		// TODO Auto-generated method stub
-		return null;
+		return "<"+ subtype.infoString()+">";
 	}
 
 	@Override
 	public boolean equivalent(Type otherType) {
-		// TODO Auto-generated method stub
+		if(otherType instanceof Range) {
+			Range otherRange = (Range)otherType;
+			return subtype.equivalent(otherRange.getSubtype());
+		}
 		return false;
 	}
 
 	@Override
 	public boolean isReference() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public Collection<TypeVariable> getTypeVariables() {
-		// TODO Auto-generated method stub
-		return null;
+		return subtype.getTypeVariables();
 	}
 
 	@Override
 	public Type concreteType() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Range(subtype.concreteType());
 	}
 
 }
