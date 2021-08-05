@@ -38,6 +38,7 @@ import semanticAnalyzer.signatures.PromotedSignature;
 import semanticAnalyzer.signatures.Promotion;
 import semanticAnalyzer.types.Array;
 import semanticAnalyzer.types.PrimitiveType;
+import semanticAnalyzer.types.Range;
 import semanticAnalyzer.types.Type;
 
 import symbolTable.Binding;
@@ -155,7 +156,8 @@ public class ASMCodeGenerator {
 			assert !code.isVoid();
 			
 			if(code.isAddress()) {
-				turnAddressIntoValue(code, node);
+				opcodeForLoad(code, node.getType());
+				code.markAsValue();
 			}	
 		}
 		private void turnAddressIntoValue(ASMCodeFragment code, ParseNode node) {
@@ -258,7 +260,7 @@ public class ASMCodeGenerator {
 			code.append(rvalue);
 			
 			Type type = node.getType();
-			code.add(opcodeForStore(type));
+			opcodeForStore(code, type);
 		}
 		
 		public void visitLeave(AssignmentNode node) {
@@ -272,7 +274,7 @@ public class ASMCodeGenerator {
 			Promotion rightPromotion = node.getPromotedSignature().getPromotions().get(1);
 			code.append(rightPromotion.codeFor());
 			Type type = node.getType();
-			code.add(opcodeForStore(type));
+			opcodeForStore(code, type);
 		}
 
 

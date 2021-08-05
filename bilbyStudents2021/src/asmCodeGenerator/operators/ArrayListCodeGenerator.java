@@ -75,7 +75,7 @@ public class ArrayListCodeGenerator implements SimpleCodeGenerator {
 			code.add(PushI, nodeType.getSubtype().getSize() * i + 16); // [.. arrayAddr arrayAddr Offset ]
 			code.add(Add);							// [.. arrayAddr indexAddr ]
 			code.append(args.get(i));				// [.. arrayAddr indexAddr value ]
-			code.add(opcodeForStore( ((Array)node.getType()).getSubtype()));
+			opcodeForStore(code, ((Array)node.getType()).getSubtype());
 													// [.. arrayAddr]   array[i] <- value
 		}
 		

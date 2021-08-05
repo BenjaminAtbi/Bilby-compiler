@@ -496,7 +496,7 @@ public class Parser {
 	}
 	
 	private boolean startsAtomicExpression(Token token) {
-		return startsLiteral(token) || startsParantheticExpression(token) || startsSquareBracketExpression(token) || startsAllocExpression(token);
+		return startsLiteral(token) || startsParantheticExpression(token) || startsSquareBracketExpression(token) || startsAllocExpression(token) || startsRangeExpression(token);
 	}
 	
 	private ParseNode parseParantheticExpression() {
@@ -537,20 +537,20 @@ public class Parser {
 		if(!startsRangeExpression(nowReading)) {
 			return syntaxErrorNode("rangeExpression");
 		}
-		expect(Punctuator.LESS_THAN);
-		ParseNode left = parseExpression();
+		expect(Punctuator.LESS);
+		ParseNode left = parseAdditiveExpression();
 		if(!nowReading.isLextant(Punctuator.RANGE)) {
 			return syntaxErrorNode("rangeExpression");
 		}
 		Token rangeToken = nowReading;
 		readToken();
-		ParseNode right = parseExpression();
-		expect(Punctuator.GREATER_THAN);
+		ParseNode right = parseAdditiveExpression();
+		expect(Punctuator.GREATER);
 		return OperatorNode.withChildren(rangeToken, left, right);
 	}
 	
 	private boolean startsRangeExpression(Token token) {
-		return token.isLextant(Punctuator.LESS_THAN);
+		return token.isLextant(Punctuator.LESS);
 	}
 	
 	private ParseNode parseSquareBracketExpression() {

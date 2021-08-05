@@ -254,16 +254,14 @@
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% a
-        PushI        4                         
+        Add                                    %% abcd
+        PushI        8                         
         StoreI                                 
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% a
-        PushI        3                         
-        Nop                                    
-        StoreI                                 
-        PushI        3                         
+        Add                                    %% abcd
+        LoadI                                  
+        LoadI                                  
         PushD        $print-format-integer     
         Printf                                 
         PushI        10                        

@@ -99,7 +99,12 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 		buffer.append(firstChar.getCharacter());
 		appendSubsequentDigits(buffer);
 		if(input.peek().getCharacter() == DECIMAL_POINT) {
-			buffer.append(input.next().getCharacter());
+			LocatedChar c = input.next();
+			if(input.peek().getCharacter() == DECIMAL_POINT) {
+				input.pushback(c);
+				return IntToken.make(firstChar, buffer.toString());
+			}
+			buffer.append(c.getCharacter());
 			if(input.peek().isDigit()) {
 				appendSubsequentDigits(buffer);
 				if(input.peek().getCharacter() == CAPITAL_E) {
