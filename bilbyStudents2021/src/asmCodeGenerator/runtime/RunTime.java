@@ -13,7 +13,10 @@ public class RunTime {
 	public static final String SPACE_PRINT_FORMAT     = "$print-format-space";
 	public static final String OPEN_SQUARE_PRINT_FORMAT   = "$print-format-open-square";
 	public static final String CLOSE_SQUARE_PRINT_FORMAT  = "$print-format-close-square";
+	public static final String LESS_PRINT_FORMAT 	  = "$print-format-less";
+	public static final String GREATER_PRINT_FORMAT   = "$print-format-greater";
 	public static final String COMMA_PRINT_FORMAT     = "$print-format-comma";
+	public static final String RANGE_PRINT_FORMAT 	  = "$print-format-period";
 	public static final String BOOLEAN_TRUE_STRING    = "$boolean-true-string";
 	public static final String BOOLEAN_FALSE_STRING   = "$boolean-false-string";
 	public static final String REF_SPACE1 			  = "$reference-space-1";
@@ -30,6 +33,9 @@ public class RunTime {
 	public static final String ARRAY_OUT_OF_BOUNDS_ERROR = "$$array-out-of-bounds";
 	public static final String ARRAY_NEGATIVE_LENGTH_ERROR = "$$array-negative-length";
 	public static final String ARRAY_NOT_INITIALIZED_ERROR = "$$array-not-initialized";
+	public static final String RANGE_CONTAINS_INVALID_TYPE_ERROR = "$$range-contains-invalid-type";
+	
+	
 	
 
 	private ASMCodeFragment environmentASM() {
@@ -70,6 +76,12 @@ public class RunTime {
 		frag.add(DataS, "[");
 		frag.add(DLabel, CLOSE_SQUARE_PRINT_FORMAT);
 		frag.add(DataS, "]");
+		frag.add(DLabel, LESS_PRINT_FORMAT);
+		frag.add(DataS, "<");
+		frag.add(DLabel, GREATER_PRINT_FORMAT);
+		frag.add(DataS, ">");
+		frag.add(DLabel, RANGE_PRINT_FORMAT);
+		frag.add(DataS, "..");
 		frag.add(DLabel, COMMA_PRINT_FORMAT);
 		frag.add(DataS, ",");
 		frag.add(DLabel, BOOLEAN_TRUE_STRING);
@@ -102,6 +114,7 @@ public class RunTime {
 		arrayOutOfBoundsError(frag);
 		arrayNegativeLengthError(frag);
 		arrayNotInitializedError(frag);
+		rangeContainsInvalidTypeError(frag);
 		return frag;
 	}
 	private ASMCodeFragment generalRuntimeError(ASMCodeFragment frag) {
@@ -167,6 +180,17 @@ public class RunTime {
 		frag.add(DataS, "array not initialized");
 		
 		frag.add(Label, ARRAY_NOT_INITIALIZED_ERROR);
+		frag.add(PushD, errorMessage);
+		frag.add(Jump, GENERAL_RUNTIME_ERROR);
+	}
+	
+	private void rangeContainsInvalidTypeError(ASMCodeFragment frag) {
+		String errorMessage = "$range-contains-invalid-type";
+		
+		frag.add(DLabel, errorMessage);
+		frag.add(DataS, "range contains invalid type");
+		
+		frag.add(Label, RANGE_CONTAINS_INVALID_TYPE_ERROR);
 		frag.add(PushD, errorMessage);
 		frag.add(Jump, GENERAL_RUNTIME_ERROR);
 	}

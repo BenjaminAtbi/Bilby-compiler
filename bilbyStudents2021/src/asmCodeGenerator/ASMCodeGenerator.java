@@ -154,7 +154,7 @@ public class ASMCodeGenerator {
         // convert code to value-generating code.
 		private void makeFragmentValueCode(ASMCodeFragment code, ParseNode node) {
 			assert !code.isVoid();
-			
+		
 			if(code.isAddress()) {
 				opcodeForLoad(code, node.getType());
 				code.markAsValue();

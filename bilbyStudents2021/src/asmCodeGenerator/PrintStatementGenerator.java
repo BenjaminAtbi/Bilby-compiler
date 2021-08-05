@@ -8,6 +8,7 @@ import parseTree.nodeTypes.PrintStatementNode;
 import parseTree.nodeTypes.SpaceNode;
 import semanticAnalyzer.types.Array;
 import semanticAnalyzer.types.PrimitiveType;
+import semanticAnalyzer.types.Range;
 import semanticAnalyzer.types.Type;
 import asmCodeGenerator.ASMCodeGenerator.CodeVisitor;
 import asmCodeGenerator.codeStorage.ASMCodeFragment;
@@ -32,6 +33,8 @@ public class PrintStatementGenerator {
 				code.append(childCode);
 			} else if(child.getType() instanceof Array){
 				appendArrayCode(child);
+			} else if(child.getType() instanceof Range) {
+				appendRangeCode(child);
 			}
 			else {
 				appendPrintCode(child);
@@ -42,13 +45,21 @@ public class PrintStatementGenerator {
 	private void appendArrayCode(ParseNode child) {
 		assert(child.getType() instanceof Array);
 		
-		code.append(visitor.removeValueCode(child)); 		//[.. addr ]
+		code.append(visitor.removeValueCode(child)); 					//[.. addr ]
 		code.add(PushI, PrintSubroutines.getTypeID(child.getType()));	//[.. addr typeID]
 		
 		Array type = (Array)child.getType();
-		code.add(PushI, type.getDepth()); 							//[.. addr typeID depth ]
+		code.add(PushI, type.getDepth()); 								//[.. addr typeID depth ]
 		
 		code.add(Call, PrintSubroutines.PRINT_ARRAY);
+	}
+	
+	private void appendRangeCode(ParseNode child) {
+		assert(child.getType() instanceof Range);
+		
+		code.append(visitor.removeValueCode(child));					//[.. addr ]
+		code.add(PushI, PrintSubroutines.getTypeID(child.getType()));	//[.. addr typeID]
+		code.add(Call, PrintSubroutines.PRINT_RANGE);
 	}
 
 	private void appendPrintCode(ParseNode node) {
