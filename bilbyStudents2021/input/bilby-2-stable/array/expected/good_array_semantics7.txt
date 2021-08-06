@@ -1,0 +1,1 @@
+Couldn't read file "D:\Projects\Bilby-compiler\bilbyStudents2021\input\bilby-2-stable/array/output/good_array_semantics7.asm"

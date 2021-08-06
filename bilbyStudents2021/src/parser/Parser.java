@@ -444,7 +444,7 @@ public class Parser {
 		if(nowReading.isLextant(Punctuator.SUBTRACT, Punctuator.ADD, Punctuator.NOT, Keyword.LENGTH, Keyword.LOW, Keyword.HIGH)) {
 			Token operatorToken = nowReading;
 			readToken();
-			ParseNode child = parseExpression();
+			ParseNode child = parseUnaryExpression();
 			
 			return OperatorNode.withChildren(operatorToken, child);
 		}

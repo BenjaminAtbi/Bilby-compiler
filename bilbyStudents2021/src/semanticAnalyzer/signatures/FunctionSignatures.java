@@ -236,6 +236,7 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 				new FunctionSignature(ASMOpcode.Nop, FLOAT, FLOAT, FLOAT),
 				new FunctionSignature(ASMOpcode.ConvertI, FLOAT, INTEGER, INTEGER),
 				new FunctionSignature(ASMOpcode.Nop, STRING, STRING, STRING),
+				new FunctionSignature(ASMOpcode.Nop, new Array(S), new Array(S), new Array(S)),
 				new FunctionSignature(ASMOpcode.Nop, new Range(INTEGER), new Range(INTEGER), new Range(INTEGER)),
 				new FunctionSignature(ASMOpcode.Nop, new Range(FLOAT), new Range(FLOAT), new Range(FLOAT)),
 				new FunctionSignature(ASMOpcode.Nop, new Range(CHAR), new Range(CHAR), new Range(CHAR))
