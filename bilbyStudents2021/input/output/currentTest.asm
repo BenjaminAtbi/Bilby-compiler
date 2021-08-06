@@ -344,55 +344,36 @@
         DataZ        8                         
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        16                        
+        DataZ        0                         
         Label        $$main                    
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% a
-        PushF        5.000000                  
-        Nop                                    
-        PushF        2.999000                  
-        Nop                                    
-        FSubtract                              
-        JumpFNeg     $$range-low-high-mismatch 
-        PushF        2.999000                  
-        Nop                                    
-        PushF        5.000000                  
-        Nop                                    
-        PushD        $range-move-outer-val     
-        Exchange                               
-        StoreF                                 
-        PushD        $range-move-inner-val     
-        Exchange                               
-        StoreF                                 
-        Duplicate                              
-        PushD        $range-move-inner-val     
-        LoadF                                  
-        StoreF                                 
-        PushI        8                         
-        Add                                    
-        PushD        $range-move-outer-val     
-        LoadF                                  
-        StoreF                                 
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% a
-        Duplicate                              
-        LoadF                                  
-        Exchange                               
-        PushI        8                         
-        Add                                    
-        LoadF                                  
+        PushI        2                         
         Nop                                    
         PushI        2                         
-        ConvertF                               
-        FSubtract                              
-        JumpFNeg     -in-generator-1-false     
+        Nop                                    
+        Negate                                 
+        Nop                                    
+        Subtract                               
+        JumpNeg      $$range-low-high-mismatch 
         PushI        2                         
-        ConvertF                               
+        Nop                                    
+        Negate                                 
+        Nop                                    
+        PushI        2                         
+        Nop                                    
+        Nop                                    
+        PushI        3                         
+        Nop                                    
+        Negate                                 
+        Nop                                    
+        Subtract                               
+        JumpNeg      -in-generator-1-false     
+        PushI        3                         
+        Nop                                    
+        Negate                                 
+        Nop                                    
         Exchange                               
-        FSubtract                              
-        JumpFNeg     -in-generator-1-false     
+        Subtract                               
+        JumpNeg      -in-generator-1-false     
         PushI        1                         
         Jump         -in-generator-1-end       
         Label        -in-generator-1-false     
@@ -406,144 +387,16 @@
         Label        -print-boolean-2-join     
         PushD        $print-format-boolean     
         Printf                                 
-        PushI        10                        
+        PushI        32                        
         PushD        $print-format-char        
         Printf                                 
-        PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% a
-        Duplicate                              
-        LoadF                                  
-        Exchange                               
-        PushI        8                         
-        Add                                    
-        LoadF                                  
-        Nop                                    
-        PushI        3                         
-        ConvertF                               
-        FSubtract                              
-        JumpFNeg     -in-generator-3-false     
-        PushI        3                         
-        ConvertF                               
-        Exchange                               
-        FSubtract                              
-        JumpFNeg     -in-generator-3-false     
-        PushI        1                         
-        Jump         -in-generator-3-end       
-        Label        -in-generator-3-false     
-        PushI        0                         
-        Label        -in-generator-3-end       
-        JumpTrue     -print-boolean-4-true     
+        JumpTrue     -print-boolean-3-true     
         PushD        $boolean-false-string     
-        Jump         -print-boolean-4-join     
-        Label        -print-boolean-4-true     
+        Jump         -print-boolean-3-join     
+        Label        -print-boolean-3-true     
         PushD        $boolean-true-string      
-        Label        -print-boolean-4-join     
-        PushD        $print-format-boolean     
-        Printf                                 
-        PushI        10                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% a
-        Duplicate                              
-        LoadF                                  
-        Exchange                               
-        PushI        8                         
-        Add                                    
-        LoadF                                  
-        Nop                                    
-        PushI        4                         
-        ConvertF                               
-        FSubtract                              
-        JumpFNeg     -in-generator-5-false     
-        PushI        4                         
-        ConvertF                               
-        Exchange                               
-        FSubtract                              
-        JumpFNeg     -in-generator-5-false     
-        PushI        1                         
-        Jump         -in-generator-5-end       
-        Label        -in-generator-5-false     
-        PushI        0                         
-        Label        -in-generator-5-end       
-        JumpTrue     -print-boolean-6-true     
-        PushD        $boolean-false-string     
-        Jump         -print-boolean-6-join     
-        Label        -print-boolean-6-true     
-        PushD        $boolean-true-string      
-        Label        -print-boolean-6-join     
-        PushD        $print-format-boolean     
-        Printf                                 
-        PushI        10                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% a
-        Duplicate                              
-        LoadF                                  
-        Exchange                               
-        PushI        8                         
-        Add                                    
-        LoadF                                  
-        Nop                                    
-        PushI        5                         
-        ConvertF                               
-        FSubtract                              
-        JumpFNeg     -in-generator-7-false     
-        PushI        5                         
-        ConvertF                               
-        Exchange                               
-        FSubtract                              
-        JumpFNeg     -in-generator-7-false     
-        PushI        1                         
-        Jump         -in-generator-7-end       
-        Label        -in-generator-7-false     
-        PushI        0                         
-        Label        -in-generator-7-end       
-        JumpTrue     -print-boolean-8-true     
-        PushD        $boolean-false-string     
-        Jump         -print-boolean-8-join     
-        Label        -print-boolean-8-true     
-        PushD        $boolean-true-string      
-        Label        -print-boolean-8-join     
-        PushD        $print-format-boolean     
-        Printf                                 
-        PushI        10                        
-        PushD        $print-format-char        
-        Printf                                 
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% a
-        Duplicate                              
-        LoadF                                  
-        Exchange                               
-        PushI        8                         
-        Add                                    
-        LoadF                                  
-        Nop                                    
-        PushI        6                         
-        ConvertF                               
-        FSubtract                              
-        JumpFNeg     -in-generator-9-false     
-        PushI        6                         
-        ConvertF                               
-        Exchange                               
-        FSubtract                              
-        JumpFNeg     -in-generator-9-false     
-        PushI        1                         
-        Jump         -in-generator-9-end       
-        Label        -in-generator-9-false     
-        PushI        0                         
-        Label        -in-generator-9-end       
-        JumpTrue     -print-boolean-10-true    
-        PushD        $boolean-false-string     
-        Jump         -print-boolean-10-join    
-        Label        -print-boolean-10-true    
-        PushD        $boolean-true-string      
-        Label        -print-boolean-10-join    
+        Label        -print-boolean-3-join     
         PushD        $print-format-boolean     
         Printf                                 
         PushI        10                        
@@ -709,7 +562,7 @@
         LoadI                                  
         PushI        8                         
         Subtract                               
-        JumpNeg      -print-value-11-char      
+        JumpNeg      -print-value-4-char       
         PushD        $print-value-address      
         LoadI                                  
         PushD        $print-value-typeid       
@@ -730,44 +583,44 @@
         PushD        $print-value-address      
         Exchange                               
         StoreI                                 
-        Jump         -print-value-11-end       
-        Label        -print-value-11-char      
+        Jump         -print-value-4-end        
+        Label        -print-value-4-char       
         PushD        $print-value-typeid       
         LoadI                                  
-        JumpTrue     -print-value-11-int       
+        JumpTrue     -print-value-4-int        
         PushD        $print-value-address      
         LoadI                                  
         LoadC                                  
         PushD        $print-format-char        
         Printf                                 
-        Label        -print-value-11-int       
+        Label        -print-value-4-int        
         PushD        $print-value-typeid       
         LoadI                                  
         PushI        1                         
         Subtract                               
-        JumpTrue     -print-value-11-float     
+        JumpTrue     -print-value-4-float      
         PushD        $print-value-address      
         LoadI                                  
         LoadI                                  
         PushD        $print-format-integer     
         Printf                                 
-        Label        -print-value-11-float     
+        Label        -print-value-4-float      
         PushD        $print-value-typeid       
         LoadI                                  
         PushI        2                         
         Subtract                               
-        JumpTrue     -print-value-11-string    
+        JumpTrue     -print-value-4-string     
         PushD        $print-value-address      
         LoadI                                  
         LoadF                                  
         PushD        $print-format-floating    
         Printf                                 
-        Label        -print-value-11-string    
+        Label        -print-value-4-string     
         PushD        $print-value-typeid       
         LoadI                                  
         PushI        3                         
         Subtract                               
-        JumpTrue     -print-value-11-bool      
+        JumpTrue     -print-value-4-bool       
         PushD        $print-value-address      
         LoadI                                  
         LoadI                                  
@@ -775,84 +628,84 @@
         Add                                    
         PushD        $print-format-string      
         Printf                                 
-        Label        -print-value-11-bool      
+        Label        -print-value-4-bool       
         PushD        $print-value-typeid       
         LoadI                                  
         PushI        4                         
         Subtract                               
-        JumpTrue     -print-value-11-end       
+        JumpTrue     -print-value-4-end        
         PushD        $print-value-address      
         LoadI                                  
         LoadC                                  
-        JumpTrue     -print-value-11-true      
+        JumpTrue     -print-value-4-true       
         PushD        $boolean-false-string     
-        Jump         -print-value-11-pastTrue  
-        Label        -print-value-11-true      
+        Jump         -print-value-4-pastTrue   
+        Label        -print-value-4-true       
         PushD        $boolean-true-string      
-        Label        -print-value-11-pastTrue  
+        Label        -print-value-4-pastTrue   
         PushD        $print-format-string      
         Printf                                 
-        Label        -print-value-11-end       
+        Label        -print-value-4-end        
         PushD        $print-value-return-address 
         LoadI                                  
         Return                                 
         Label        $print-range              
-        DLabel       -print-range-12-return-address 
+        DLabel       -print-range-5-return-address 
         DataZ        4                         
-        DLabel       -print-range-12-typeID    
+        DLabel       -print-range-5-typeID     
         DataZ        4                         
-        DLabel       -print-range-12-address   
+        DLabel       -print-range-5-address    
         DataZ        4                         
-        PushD        -print-range-12-return-address 
+        PushD        -print-range-5-return-address 
         Exchange                               
         StoreI                                 
         PushI        7                         
         BTAnd                                  
-        PushD        -print-range-12-typeID    
+        PushD        -print-range-5-typeID     
         Exchange                               
         StoreI                                 
-        PushD        -print-range-12-address   
+        PushD        -print-range-5-address    
         Exchange                               
         StoreI                                 
         PushD        $print-format-less        
         Printf                                 
-        PushD        -print-range-12-address   
+        PushD        -print-range-5-address    
         LoadI                                  
-        PushD        -print-range-12-typeID    
+        PushD        -print-range-5-typeID     
         LoadI                                  
         Call         $print-value              
         PushD        $print-format-period      
         Printf                                 
-        PushD        -print-range-12-typeID    
+        PushD        -print-range-5-typeID     
         LoadI                                  
-        JumpTrue     -print-range-12-type-int  
+        JumpTrue     -print-range-5-type-int   
         PushI        1                         
-        Jump         -print-range-12-after-offset 
-        Label        -print-range-12-type-int  
-        PushD        -print-range-12-typeID    
+        Jump         -print-range-5-after-offset 
+        Label        -print-range-5-type-int   
+        PushD        -print-range-5-typeID     
         LoadI                                  
         PushI        1                         
         BTAnd                                  
-        JumpFalse    -print-range-12-type-float 
+        JumpFalse    -print-range-5-type-float 
         PushI        4                         
-        Jump         -print-range-12-after-offset 
-        Label        -print-range-12-type-float 
-        PushD        -print-range-12-typeID    
+        Jump         -print-range-5-after-offset 
+        Label        -print-range-5-type-float 
+        PushD        -print-range-5-typeID     
         LoadI                                  
         PushI        2                         
         BTAnd                                  
         JumpFalse    $$range-contains-invalid-type 
         PushI        8                         
-        Label        -print-range-12-after-offset 
-        PushD        -print-range-12-address   
+        Label        -print-range-5-after-offset 
+        PushD        -print-range-5-address    
         LoadI                                  
         Add                                    
-        PushD        -print-range-12-typeID    
+        PushD        -print-range-5-typeID     
         LoadI                                  
         Call         $print-value              
         PushD        $print-format-greater     
         Printf                                 
-        PushD        -print-range-12-return-address 
+        PushD        -print-range-5-return-address 
         LoadI                                  
         Return                                 
         Label        -mem-manager-make-tags    

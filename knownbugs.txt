@@ -1,0 +1,4 @@
+array promotion
+explicit array indexing
+and/or short circuit
+bracket left hand assign
