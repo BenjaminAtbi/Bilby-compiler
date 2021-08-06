@@ -35,6 +35,7 @@ public class RunTime {
 	public static final String ARRAY_NEGATIVE_LENGTH_ERROR = "$$array-negative-length";
 	public static final String ARRAY_NOT_INITIALIZED_ERROR = "$$array-not-initialized";
 	public static final String RANGE_CONTAINS_INVALID_TYPE_ERROR = "$$range-contains-invalid-type";
+	public static final String RANGE_LOW_HIGH_MISMATCH_ERROR = "$$range-low-high-mismatch";
 	
 	
 	
@@ -117,6 +118,7 @@ public class RunTime {
 		arrayNegativeLengthError(frag);
 		arrayNotInitializedError(frag);
 		rangeContainsInvalidTypeError(frag);
+		rangeLowHighMismatchError(frag);
 		return frag;
 	}
 	private ASMCodeFragment generalRuntimeError(ASMCodeFragment frag) {
@@ -193,6 +195,17 @@ public class RunTime {
 		frag.add(DataS, "range contains invalid type");
 		
 		frag.add(Label, RANGE_CONTAINS_INVALID_TYPE_ERROR);
+		frag.add(PushD, errorMessage);
+		frag.add(Jump, GENERAL_RUNTIME_ERROR);
+	}
+	
+	private void rangeLowHighMismatchError(ASMCodeFragment frag) {
+		String errorMessage = "$range-low-high-mismatch";
+		
+		frag.add(DLabel, errorMessage);
+		frag.add(DataS, "range low value is higher than high value");
+		
+		frag.add(Label, RANGE_LOW_HIGH_MISMATCH_ERROR);
 		frag.add(PushD, errorMessage);
 		frag.add(Jump, GENERAL_RUNTIME_ERROR);
 	}

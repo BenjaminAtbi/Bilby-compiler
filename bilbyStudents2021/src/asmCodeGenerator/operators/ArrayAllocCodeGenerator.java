@@ -34,7 +34,6 @@ public class ArrayAllocCodeGenerator implements SimpleCodeGenerator {
 		
 		ASMCodeFragment code = new ASMCodeFragment(CodeType.GENERATES_VALUE);
 		
-		
 		code.add(Label, startLabel);
 		code.append(args.get(1));					// [.. arrayLength ]
 		

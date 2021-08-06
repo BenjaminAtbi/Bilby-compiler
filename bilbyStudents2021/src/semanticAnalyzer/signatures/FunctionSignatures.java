@@ -13,6 +13,9 @@ import asmCodeGenerator.operators.CompareCodeGenerator;
 import asmCodeGenerator.operators.DivideCodeGenerator;
 import asmCodeGenerator.operators.NotEqualCodeGenerator;
 import asmCodeGenerator.operators.OrCodeGenerator;
+import asmCodeGenerator.operators.RangeAddLeftCodeGenerator;
+import asmCodeGenerator.operators.RangeCodeGenerator;
+import asmCodeGenerator.operators.RangeAddRightCodeGenerator;
 import asmCodeGenerator.operators.IntToBoolCodeGenerator;
 import asmCodeGenerator.operators.IntToCharCodeGenerator;
 import lexicalAnalyzer.Keyword;
@@ -105,12 +108,17 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 	static {
 		// here's one example to get you started with FunctionSignatures: the signatures for addition.		
 		// for this to work, you should statically import PrimitiveType.*
-
+		TypeVariable S = new TypeVariable("S");
+		
 		new FunctionSignatures(Punctuator.ADD,
 			new FunctionSignature(ASMOpcode.Nop, INTEGER, INTEGER),
 			new FunctionSignature(ASMOpcode.Nop, FLOAT, FLOAT),
 			new FunctionSignature(ASMOpcode.Add, INTEGER, INTEGER, INTEGER),
-		    new FunctionSignature(ASMOpcode.FAdd, FLOAT, FLOAT, FLOAT)
+		    new FunctionSignature(ASMOpcode.FAdd, FLOAT, FLOAT, FLOAT),
+		    new FunctionSignature(new RangeAddRightCodeGenerator(), new Range(INTEGER), INTEGER, new Range(INTEGER)),
+		    new FunctionSignature(new RangeAddLeftCodeGenerator(), INTEGER, new Range(INTEGER), new Range(INTEGER)),
+		    new FunctionSignature(new RangeAddRightCodeGenerator(), new Range(FLOAT), FLOAT, new Range(FLOAT)),
+		    new FunctionSignature(new RangeAddLeftCodeGenerator(), FLOAT, new Range(FLOAT), new Range(FLOAT))
 		);
 		
 		new FunctionSignatures(Punctuator.SUBTRACT,
@@ -194,10 +202,12 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 				new FunctionSignature(new IntToBoolCodeGenerator(), INTEGER, BOOLEAN, BOOLEAN),
 				new FunctionSignature(ASMOpcode.Nop, FLOAT, FLOAT, FLOAT),
 				new FunctionSignature(ASMOpcode.ConvertI, FLOAT, INTEGER, INTEGER),
-				new FunctionSignature(ASMOpcode.Nop, STRING, STRING, STRING)
+				new FunctionSignature(ASMOpcode.Nop, STRING, STRING, STRING),
+				new FunctionSignature(ASMOpcode.Nop, new Range(INTEGER), new Range(INTEGER), new Range(INTEGER)),
+				new FunctionSignature(ASMOpcode.Nop, new Range(FLOAT), new Range(FLOAT), new Range(FLOAT)),
+				new FunctionSignature(ASMOpcode.Nop, new Range(CHAR), new Range(CHAR), new Range(CHAR))
 		);
 		
-		TypeVariable S = new TypeVariable("S");
 		new FunctionSignatures(Keyword.ALLOC,
 				new FunctionSignature(new ArrayAllocCodeGenerator(), new Array(S), INTEGER, new Array(S))	
 		);
@@ -210,9 +220,9 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 		);
 		
 		new FunctionSignatures(Punctuator.RANGE,
-				new FunctionSignature(ASMOpcode.Nop, CHAR, CHAR, new Range(CHAR)),
-				new FunctionSignature(ASMOpcode.Nop, INTEGER, INTEGER, new Range(INTEGER)),
-				new FunctionSignature(ASMOpcode.Nop, FLOAT, FLOAT, new Range(FLOAT))
+				new FunctionSignature(new RangeCodeGenerator(), CHAR, CHAR, new Range(CHAR)),
+				new FunctionSignature(new RangeCodeGenerator(), INTEGER, INTEGER, new Range(INTEGER)),
+				new FunctionSignature(new RangeCodeGenerator(), FLOAT, FLOAT, new Range(FLOAT))
 		);
 		
 		// First, we use the operator itself (in this case the Punctuator ADD) as the key.

@@ -282,52 +282,6 @@
         Label        $$range-contains-invalid-type 
         PushD        $range-contains-invalid-type 
         Jump         $$general-runtime-error   
-        DLabel       $range-low-high-mismatch  
-        DataC        114                       %% "range low value is higher than high value"
-        DataC        97                        
-        DataC        110                       
-        DataC        103                       
-        DataC        101                       
-        DataC        32                        
-        DataC        108                       
-        DataC        111                       
-        DataC        119                       
-        DataC        32                        
-        DataC        118                       
-        DataC        97                        
-        DataC        108                       
-        DataC        117                       
-        DataC        101                       
-        DataC        32                        
-        DataC        105                       
-        DataC        115                       
-        DataC        32                        
-        DataC        104                       
-        DataC        105                       
-        DataC        103                       
-        DataC        104                       
-        DataC        101                       
-        DataC        114                       
-        DataC        32                        
-        DataC        116                       
-        DataC        104                       
-        DataC        97                        
-        DataC        110                       
-        DataC        32                        
-        DataC        104                       
-        DataC        105                       
-        DataC        103                       
-        DataC        104                       
-        DataC        32                        
-        DataC        118                       
-        DataC        97                        
-        DataC        108                       
-        DataC        117                       
-        DataC        101                       
-        DataC        0                         
-        Label        $$range-low-high-mismatch 
-        PushD        $range-low-high-mismatch  
-        Jump         $$general-runtime-error   
         DLabel       $reference-space-1        
         DataZ        4                         
         DLabel       $reference-space-2        
@@ -336,38 +290,22 @@
         DataZ        4                         
         DLabel       $reference-space-Iter     
         DataZ        4                         
-        DLabel       $range-move-outer-val     
-        DataZ        8                         
-        DLabel       $range-move-inner-val     
-        DataZ        8                         
-        DLabel       $range-load-outer-val     
-        DataZ        8                         
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
         DataZ        16                        
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% i
-        PushF        3.300000                  
+        Add                                    %% r
+        PushF        6.300000                  
         Nop                                    
-        PushF        1.100000                  
-        Nop                                    
-        FSubtract                              
-        JumpFNeg     $$range-low-high-mismatch 
-        PushF        1.100000                  
-        Nop                                    
-        PushF        3.300000                  
+        PushF        40.500000                 
         Nop                                    
         Nop                                    
-        PushI        2                         
-        ConvertF                               
-        FAdd                                   
-        Exchange                               
-        PushI        2                         
-        ConvertF                               
-        FAdd                                   
-        Exchange                               
+        DLabel       $range-move-outer-val     
+        DataZ        8                         
+        DLabel       $range-move-inner-val     
+        DataZ        8                         
         PushD        $range-move-outer-val     
         Exchange                               
         StoreF                                 
@@ -387,7 +325,9 @@
         Printf                                 
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% i
+        Add                                    %% r
+        DLabel       $range-load-outer-val     
+        DataZ        8                         
         Duplicate                              
         LoadF                                  
         Exchange                               
@@ -664,7 +604,7 @@
         Exchange                               
         StoreI                                 
         PushI        7                         
-        BTAnd                                  
+        And                                    
         PushD        -print-range-2-typeID     
         Exchange                               
         StoreI                                 
@@ -682,14 +622,16 @@
         Printf                                 
         PushD        -print-range-2-typeID     
         LoadI                                  
-        JumpTrue     -print-range-2-type-int   
+        PushI        0                         
+        And                                    
+        JumpFalse    -print-range-2-type-int   
         PushI        1                         
         Jump         -print-range-2-after-offset 
         Label        -print-range-2-type-int   
         PushD        -print-range-2-typeID     
         LoadI                                  
         PushI        1                         
-        BTAnd                                  
+        And                                    
         JumpFalse    -print-range-2-type-float 
         PushI        4                         
         Jump         -print-range-2-after-offset 
@@ -697,7 +639,7 @@
         PushD        -print-range-2-typeID     
         LoadI                                  
         PushI        2                         
-        BTAnd                                  
+        And                                    
         JumpFalse    $$range-contains-invalid-type 
         PushI        8                         
         Label        -print-range-2-after-offset 
