@@ -11,6 +11,9 @@ import asmCodeGenerator.operators.ArrayIndexCodeGenerator;
 import asmCodeGenerator.operators.ArrayAllocCodeGenerator;
 import asmCodeGenerator.operators.CompareCodeGenerator;
 import asmCodeGenerator.operators.DivideCodeGenerator;
+import asmCodeGenerator.operators.HighCodeGenerator;
+import asmCodeGenerator.operators.InCodeGenerator;
+import asmCodeGenerator.operators.InFloatCodeGenerator;
 import asmCodeGenerator.operators.NotEqualCodeGenerator;
 import asmCodeGenerator.operators.OrCodeGenerator;
 import asmCodeGenerator.operators.RangeAddLeftCodeGenerator;
@@ -18,6 +21,8 @@ import asmCodeGenerator.operators.RangeCodeGenerator;
 import asmCodeGenerator.operators.RangeAddRightCodeGenerator;
 import asmCodeGenerator.operators.IntToBoolCodeGenerator;
 import asmCodeGenerator.operators.IntToCharCodeGenerator;
+import asmCodeGenerator.operators.LengthCodeGenerator;
+import asmCodeGenerator.operators.LowCodeGenerator;
 import asmCodeGenerator.operators.NotCodeGenerator;
 import lexicalAnalyzer.Keyword;
 import lexicalAnalyzer.Punctuator;
@@ -195,8 +200,29 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 				new FunctionSignature(new NotCodeGenerator(), BOOLEAN, BOOLEAN)
 		);
 		
+		new FunctionSignatures(Keyword.LENGTH,
+				new FunctionSignature(new LengthCodeGenerator(), new Array(S), INTEGER)
+		);
 		
+		new FunctionSignatures(Keyword.LOW,
+				new FunctionSignature(new LowCodeGenerator(), new Range(INTEGER), INTEGER),
+				new FunctionSignature(new LowCodeGenerator(), new Range(FLOAT), FLOAT),
+				new FunctionSignature(new LowCodeGenerator(), new Range(CHAR), CHAR)
+		);
 		
+		new FunctionSignatures(Keyword.HIGH,
+				new FunctionSignature(new HighCodeGenerator(), new Range(CHAR), CHAR),
+				new FunctionSignature(new HighCodeGenerator(), new Range(INTEGER), INTEGER),
+				new FunctionSignature(new HighCodeGenerator(), new Range(FLOAT), FLOAT)
+		);
+		
+		new FunctionSignatures(Keyword.IN,
+				new FunctionSignature(new InCodeGenerator(), CHAR, new Range(CHAR), BOOLEAN),
+				new FunctionSignature(new InCodeGenerator(), INTEGER, new Range(INTEGER), BOOLEAN),
+				new FunctionSignature(new InFloatCodeGenerator(), FLOAT, new Range(FLOAT), BOOLEAN)
+				
+		);
+				
 		// Casting signatures
 		new FunctionSignatures(Keyword.AS,
 				new FunctionSignature(ASMOpcode.Nop, BOOLEAN, BOOLEAN, BOOLEAN),

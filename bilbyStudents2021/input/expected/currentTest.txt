@@ -1,1 +1,5 @@
-<3.100000..5.300000>
+false
+true
+true
+true
+false

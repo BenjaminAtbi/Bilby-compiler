@@ -1,5 +1,9 @@
 main {
-	imm a := !true;
-	imm b := ! 3 < 4;
-	print a $s b $n;
+	imm a := <2.999..5.0>;
+	
+	print 2 in a $n;
+	print 3 in a $n;
+	print 4 in a $n;
+	print 5 in a $n;
+	print 6 in a $n;
 }

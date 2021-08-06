@@ -381,7 +381,7 @@ public class Parser {
 	}
 	
 	private ParseNode parseContinuedComparisonExpression(ParseNode left) {
-		if(nowReading.isLextant(Punctuator.GREATER, Punctuator.LESS, Punctuator.LESS_EQUAL, Punctuator.GREATER_EQUAL, Punctuator.NOT_EQUAL, Punctuator.EQUAL)) {
+		if(nowReading.isLextant(Punctuator.GREATER, Punctuator.LESS, Punctuator.LESS_EQUAL, Punctuator.GREATER_EQUAL, Punctuator.NOT_EQUAL, Punctuator.EQUAL, Keyword.IN)) {
 			Token compareToken = nowReading;
 			readToken();
 			ParseNode right = parseAdditiveExpression();
@@ -441,7 +441,7 @@ public class Parser {
 		if(!startsUnaryExpression(nowReading)) {
 			return syntaxErrorNode("unary expression");
 		}
-		if(nowReading.isLextant(Punctuator.SUBTRACT, Punctuator.ADD, Punctuator.NOT)) {
+		if(nowReading.isLextant(Punctuator.SUBTRACT, Punctuator.ADD, Punctuator.NOT, Keyword.LENGTH, Keyword.LOW, Keyword.HIGH)) {
 			Token operatorToken = nowReading;
 			readToken();
 			ParseNode child = parseExpression();
@@ -452,7 +452,7 @@ public class Parser {
 	}
 	
 	private boolean startsUnaryExpression(Token token) {
-		return token.isLextant(Punctuator.SUBTRACT, Punctuator.ADD, Punctuator.NOT) || startsIndexingExpression(token);
+		return token.isLextant(Punctuator.SUBTRACT, Punctuator.ADD, Punctuator.NOT, Keyword.LENGTH, Keyword.LOW, Keyword.HIGH) || startsIndexingExpression(token);
 	}
 	
 	private ParseNode parseIndexingExpression() {
