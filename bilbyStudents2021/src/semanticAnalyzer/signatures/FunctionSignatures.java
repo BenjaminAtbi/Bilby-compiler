@@ -18,6 +18,7 @@ import asmCodeGenerator.operators.RangeCodeGenerator;
 import asmCodeGenerator.operators.RangeAddRightCodeGenerator;
 import asmCodeGenerator.operators.IntToBoolCodeGenerator;
 import asmCodeGenerator.operators.IntToCharCodeGenerator;
+import asmCodeGenerator.operators.NotCodeGenerator;
 import lexicalAnalyzer.Keyword;
 import lexicalAnalyzer.Punctuator;
 import semanticAnalyzer.types.Array;
@@ -189,6 +190,12 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 		new FunctionSignatures(Punctuator.OR,
 				new FunctionSignature(new OrCodeGenerator(), BOOLEAN, BOOLEAN, BOOLEAN)
 		);
+		
+		new FunctionSignatures(Punctuator.NOT,
+				new FunctionSignature(new NotCodeGenerator(), BOOLEAN, BOOLEAN)
+		);
+		
+		
 		
 		// Casting signatures
 		new FunctionSignatures(Keyword.AS,

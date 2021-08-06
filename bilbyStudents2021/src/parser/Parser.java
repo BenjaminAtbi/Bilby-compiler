@@ -441,10 +441,10 @@ public class Parser {
 		if(!startsUnaryExpression(nowReading)) {
 			return syntaxErrorNode("unary expression");
 		}
-		if(nowReading.isLextant(Punctuator.SUBTRACT, Punctuator.ADD)) {
+		if(nowReading.isLextant(Punctuator.SUBTRACT, Punctuator.ADD, Punctuator.NOT)) {
 			Token operatorToken = nowReading;
 			readToken();
-			ParseNode child = parseUnaryExpression();
+			ParseNode child = parseExpression();
 			
 			return OperatorNode.withChildren(operatorToken, child);
 		}
@@ -452,7 +452,7 @@ public class Parser {
 	}
 	
 	private boolean startsUnaryExpression(Token token) {
-		return token.isLextant(Punctuator.SUBTRACT, Punctuator.ADD) || startsIndexingExpression(token);
+		return token.isLextant(Punctuator.SUBTRACT, Punctuator.ADD, Punctuator.NOT) || startsIndexingExpression(token);
 	}
 	
 	private ParseNode parseIndexingExpression() {
