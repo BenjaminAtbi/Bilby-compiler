@@ -292,15 +292,57 @@
         DataZ        4                         
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        0                         
+        DataZ        8                         
         Label        $$main                    
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% i
         PushI        3                         
         Nop                                    
         PushI        10                        
         Nop                                    
         Nop                                    
-        PushI        9                         
-        Call         $print-range              
+        DLabel       $range-move-outer-val     
+        DataZ        8                         
+        DLabel       $range-move-inner-val     
+        DataZ        8                         
+        PushD        $range-move-outer-val     
+        Exchange                               
+        StoreI                                 
+        PushD        $range-move-inner-val     
+        Exchange                               
+        StoreI                                 
+        Duplicate                              
+        PushD        $range-move-inner-val     
+        LoadI                                  
+        StoreI                                 
+        PushI        4                         
+        Add                                    
+        PushD        $range-move-outer-val     
+        LoadI                                  
+        StoreI                                 
+        PushD        $print-format-less        
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% i
+        DLabel       $range-load-outer-val     
+        DataZ        8                         
+        Duplicate                              
+        LoadI                                  
+        Exchange                               
+        PushI        4                         
+        Add                                    
+        LoadI                                  
+        Exchange                               
+        PushD        $print-format-integer     
+        Printf                                 
+        PushD        $print-format-period      
+        Printf                                 
+        PushD        $print-format-integer     
+        Printf                                 
+        PushD        $print-format-greater     
+        Printf                                 
         PushI        10                        
         PushD        $print-format-char        
         Printf                                 
@@ -604,10 +646,6 @@
         PushD        -print-range-2-address    
         LoadI                                  
         Add                                    
-        PStack                                 
-        Duplicate                              
-        LoadI                                  
-        PStack                                 
         PushD        -print-range-2-typeID     
         LoadI                                  
         Call         $print-value              

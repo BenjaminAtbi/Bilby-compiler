@@ -47,7 +47,6 @@ public class PrintStatementGenerator {
 		
 		code.append(visitor.removeValueCode(child)); 					//[.. addr ]
 		code.add(PushI, PrintSubroutines.getTypeID(child.getType()));	//[.. addr typeID]
-		
 		Array type = (Array)child.getType();
 		code.add(PushI, type.getDepth()); 								//[.. addr typeID depth ]
 		
@@ -56,10 +55,26 @@ public class PrintStatementGenerator {
 	
 	private void appendRangeCode(ParseNode child) {
 		assert(child.getType() instanceof Range);
+		Type childType = ((Range)child.getType()).getSubtype();
+		String format = printFormat(childType);
 		
-		code.append(visitor.removeValueCode(child));					//[.. addr ]
-		code.add(PushI, PrintSubroutines.getTypeID(child.getType()));	//[.. addr typeID]
-		code.add(Call, PrintSubroutines.PRINT_RANGE);
+		code.add(PushD, RunTime.LESS_PRINT_FORMAT);
+		code.add(Printf);
+		
+		code.append(visitor.removeValueCode(child));					//[.. value1 value2 ]
+		code.add(Exchange);												//[.. value2 value1 ]
+		
+		code.add(PushD, format);
+		code.add(Printf);						
+		
+		code.add(PushD, RunTime.RANGE_PRINT_FORMAT);
+		code.add(Printf);
+		
+		code.add(PushD, format);
+		code.add(Printf);
+		
+		code.add(PushD, RunTime.GREATER_PRINT_FORMAT);
+		code.add(Printf);
 	}
 
 	private void appendPrintCode(ParseNode node) {

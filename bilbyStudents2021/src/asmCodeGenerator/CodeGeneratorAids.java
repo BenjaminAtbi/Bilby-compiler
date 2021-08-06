@@ -16,8 +16,8 @@ public class CodeGeneratorAids {
 	private static final String RANGE_STORE_INNER_VAL = "$range-move-inner-val";
 	private static final String RANGE_LOAD_OUTER_VAL  = "$range-load-outer-val";
 
-	public static void opcodeForStore(ASMCodeFragment code, Type type) {
-
+	public static ASMCodeFragment opcodeForStore(Type type) {
+		ASMCodeFragment code = new ASMCodeFragment(CodeType.GENERATES_VOID);
 		if(type.isReference()) {
 			code.add(StoreI);
 		}
@@ -37,16 +37,16 @@ public class CodeGeneratorAids {
 			code.add(StoreC);
 		}
 		else if(type instanceof Range) {
-			ASMCodeFragment subtypeStore = new ASMCodeFragment(CodeType.GENERATES_VOID);
-			opcodeForStore(subtypeStore, ((Range) type).getSubtype());
 			code.append(rangeStore(type));
 		}
 		else {
 			assert false: "Type " + type + " unimplemented in opcodeForStore()";
 		}
+		return code;
 	}
 
-	public static void opcodeForLoad(ASMCodeFragment code, Type type) {
+	public static ASMCodeFragment opcodeForLoad(Type type) {
+		ASMCodeFragment code = new ASMCodeFragment(CodeType.GENERATES_VOID);
 		if(type.isReference()) {
 			code.add(LoadI);
 		}
@@ -66,13 +66,12 @@ public class CodeGeneratorAids {
 			code.add(LoadC);
 		}
 		else if(type instanceof Range) {
-			ASMCodeFragment subtypeLoad = new ASMCodeFragment(CodeType.GENERATES_VOID);
-			opcodeForLoad(subtypeLoad, ((Range) type).getSubtype());
 			code.append(rangeLoad(type));
 		}
 		else {
 			assert false: "Type " + type + " unimplemented in opcodeForLoad()";
 		}
+		return code;
 	}
 	
 	public static ASMOpcode opcodeForPush(Type type) {
@@ -100,64 +99,58 @@ public class CodeGeneratorAids {
 	
 	private static ASMCodeFragment rangeStore(Type type) {
 		ASMCodeFragment frag = new ASMCodeFragment(GENERATES_VOID);
-		ASMCodeFragment subtypeStore = new ASMCodeFragment(CodeType.GENERATES_VOID);
-		opcodeForStore(subtypeStore, ((Range) type).getSubtype());
-		ASMCodeFragment subtypeLoad = new ASMCodeFragment(CodeType.GENERATES_VOID);
-		opcodeForLoad(subtypeLoad, ((Range) type).getSubtype());
+		Type subtype = ((Range) type).getSubtype();
 		
-		frag.add(DLabel, RANGE_STORE_OUTER_VAL);
-		frag.add(DataZ, 8);
-		frag.add(DLabel, RANGE_STORE_INNER_VAL);
-		frag.add(DataZ, 8);
+
 		
 		frag.add(PushD, RANGE_STORE_OUTER_VAL);
 		frag.add(Exchange);
-		frag.append(subtypeStore);				//store outer value
+		frag.append(opcodeForStore(subtype));				//store outer value
+		
 		frag.add(PushD, RANGE_STORE_INNER_VAL);
 		frag.add(Exchange);
-		frag.append(subtypeStore);				//store inner value
+		frag.append(opcodeForStore(subtype));				//store inner value
 		
-		frag.add(Duplicate);					//duplicate address
+		frag.add(Duplicate);								//duplicate address
 		
 		frag.add(PushD, RANGE_STORE_INNER_VAL);
-		frag.append(subtypeLoad);
-		frag.append(subtypeStore);				//store inner val at address
+		frag.append(opcodeForLoad(subtype));				//load inner again
+		frag.append(opcodeForStore(subtype));				//store inner val at address
 		
-		frag.add(PushI, type.getSize());
-		frag.add(Add);							//shift address 
-		
+		frag.add(PushI, subtype.getSize());
+		frag.add(Add);										//shift address 
 		frag.add(PushD, RANGE_STORE_OUTER_VAL);
-		frag.append(subtypeLoad);
-		frag.append(subtypeStore);				//store outer val at address
+		frag.append(opcodeForLoad(subtype));
+		frag.append(opcodeForStore(subtype));				//store outer val at address
 		
 		return frag;
 	}
 	
 	private static ASMCodeFragment rangeLoad(Type type) {
 		ASMCodeFragment frag = new ASMCodeFragment(GENERATES_VALUE);
-		ASMCodeFragment subtypeStore = new ASMCodeFragment(CodeType.GENERATES_VOID);
-		opcodeForStore(subtypeStore, ((Range) type).getSubtype());
-		ASMCodeFragment subtypeLoad = new ASMCodeFragment(CodeType.GENERATES_VOID);
-		opcodeForLoad(subtypeLoad, ((Range) type).getSubtype());
+		Type subtype = ((Range) type).getSubtype();
 		
+		
+		frag.add(Duplicate);								// [.. address address ]
+		
+		frag.append(opcodeForLoad(subtype));				// [.. address value1 ]			
+		frag.add(Exchange);									// [.. value1 address ]
+		frag.add(PushI, subtype.getSize());
+		frag.add(Add);										// [.. value1 address2 ]
+		
+		frag.append(opcodeForLoad(subtype));				// [.. value1 value2 ]
+		
+		return frag;
+	}
+	
+	public static ASMCodeFragment rangeRecordSpace() {
+		ASMCodeFragment frag = new ASMCodeFragment(GENERATES_VOID);
+		frag.add(DLabel, RANGE_STORE_OUTER_VAL);
+		frag.add(DataZ, 8);
+		frag.add(DLabel, RANGE_STORE_INNER_VAL);
+		frag.add(DataZ, 8);
 		frag.add(DLabel, RANGE_LOAD_OUTER_VAL);
 		frag.add(DataZ, 8);
-		
-		frag.add(Duplicate);					//duplicate address
-		
-		frag.append(subtypeLoad);
-		frag.add(PushD, RANGE_STORE_OUTER_VAL);
-		frag.add(Exchange);
-		frag.append(subtypeStore);				//load and store inner value
-		
-		frag.add(PushI, type.getSize());
-		frag.add(Add);							//shift address 
-		
-		frag.append(subtypeLoad);				//load outer value
-		frag.add(PushD, RANGE_STORE_OUTER_VAL);
-		frag.append(subtypeLoad); 				//load inner again
-		frag.add(Exchange); 					//reorder inner and outer
-		
 		return frag;
 	}
 }

@@ -2,6 +2,7 @@ package asmCodeGenerator.runtime;
 import static asmCodeGenerator.codeStorage.ASMCodeFragment.CodeType.*;
 import static asmCodeGenerator.codeStorage.ASMOpcode.*;
 import asmCodeGenerator.codeStorage.ASMCodeFragment;
+import asmCodeGenerator.CodeGeneratorAids;
 public class RunTime {
 	public static final String EAT_LOCATION_ZERO      = "$eat-location-zero";		// helps us distinguish null pointers from real ones.
 	public static final String CHAR_PRINT_FORMAT 	  = "$print-format-char";
@@ -44,6 +45,7 @@ public class RunTime {
 		result.append(stringsForPrintf());
 		result.append(runtimeErrors());
 		result.append(referenceSpace());
+		result.append(CodeGeneratorAids.rangeRecordSpace());
 		result.add(DLabel, USABLE_MEMORY_START);
 		return result;
 	}

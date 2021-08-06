@@ -181,7 +181,7 @@ public class PrintSubroutines {
 		
 		storeITo(frag, returnAddressLabel);			// [.. addr typeID ]
 		frag.add(PushI, 7);
-		frag.add(And); 								// clean range bit
+		frag.add(BTAnd); 								// clean range bit
 		storeITo(frag, typeIDLabel);
 		storeITo(frag, addressLabel);				// [.. ]
 		
@@ -189,26 +189,21 @@ public class PrintSubroutines {
 		frag.add(Printf);
 		
 		loadIFrom(frag, addressLabel);
-		
 		loadIFrom(frag, typeIDLabel);
-		
-
 		frag.add(Call, PRINT_VALUE); 				// print first value
 		
 		frag.add(PushD, RunTime.RANGE_PRINT_FORMAT);
 		frag.add(Printf);
 		
 		loadIFrom(frag, typeIDLabel);				
-		frag.add(PushI, 0); 						
-		frag.add(And);
-		frag.add(JumpFalse, typeIntLabel);			//jump if not char
+		frag.add(JumpTrue, typeIntLabel);			//jump if not char
 		frag.add(PushI, 1);
 		frag.add(Jump, afterOffsetLabel);			
 		
 		frag.add(Label, typeIntLabel);				
 		loadIFrom(frag, typeIDLabel);				
 		frag.add(PushI, 1); 						
-		frag.add(And);
+		frag.add(BTAnd);
 		frag.add(JumpFalse, typeFloatLabel);			//jump if not int
 		frag.add(PushI, 4);
 		frag.add(Jump, afterOffsetLabel);			
@@ -216,7 +211,7 @@ public class PrintSubroutines {
 		frag.add(Label, typeFloatLabel);				
 		loadIFrom(frag, typeIDLabel);				
 		frag.add(PushI, 2); 						
-		frag.add(And);
+		frag.add(BTAnd);
 		frag.add(JumpFalse, RunTime.RANGE_CONTAINS_INVALID_TYPE_ERROR);		//jump if not float
 		frag.add(PushI, 8);	
 		

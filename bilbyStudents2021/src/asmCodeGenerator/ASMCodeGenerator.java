@@ -154,9 +154,8 @@ public class ASMCodeGenerator {
         // convert code to value-generating code.
 		private void makeFragmentValueCode(ASMCodeFragment code, ParseNode node) {
 			assert !code.isVoid();
-		
 			if(code.isAddress()) {
-				opcodeForLoad(code, node.getType());
+				code.append(opcodeForLoad(node.getType()));
 				code.markAsValue();
 			}	
 		}
@@ -258,9 +257,8 @@ public class ASMCodeGenerator {
 			
 			code.append(lvalue);
 			code.append(rvalue);
-			
 			Type type = node.getType();
-			opcodeForStore(code, type);
+			code.append(opcodeForStore(type));
 		}
 		
 		public void visitLeave(AssignmentNode node) {
@@ -274,7 +272,7 @@ public class ASMCodeGenerator {
 			Promotion rightPromotion = node.getPromotedSignature().getPromotions().get(1);
 			code.append(rightPromotion.codeFor());
 			Type type = node.getType();
-			opcodeForStore(code, type);
+			code.append(opcodeForStore(type));
 		}
 
 
