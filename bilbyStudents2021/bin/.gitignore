@@ -1,5 +1,5 @@
-/applications/
-/asmCodeGenerator/
 /semanticAnalyzer/
 /lexicalAnalyzer/
 /parser/
+/parseTree/
+/symbolTable/

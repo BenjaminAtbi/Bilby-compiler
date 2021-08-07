@@ -216,6 +216,7 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 				new FunctionSignature(new HighCodeGenerator(), new Range(FLOAT), FLOAT)
 		);
 		
+
 		new FunctionSignatures(Keyword.IN,
 				new FunctionSignature(new InCodeGenerator(), CHAR, new Range(CHAR), BOOLEAN),
 				new FunctionSignature(new InCodeGenerator(), INTEGER, new Range(INTEGER), BOOLEAN),

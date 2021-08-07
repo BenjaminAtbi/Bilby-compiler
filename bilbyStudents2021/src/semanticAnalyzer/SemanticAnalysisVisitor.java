@@ -75,6 +75,7 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		Scope scope = baseScope.createSubscope();
 		node.setScope(scope);
 	}		
+	
 	private void leaveScope(ParseNode node) {
 		node.getScope().leave();
 	}

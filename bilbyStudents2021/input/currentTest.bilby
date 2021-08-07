@@ -1,3 +1,8 @@
+
+func int shit(int a, float b){
+	return a;
+}
+
 main {
-	print -3 in <-2..2> $s false $n;
+	print "fuck" $n;
 }
