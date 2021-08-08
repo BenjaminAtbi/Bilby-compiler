@@ -2,7 +2,9 @@ package symbolTable;
 
 import inputHandler.TextLocation;
 import logging.BilbyLogger;
+import parseTree.nodeTypes.FunctionNode;
 import parseTree.nodeTypes.IdentifierNode;
+import semanticAnalyzer.signatures.FunctionSignature;
 import semanticAnalyzer.types.Type;
 import tokens.Token;
 
@@ -21,10 +23,31 @@ public class Scope {
 		return new Scope(allocator, this);
 	}
 	
+	//should only be called by program scope
+	public Scope createParameterScope() {
+		return new Scope(parameterScopeAllocator(),this);
+	}
+	
+	public Scope createProcedureScope() {
+		return new Scope(procedureScopeAllocator(),this);
+	}
+	
 	private static MemoryAllocator programScopeAllocator() {
 		return new PositiveMemoryAllocator(
 				MemoryAccessMethod.DIRECT_ACCESS_BASE, 
 				MemoryLocation.GLOBAL_VARIABLE_BLOCK);
+	}
+	
+	private static MemoryAllocator parameterScopeAllocator() {
+		return new ParameterMemoryAllocator(
+				MemoryAccessMethod.INDIRECT_ACCESS_BASE, 
+				MemoryLocation.FRAME_POINTER);
+	}
+	
+	private static MemoryAllocator procedureScopeAllocator() {
+		return new NegativeMemoryAllocator(
+				MemoryAccessMethod.INDIRECT_ACCESS_BASE, 
+				MemoryLocation.FRAME_POINTER, -8);
 	}
 	
 //////////////////////////////////////////////////////////////////////
@@ -77,8 +100,27 @@ public class Scope {
 		return new Binding(type, textLocation, memoryLocation, lexeme, mutable);
 	}
 	
-///////////////////////////////////////////////////////////////////////
-//toString
+///////////////////////////////////////////////////////////////////////////
+//function bindings
+	
+	public Binding createFunctionBinding(FunctionNode functionNode, Type type, FunctionSignature signature) {
+		Token token = functionNode.getToken();
+		symbolTable.errorIfAlreadyDefined(token);
+		
+		String lexeme = token.getLexeme();
+		Binding binding = allocateNewFunctionBinding(type, token.getLocation(), lexeme, signature);	
+		symbolTable.install(lexeme, binding);
+
+		return binding;
+	}
+	
+	private Binding allocateNewFunctionBinding(Type type, TextLocation textLocation, String lexeme, FunctionSignature signature) {
+		MemoryLocation memoryLocation = allocator.allocate(type.getSize());
+		return new FunctionBinding(type, textLocation, memoryLocation, lexeme, signature);
+	}
+	
+	///////////////////////////////////////////////////////////////////////
+	//toString
 	public String toString() {
 		String result = "scope: ";
 		result += " hash "+ hashCode() + "\n";

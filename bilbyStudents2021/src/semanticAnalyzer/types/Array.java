@@ -25,6 +25,7 @@ public class Array implements Type {
 		return "[" + getSubtype().infoString() + "]";
 	}
 	
+	@Override
 	public boolean equivalent(Type otherType) {
 		if(otherType instanceof Array) {
 			Array otherArray = (Array)otherType;

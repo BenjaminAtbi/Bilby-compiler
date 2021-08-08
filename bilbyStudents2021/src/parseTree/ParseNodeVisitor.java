@@ -8,13 +8,17 @@ import parseTree.nodeTypes.BlockNode;
 import parseTree.nodeTypes.DeclarationNode;
 import parseTree.nodeTypes.ErrorNode;
 import parseTree.nodeTypes.FloatConstantNode;
+import parseTree.nodeTypes.FunctionNode;
 import parseTree.nodeTypes.IdentifierNode;
 import parseTree.nodeTypes.IfStatementNode;
 import parseTree.nodeTypes.IntegerConstantNode;
 import parseTree.nodeTypes.NewlineNode;
 import parseTree.nodeTypes.OperatorNode;
+import parseTree.nodeTypes.ParameterListNode;
+import parseTree.nodeTypes.ParameterNode;
 import parseTree.nodeTypes.PrintStatementNode;
 import parseTree.nodeTypes.ProgramNode;
+import parseTree.nodeTypes.ReturnNode;
 import parseTree.nodeTypes.SpaceNode;
 import parseTree.nodeTypes.StringConstantNode;
 import parseTree.nodeTypes.TypeNode;
@@ -59,6 +63,18 @@ public interface ParseNodeVisitor {
 	
 	void visitEnter(ArrayExpressionListNode node);
 	void visitLeave(ArrayExpressionListNode node);
+	
+	void visitEnter(FunctionNode node);
+	void visitLeave(FunctionNode node);
+	
+	void visitEnter(ParameterListNode node);
+	void visitLeave(ParameterListNode node);
+	
+	void visitEnter(ParameterNode node);
+	void visitLeave(ParameterNode node);
+	
+	void visitEnter(ReturnNode node);
+	void visitLeave(ReturnNode node);
 	
 	// leaf nodes: visitLeaf only
 	void visit(BooleanConstantNode node);
@@ -156,7 +172,31 @@ public interface ParseNodeVisitor {
 		public void visitLeave(ArrayExpressionListNode node) {
 			defaultVisitLeave(node);
 		}
-
+		public void visitEnter(FunctionNode node) {
+			defaultVisitEnter(node);
+		}
+		public void visitLeave(FunctionNode node) {
+			defaultVisitLeave(node);
+		}
+		public void visitEnter(ParameterListNode node) {
+			defaultVisitEnter(node);
+		}
+		public void visitLeave(ParameterListNode node) {
+			defaultVisitLeave(node);
+		}
+		public void visitEnter(ParameterNode node) {
+			defaultVisitEnter(node);
+		}
+		public void visitLeave(ParameterNode node) {
+			defaultVisitLeave(node);
+		}
+		public void visitEnter(ReturnNode node) {
+			defaultVisitEnter(node);
+		}
+		public void visitLeave(ReturnNode node) {
+			defaultVisitLeave(node);
+		}
+		
 		public void visit(BooleanConstantNode node) {
 			defaultVisitForLeaf(node);
 		}

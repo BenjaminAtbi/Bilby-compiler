@@ -121,7 +121,6 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		ParseNode identifier = node.child(0);
 		ParseNode value = node.child(1);
 		
-		
 		assert(identifier instanceof IdentifierNode || 
 			  (identifier instanceof OperatorNode && 
 			   identifier.getToken().isLextant(Punctuator.INDEXING))) : "Assignment node: left node is not identifier or indexing expression";

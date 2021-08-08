@@ -1,9 +1,13 @@
 package parseTree.nodeTypes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lexicalAnalyzer.Keyword;
 import lexicalAnalyzer.Punctuator;
 import parseTree.ParseNode;
 import parseTree.ParseNodeVisitor;
+import semanticAnalyzer.types.Type;
 import tokens.Token;
 
 public class ParameterListNode extends ParseNode {
@@ -26,9 +30,16 @@ public class ParameterListNode extends ParseNode {
 		return node;
 	}
 	
+	public List<Type> childTypes() {
+		List<Type> types = new ArrayList<Type>();
+		for (ParseNode child : this.getChildren()) {
+			types.add(child.getType());
+		}
+		return types;
+	}
+	
 	///////////////////////////////////////////////////////////
 	// boilerplate for visitors
-	
 	
 	public void accept(ParseNodeVisitor visitor) {
 		visitor.visitEnter(this);

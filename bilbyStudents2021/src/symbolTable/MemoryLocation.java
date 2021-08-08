@@ -31,6 +31,10 @@ public class MemoryLocation {
 		return "M-" + accessor + "(" + baseAddress + ") +" + offset + "  ";
 	}
 	
+	public void modifyOffset(int modifier) {
+		offset += modifier;
+	}
+	
 	public void generateAddress(ASMCodeFragment code, String comment) {
 		accessor.generateAddress(code, baseAddress, offset, comment);
 	}
