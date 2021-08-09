@@ -1,11 +1,12 @@
 
 func int shit(int a, float b){
-	print "shit" $s a $s b $n;
 	imm c := 3;
+	print "shit" $s a $s b $s c $n;
 	%return a;
 }
 
 main {
 	print "fuck" $n;
-	imm d := 5;
+	imm d := 50;
+	print shit(3, d) $n;
 }

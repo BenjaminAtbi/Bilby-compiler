@@ -17,6 +17,7 @@ import parseTree.nodeTypes.FunctionNode;
 import parseTree.nodeTypes.IdentifierNode;
 import parseTree.nodeTypes.IfStatementNode;
 import parseTree.nodeTypes.IntegerConstantNode;
+import parseTree.nodeTypes.InvocationNode;
 import parseTree.nodeTypes.NewlineNode;
 import parseTree.nodeTypes.OperatorNode;
 import parseTree.nodeTypes.ParameterListNode;
@@ -579,11 +580,19 @@ public class Parser {
 		if(startsRangeExpression(nowReading)) {
 			return parseRangeExpression();
 		}
+		if(startsInvocation(nowReading)) {
+			return parseInvocation();
+		}
 		return parseLiteral();
 	}
 	
 	private boolean startsAtomicExpression(Token token) {
-		return startsLiteral(token) || startsParantheticExpression(token) || startsSquareBracketExpression(token) || startsAllocExpression(token) || startsRangeExpression(token);
+		return startsLiteral(token) || 
+				startsParantheticExpression(token) || 
+				startsSquareBracketExpression(token) || 
+				startsAllocExpression(token) || 
+				startsRangeExpression(token) ||
+				startsInvocation(token);
 	}
 	
 	private ParseNode parseParantheticExpression() {
@@ -697,6 +706,52 @@ public class Parser {
 		return token.isLextant(Punctuator.OPEN_SQUARE);
 	}
 
+	private ParseNode parseInvocation() {
+		if(!startsIdentifier(nowReading)) {
+			return syntaxErrorNode("invocation");
+		}
+		ParseNode identifier = parseIdentifier();
+		if(nowReading.isLextant(Punctuator.OPEN_BRACKET)) {
+			Token invocationToken = nowReading;
+			readToken();
+			ParseNode expressionList = parseInvocationParameters();
+			expect(Punctuator.CLOSE_BRACKET);
+			LextantToken token = LextantToken.make(invocationToken, Keyword.FUNC.getLexeme(), Keyword.FUNC);
+			return InvocationNode.withChildren(token, identifier, expressionList);
+		} 
+		else {
+			return identifier;
+		}
+	}
+	private boolean startsInvocation(Token token) {
+		return startsIdentifier(token);
+	}
+	
+	private ParseNode parseInvocationParameters() {
+		LextantToken token = LextantToken.make(nowReading, nowReading.getLexeme(), Punctuator.ARGUMENT_LIST);
+		ParameterListNode parameterList = new ParameterListNode(token);
+		while(startsExpression(nowReading)) {
+			parameterList.appendChild(parseExpression());
+			if(nowReading.isLextant(Punctuator.COMMA)) {
+				readToken();
+			}
+		}
+		return parameterList;
+	}
+	
+	// identifier (terminal)
+	private ParseNode parseIdentifier() {
+		if(!startsIdentifier(nowReading)) {
+			return syntaxErrorNode("identifier");
+		}
+		readToken();
+		ParseNode identifier = new IdentifierNode(previouslyRead);
+		
+		return identifier;
+	}
+	private boolean startsIdentifier(Token token) {
+		return token instanceof IdentifierToken;
+	}
 	
 	private ParseNode parseType() {
 		if(!startsType(nowReading)) {
@@ -719,6 +774,8 @@ public class Parser {
 		return token.isLextant(Keyword.BOOL, Keyword.CHAR, Keyword.STRING, Keyword.INT, Keyword.FLOAT, Punctuator.OPEN_SQUARE);
 	}
 	
+	
+	
 	// literal -> int | float | identifier | booleanConstant
 	private ParseNode parseLiteral() {
 		if(!startsLiteral(nowReading)) {
@@ -736,9 +793,6 @@ public class Parser {
 		if(startsStringLiteral(nowReading)) {
 			return parseStringLiteral();
 		}
-		if(startsIdentifier(nowReading)) {
-			return parseIdentifier();
-		}
 		if(startsBooleanLiteral(nowReading)) {
 			return parseBooleanLiteral();
 		}
@@ -750,7 +804,6 @@ public class Parser {
 				startsIntLiteral(token)|| 
 				startsFloatLiteral(token) || 
 				startsStringLiteral(token) || 
-				startsIdentifier(token) || 
 				startsBooleanLiteral(token);
 	}
 
@@ -800,29 +853,6 @@ public class Parser {
 	}
 	private boolean startsStringLiteral(Token token) {
 		return token instanceof StringToken;
-	}
-	
-	// identifier (terminal)
-	private ParseNode parseIdentifier() {
-		if(!startsIdentifier(nowReading)) {
-			return syntaxErrorNode("identifier");
-		}
-		readToken();
-		ParseNode identifier = new IdentifierNode(previouslyRead);
-		
-//		while(nowReading.isLextant(Punctuator.OPEN_SQUARE)) {
-//			Token bracketToken = nowReading;
-//			readToken();
-//			ParseNode index = parseIntLiteral();
-//			expect(Punctuator.CLOSE_SQUARE);
-//			Token indexingToken = LextantToken.make(bracketToken, bracketToken.getLexeme(), Punctuator.INDEXING);
-//			identifier = IdentifierNode.withChildren(indexingToken, identifier, index);
-//		}
-		
-		return identifier;
-	}
-	private boolean startsIdentifier(Token token) {
-		return token instanceof IdentifierToken;
 	}
 
 	// boolean literal

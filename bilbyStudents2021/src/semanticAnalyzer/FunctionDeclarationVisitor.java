@@ -42,14 +42,15 @@ public class FunctionDeclarationVisitor extends ParseNodeVisitor.Default {
 		IdentifierNode identifierChild = (IdentifierNode) node.child(1);
 		ParameterListNode parameterListChild = (ParameterListNode) node.child(2);
 		
-		List<Type> paramTypes = parameterListChild.childTypes(); 
+		List<Type> paramTypes = parameterListChild.getChildTypes(); 
 		paramTypes.add(typeChild.getType());
 		FunctionSignature signature = new FunctionSignature(ASMOpcode.Nop, paramTypes.toArray(new Type[paramTypes.size()]));
 		node.setSignature(signature);
 		
 		Scope scope = node.getLocalScope();
-		Binding binding = scope.createFunctionBinding(identifierChild, node.getType(), signature);
+		Binding binding = scope.createFunctionBinding(identifierChild, typeChild.getType(), signature);
 		node.setBinding(binding);
+		node.setType(typeChild.getType());
 	}
 	
 //	//enter procedure scope
@@ -97,18 +98,5 @@ public class FunctionDeclarationVisitor extends ParseNodeVisitor.Default {
 		} else {
 			node.setType(PrimitiveType.fromToken(node.LextantToken()));
 		}
-	}
-	
-	
-	
-	///////////////////////////////////////////////////////////////////////////
-	// debug
-	
-	private void enterScopeDebug(ParseNode node, Scope scope) {
-		if(Scope.Debug) System.out.println("FunctionDeclaration - entering scope: " + node.getClass( )+ "\n" + scope.toString());
-	}
-	
-	private void exitScopeDebug(ParseNode node, Scope scope) {
-		if(Scope.Debug) System.out.println("FunctionDeclaration - exiting scope: " + node.getClass() + "\n" + scope.toString());
 	}
 }

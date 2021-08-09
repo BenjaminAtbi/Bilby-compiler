@@ -21,8 +21,10 @@ import parseTree.nodeTypes.FunctionNode;
 import parseTree.nodeTypes.IdentifierNode;
 import parseTree.nodeTypes.IfStatementNode;
 import parseTree.nodeTypes.IntegerConstantNode;
+import parseTree.nodeTypes.InvocationNode;
 import parseTree.nodeTypes.NewlineNode;
 import parseTree.nodeTypes.OperatorNode;
+import parseTree.nodeTypes.ParameterListNode;
 import parseTree.nodeTypes.PrintStatementNode;
 import parseTree.nodeTypes.ProgramNode;
 import parseTree.nodeTypes.SpaceNode;
@@ -36,6 +38,7 @@ import semanticAnalyzer.types.Array;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
 import symbolTable.Binding;
+import symbolTable.FunctionBinding;
 import symbolTable.Scope;
 import static symbolTable.ScopeControl.*;
 import tokens.LextantToken;
@@ -144,6 +147,7 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	@Override
 	public void visitLeave(DeclarationNode node) {
 		IdentifierNode identifier = (IdentifierNode) node.child(0);
+		assert !(identifier.getBinding() instanceof FunctionBinding) : "Declaration node: assigning to function binding";
 		ParseNode initializer = node.child(1);
 		
 		Type declarationType = initializer.getType();
@@ -169,6 +173,7 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		
 		if(identifier instanceof IdentifierNode){
 			assert (((IdentifierNode)identifier).getBinding().getMutable()) : "Assignment node: binding not mutable";
+			assert !(((IdentifierNode)identifier).getBinding() instanceof FunctionBinding) : "Assignment node: assigning to function binding";
 		}
 		
 		List<Type> childTypes = childTypes(node);
@@ -226,6 +231,32 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		Scope scope = identifierNode.getLocalScope();
 		Binding binding = scope.createBinding(identifierNode, type, mutable);
 		identifierNode.setBinding(binding);
+	}
+	
+
+	///////////////////////////////////////////////////////////////////////////
+	// fuction invocation
+	
+	@Override
+	public void visitLeave(InvocationNode node) {
+		assert node.child(0) instanceof IdentifierNode :  "Semantic Analyzer: Function Node: 1st child is not identifier node";
+		assert node.child(1) instanceof ParameterListNode : "Semantic Analyzer: Function Node: 2nd child is not parameter list node"; 
+		IdentifierNode identifier = (IdentifierNode) node.child(0);
+		ParameterListNode parameterList = (ParameterListNode) node.child(1);
+		
+		List<Type> argumentTypes = parameterList.getChildTypes();
+		
+		assert identifier.getBinding() instanceof FunctionBinding : "Semantic Analyzer: Invocation Node: binding is not function binding";
+		FunctionBinding binding = (FunctionBinding) identifier.getBinding();
+		FunctionSignature signature = binding.getSignature();
+		
+		if(signature.accepts(argumentTypes) && identifier.getType().equivalent(signature.resultType())) {
+			node.setType(signature.resultType());
+			node.setSignature(signature);
+		} else {
+			typeCheckError(node, argumentTypes);
+			node.setType(PrimitiveType.ERROR);
+		}
 	}
 
 	///////////////////////////////////////////////////////////////////////////

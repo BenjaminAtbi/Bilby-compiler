@@ -13,6 +13,10 @@ public class FunctionBinding extends Binding {
 	this.signature = signature;
 	}
 	
+	public FunctionSignature getSignature() {
+		return signature;
+	}
+	
 	@Override
 	public String toString() {
 		return "[" + super.getLexeme() +

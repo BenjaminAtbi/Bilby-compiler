@@ -53,6 +53,9 @@ public class FunctionSignature {
 	public boolean isNull() {
 		return false;
 	}
+	public Type[] getParamTypes() {
+		return paramTypes;
+	}
 	
 	///////////////////////////////////////////////////////////////
 	// main query

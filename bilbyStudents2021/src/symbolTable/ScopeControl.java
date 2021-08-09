@@ -3,7 +3,7 @@ package symbolTable;
 import parseTree.ParseNode;
 
 public class ScopeControl {
-	
+	public static boolean Debug = false;
 	
 	public static void enterProgramScope(ParseNode node) {
 		Scope scope = Scope.createProgramScope();
@@ -46,18 +46,16 @@ public class ScopeControl {
 		exitScopeDebug(node, oldScope);
 	}
 	
-	
-	
 	///////////////////////////////////////////////////////////////////////////
 	// debug
 	
 	public static void enterScopeDebug(ParseNode node, Scope scope) {
-		if(Scope.Debug) System.out.println("SemanticAnalysis - entering scope: " + node.getClass( )+ "\n" + scope.toString());
+		if(Debug) System.out.println("entering scope: " + node.getClass( )+ "\n" + scope.toString());
 		
 	}
 	
 	public static void exitScopeDebug(ParseNode node, Scope scope) {
-		if(Scope.Debug) System.out.println("SemanticAnalysis - exiting scope: " + node.getClass() + "\n" + scope.toString());
+		if(Debug) System.out.println("exiting scope: " + node.getClass() + "\n" + scope.toString());
 	}
 }
 

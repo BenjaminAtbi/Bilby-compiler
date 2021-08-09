@@ -14,7 +14,7 @@ public class ParameterListNode extends ParseNode {
 
 	public ParameterListNode(Token token) {
 		super(token);
-		assert(token.isLextant(Punctuator.PARAMETER_LIST));
+		assert(token.isLextant(Punctuator.PARAMETER_LIST, Punctuator.ARGUMENT_LIST));
 	}
 	
 	public ParameterListNode(ParseNode node) {
@@ -30,7 +30,7 @@ public class ParameterListNode extends ParseNode {
 		return node;
 	}
 	
-	public List<Type> childTypes() {
+	public List<Type> getChildTypes() {
 		List<Type> types = new ArrayList<Type>();
 		for (ParseNode child : this.getChildren()) {
 			types.add(child.getType());

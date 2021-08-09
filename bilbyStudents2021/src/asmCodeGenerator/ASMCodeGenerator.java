@@ -23,6 +23,7 @@ import parseTree.nodeTypes.AssignmentNode;
 import parseTree.nodeTypes.BlockNode;
 import parseTree.nodeTypes.DeclarationNode;
 import parseTree.nodeTypes.FloatConstantNode;
+import parseTree.nodeTypes.FunctionNode;
 import parseTree.nodeTypes.IdentifierNode;
 import parseTree.nodeTypes.IfStatementNode;
 import parseTree.nodeTypes.IntegerConstantNode;
@@ -193,6 +194,14 @@ public class ASMCodeGenerator {
 				ASMCodeFragment childCode = removeVoidCode(child);
 				code.append(childCode);
 			}
+		}
+		public void visitLeave(FunctionNode node) {
+			// label for function, get it from binding?
+			
+			// body code?
+			// if body has a variable, identifier automatically finds correct binding, grabs value relative to frame pointer
+			// if body references parameter, identifier will look up scope tree until it finds most recent instance, either parameter or 
+			// 			a local shadowing the parameter
 		}
 
 		///////////////////////////////////////////////////////////////////////////
