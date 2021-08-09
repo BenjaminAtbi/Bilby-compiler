@@ -4,6 +4,7 @@ import lexicalAnalyzer.Keyword;
 import lexicalAnalyzer.Punctuator;
 import parseTree.ParseNode;
 import parseTree.ParseNodeVisitor;
+import semanticAnalyzer.signatures.FunctionSignature;
 import semanticAnalyzer.types.Type;
 import symbolTable.Binding;
 import tokens.Token;
@@ -13,6 +14,7 @@ public class FunctionNode extends ParseNode {
 	Token identifierToken;
 	Type returnType;
 	Binding binding;
+	FunctionSignature signature;
 	
 	///////////////////////////////////////////////////////////////
 	/// constructors 
@@ -21,6 +23,7 @@ public class FunctionNode extends ParseNode {
 		super(token);
 		assert(token.isLextant(Keyword.FUNC));
 		this.binding = null;
+		this.signature = null;
 	}
 	public FunctionNode(ParseNode node) {
 		super(node);
@@ -45,6 +48,7 @@ public class FunctionNode extends ParseNode {
 		return node;
 	}
 	
+	
 	////////////////////////////////////////////////////////////
 	/// set get
 	
@@ -52,7 +56,9 @@ public class FunctionNode extends ParseNode {
 		this.binding = binding;
 	}
 	
-	
+	public void setSignature(FunctionSignature signature) {
+		this.signature = signature;
+	}
 	///////////////////////////////////////////////////////////
 	//accept a visitor
 	

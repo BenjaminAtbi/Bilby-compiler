@@ -17,6 +17,7 @@ import parseTree.nodeTypes.BlockNode;
 import parseTree.nodeTypes.DeclarationNode;
 import parseTree.nodeTypes.ErrorNode;
 import parseTree.nodeTypes.FloatConstantNode;
+import parseTree.nodeTypes.FunctionNode;
 import parseTree.nodeTypes.IdentifierNode;
 import parseTree.nodeTypes.IfStatementNode;
 import parseTree.nodeTypes.IntegerConstantNode;
@@ -49,11 +50,22 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	// constructs larger than statements
 	@Override
 	public void visitEnter(ProgramNode node) {
-		enterProgramScope(node);
+		//we never left bby
 	}
+
+	
 	public void visitLeave(ProgramNode node) {
 		leaveScope(node);
 	}
+	
+	public void visitEnter(FunctionNode node) {
+		reenterScope(node);
+	}
+	
+	public void visitLeave(FunctionNode node) {
+		leaveScope(node);
+	}
+	
 	public void visitEnter(BlockNode node) {
 		enterSubscope(node);
 	}
@@ -61,23 +73,47 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		leaveScope(node);
 	}
 	
-	
 	///////////////////////////////////////////////////////////////////////////
 	// helper methods for scoping.
-	private void enterProgramScope(ParseNode node) {
-		Scope scope = Scope.createProgramScope();
-		node.setScope(scope);
-	}	
+//	private void enterProgramScope(ParseNode node) {
+//		Scope scope = Scope.createProgramScope();
+//		node.setScope(scope);
+//	}	
 	
 	@SuppressWarnings("unused")
 	private void enterSubscope(ParseNode node) {
 		Scope baseScope = node.getLocalScope();
 		Scope scope = baseScope.createSubscope();
 		node.setScope(scope);
+		
+		enterScopeDebug(node,scope);
 	}		
 	
+	private void reenterScope(ParseNode node) {
+		assert node.hasScope() : "Semantic Analysis - attempted to reenter scope that does not exist";
+		node.getScope().reenterScope();
+		
+		enterScopeDebug(node,node.getScope());
+	}
+	
 	private void leaveScope(ParseNode node) {
+		Scope oldScope = node.getScope();
 		node.getScope().leave();
+		exitScopeDebug(node, oldScope);
+	}
+	
+	
+	
+	///////////////////////////////////////////////////////////////////////////
+	// debug
+	
+	private void enterScopeDebug(ParseNode node, Scope scope) {
+		if(Scope.Debug) System.out.println("SemanticAnalysis - entering scope: " + node.getClass( )+ "\n" + scope.toString());
+		
+	}
+	
+	private void exitScopeDebug(ParseNode node, Scope scope) {
+		if(Scope.Debug) System.out.println("SemanticAnalysis - exiting scope: " + node.getClass() + "\n" + scope.toString());
 	}
 	
 	///////////////////////////////////////////////////////////////////////////

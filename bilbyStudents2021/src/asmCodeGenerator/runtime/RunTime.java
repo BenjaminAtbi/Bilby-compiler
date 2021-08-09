@@ -27,6 +27,8 @@ public class RunTime {
 	public static final String GLOBAL_MEMORY_BLOCK    = "$global-memory-block";
 	public static final String USABLE_MEMORY_START    = "$usable-memory-start";
 	public static final String MAIN_PROGRAM_LABEL     = "$$main";
+	public static final String FRAME_POINTER 		  = "$frame-pointer";
+	public static final String STACK_POINTER 		  = "$stack-pointer";
 	
 	public static final String GENERAL_RUNTIME_ERROR = "$$general-runtime-error";
 	public static final String INTEGER_DIVIDE_BY_ZERO_RUNTIME_ERROR = "$$i-divide-by-zero";
@@ -36,6 +38,7 @@ public class RunTime {
 	public static final String ARRAY_NOT_INITIALIZED_ERROR = "$$array-not-initialized";
 	public static final String RANGE_CONTAINS_INVALID_TYPE_ERROR = "$$range-contains-invalid-type";
 	public static final String RANGE_LOW_HIGH_MISMATCH_ERROR = "$$range-low-high-mismatch";
+
 	
 	
 	
@@ -45,12 +48,15 @@ public class RunTime {
 		result.append(jumpToMain());
 		result.append(stringsForPrintf());
 		result.append(runtimeErrors());
+		result.append(frameStack());
 		result.append(referenceSpace());
 		result.append(CodeGeneratorAids.rangeRecordSpace());
 		result.add(DLabel, USABLE_MEMORY_START);
 		return result;
 	}
 	
+
+
 	private ASMCodeFragment jumpToMain() {
 		ASMCodeFragment frag = new ASMCodeFragment(GENERATES_VOID);
 		frag.add(Jump, MAIN_PROGRAM_LABEL);
@@ -95,8 +101,18 @@ public class RunTime {
 		return frag;
 	}
 	
+	private ASMCodeFragment frameStack() {
+		ASMCodeFragment frag = new ASMCodeFragment(GENERATES_VOID);
+		frag.add(DLabel, FRAME_POINTER);
+		frag.add(DataZ, 4);
+		frag.add(DLabel, STACK_POINTER);
+		frag.add(DataZ, 4);
+		return frag;
+	}
+	
 	private ASMCodeFragment referenceSpace() {
 		ASMCodeFragment frag = new ASMCodeFragment(GENERATES_VOID);
+
 		frag.add(DLabel, REF_SPACE1);
 		frag.add(DataZ, 4);
 		frag.add(DLabel, REF_SPACE2);

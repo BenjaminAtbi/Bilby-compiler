@@ -1,5 +1,4 @@
 /semanticAnalyzer/
-/lexicalAnalyzer/
-/parser/
 /parseTree/
 /symbolTable/
+/asmCodeGenerator/

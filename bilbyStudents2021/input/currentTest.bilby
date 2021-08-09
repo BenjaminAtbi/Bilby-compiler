@@ -1,8 +1,10 @@
 
 func int shit(int a, float b){
-	return a;
+	imm c := 4;
+	%return a;
 }
 
 main {
 	print "fuck" $n;
+	imm d := 5;
 }

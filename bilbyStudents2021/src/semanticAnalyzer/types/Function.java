@@ -2,12 +2,18 @@ package semanticAnalyzer.types;
 
 import java.util.Collection;
 
+import semanticAnalyzer.signatures.FunctionSignature;
+
 public class Function implements Type {
 
 	private static final int REFERENCE_TYPE_SIZE = 4;
 	Type returnType;
 	
 	public Function(Type returnType) {
+		this.returnType = returnType;
+	}
+	
+	public Function(Type returnType, FunctionSignature signature) {
 		this.returnType = returnType;
 	}
 	

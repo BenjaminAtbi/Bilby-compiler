@@ -29,7 +29,9 @@ public class ParameterMemoryAllocator implements MemoryAllocator {
 	public MemoryLocation allocate(int sizeInBytes) {
 		currentOffset -= sizeInBytes;
 		updateMin();
-		return new MemoryLocation(accessor, baseAddress, currentOffset);
+		MemoryLocation location = new MemoryLocation(accessor, baseAddress, currentOffset);
+		createdLocations.add(location);
+		return location;
 	}
 	private void updateMin() {
 		if(minOffset > currentOffset) {
@@ -60,6 +62,7 @@ public class ParameterMemoryAllocator implements MemoryAllocator {
 			for(MemoryLocation location : createdLocations) {
 				location.modifyOffset(getMaxAllocatedSize());
 			}
+			createdLocations.clear();
 		}
 	}
 }

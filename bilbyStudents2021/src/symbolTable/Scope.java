@@ -13,6 +13,8 @@ public class Scope {
 	private MemoryAllocator allocator;
 	private SymbolTable symbolTable;
 	
+	public static boolean Debug = false;
+	
 //////////////////////////////////////////////////////////////////////
 // factories
 
@@ -61,6 +63,14 @@ public class Scope {
 		allocator.saveState();
 	}
 	
+
+///////////////////////////////////////////////////////////////////////
+// reenter scope that's already declared
+	
+	public void reenterScope() {
+		allocator.saveState();
+	}
+	
 ///////////////////////////////////////////////////////////////////////
 //  basic queries	
 	public Scope getBaseScope() {
@@ -103,8 +113,8 @@ public class Scope {
 ///////////////////////////////////////////////////////////////////////////
 //function bindings
 	
-	public Binding createFunctionBinding(FunctionNode functionNode, Type type, FunctionSignature signature) {
-		Token token = functionNode.getToken();
+	public Binding createFunctionBinding(IdentifierNode identifierNode, Type type, FunctionSignature signature) {
+		Token token = identifierNode.getToken();
 		symbolTable.errorIfAlreadyDefined(token);
 		
 		String lexeme = token.getLexeme();
@@ -125,6 +135,14 @@ public class Scope {
 		String result = "scope: ";
 		result += " hash "+ hashCode() + "\n";
 		result += symbolTable;
+		
+		Scope currentScope = baseScope;
+		while(currentScope != currentScope.getBaseScope()) {
+			result += "subscope: ";
+			result += currentScope.toString();
+			currentScope = currentScope.getBaseScope();
+		}
+		
 		return result;
 	}
 
@@ -154,7 +172,6 @@ public class Scope {
 		}
 	}
 
-
 ///////////////////////////////////////////////////////////////////////
 //error reporting
 	private static void unscopedIdentifierError(Token token) {
@@ -162,5 +179,8 @@ public class Scope {
 		log.severe("variable " + token.getLexeme() + 
 				" used outside of any scope at " + token.getLocation());
 	}
+	
+	
+	
 
 }
