@@ -18,6 +18,7 @@ import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
 import symbolTable.Binding;
 import symbolTable.Scope;
+import static symbolTable.ScopeControl.*;
 
 public class FunctionDeclarationVisitor extends ParseNodeVisitor.Default {
 
@@ -64,35 +65,6 @@ public class FunctionDeclarationVisitor extends ParseNodeVisitor.Default {
 //			leaveScope(node);
 //		}
 //	}
-	
-	///////////////////////////////////////////////////////////////////////////
-	// scope control
-	
-	private void enterProgramScope(ParseNode node) {
-		Scope scope = Scope.createProgramScope();
-		node.setScope(scope);
-		enterScopeDebug(node, scope);
-	}	
-	
-	private void enterParameterScope(ParseNode node) {
-		Scope baseScope = node.getLocalScope();
-		Scope scope = baseScope.createParameterScope();
-		node.setScope(scope);
-		enterScopeDebug(node, scope);
-	}
-	
-//	private void enterProcedureScope(ParseNode node) {
-//		Scope baseScope = node.getLocalScope();
-//		Scope scope = baseScope.createProcedureScope();
-//		node.setScope(scope);
-//		
-//	}
-//	
-	
-	private void leaveScope(ParseNode node) {
-		exitScopeDebug(node, node.getScope());
-		node.getScope().leave();
-	}
 	
 	
 	///////////////////////////////////////////////////////////////////////////

@@ -37,6 +37,7 @@ import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
 import symbolTable.Binding;
 import symbolTable.Scope;
+import static symbolTable.ScopeControl.*;
 import tokens.LextantToken;
 import tokens.Token;
 
@@ -67,7 +68,12 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	}
 	
 	public void visitEnter(BlockNode node) {
-		enterSubscope(node);
+		if(node.getParent() instanceof FunctionNode) {
+			enterProcedureScope(node);
+		}else {
+			enterSubscope(node);
+		}
+		
 	}
 	public void visitLeave(BlockNode node) {
 		leaveScope(node);
@@ -80,41 +86,41 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 //		node.setScope(scope);
 //	}	
 	
-	@SuppressWarnings("unused")
-	private void enterSubscope(ParseNode node) {
-		Scope baseScope = node.getLocalScope();
-		Scope scope = baseScope.createSubscope();
-		node.setScope(scope);
-		
-		enterScopeDebug(node,scope);
-	}		
-	
-	private void reenterScope(ParseNode node) {
-		assert node.hasScope() : "Semantic Analysis - attempted to reenter scope that does not exist";
-		node.getScope().reenterScope();
-		
-		enterScopeDebug(node,node.getScope());
-	}
-	
-	private void leaveScope(ParseNode node) {
-		Scope oldScope = node.getScope();
-		node.getScope().leave();
-		exitScopeDebug(node, oldScope);
-	}
-	
-	
-	
-	///////////////////////////////////////////////////////////////////////////
-	// debug
-	
-	private void enterScopeDebug(ParseNode node, Scope scope) {
-		if(Scope.Debug) System.out.println("SemanticAnalysis - entering scope: " + node.getClass( )+ "\n" + scope.toString());
-		
-	}
-	
-	private void exitScopeDebug(ParseNode node, Scope scope) {
-		if(Scope.Debug) System.out.println("SemanticAnalysis - exiting scope: " + node.getClass() + "\n" + scope.toString());
-	}
+//	@SuppressWarnings("unused")
+//	private void enterSubscope(ParseNode node) {
+//		Scope baseScope = node.getLocalScope();
+//		Scope scope = baseScope.createSubscope();
+//		node.setScope(scope);
+//		
+//		enterScopeDebug(node,scope);
+//	}		
+//	
+//	private void reenterScope(ParseNode node) {
+//		assert node.hasScope() : "Semantic Analysis - attempted to reenter scope that does not exist";
+//		node.getScope().reenterScope();
+//		
+//		enterScopeDebug(node,node.getScope());
+//	}
+//	
+//	private void leaveScope(ParseNode node) {
+//		Scope oldScope = node.getScope();
+//		node.getScope().leave();
+//		exitScopeDebug(node, oldScope);
+//	}
+//	
+//	
+//	
+//	///////////////////////////////////////////////////////////////////////////
+//	// debug
+//	
+//	private void enterScopeDebug(ParseNode node, Scope scope) {
+//		if(Scope.Debug) System.out.println("SemanticAnalysis - entering scope: " + node.getClass( )+ "\n" + scope.toString());
+//		
+//	}
+//	
+//	private void exitScopeDebug(ParseNode node, Scope scope) {
+//		if(Scope.Debug) System.out.println("SemanticAnalysis - exiting scope: " + node.getClass() + "\n" + scope.toString());
+//	}
 	
 	///////////////////////////////////////////////////////////////////////////
 	// statements and declarations

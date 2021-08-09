@@ -45,7 +45,7 @@ import symbolTable.Binding;
 import symbolTable.Scope;
 
 import static asmCodeGenerator.CodeGeneratorAids.*;
-import static asmCodeGenerator.Macros.declareI;
+import static asmCodeGenerator.Macros.*;
 import static asmCodeGenerator.codeStorage.ASMCodeFragment.CodeType.*;
 import static asmCodeGenerator.codeStorage.ASMOpcode.*;
 
@@ -82,9 +82,10 @@ public class ASMCodeGenerator {
 		ASMCodeFragment code = new ASMCodeFragment(GENERATES_VOID);
 		code.add(DLabel, RunTime.GLOBAL_MEMORY_BLOCK);
 		code.add(DataZ, globalBlockSize);
-		code.add(Nop);
+		code.append(setFrameStackPointers());
 		return code;
 	}
+
 	private ASMCodeFragment programASM() {
 		ASMCodeFragment code = new ASMCodeFragment(GENERATES_VOID);
 		
@@ -94,12 +95,21 @@ public class ASMCodeGenerator {
 		
 		return code;
 	}
+	
 	private ASMCodeFragment programCode() {
 		CodeVisitor visitor = new CodeVisitor();
 		root.accept(visitor);
 		return visitor.removeRootCode(root);
 	}
-
+	
+	private ASMCodeFragment setFrameStackPointers() {
+		ASMCodeFragment code = new ASMCodeFragment(GENERATES_VOID);
+		code.add(Memtop);
+		storeITo(code, RunTime.FRAME_POINTER);
+		code.add(Memtop);
+		storeITo(code, RunTime.STACK_POINTER);
+		return code;
+	}
 
 	protected class CodeVisitor extends ParseNodeVisitor.Default {
 		private Map<ParseNode, ASMCodeFragment> codeMap;
@@ -108,7 +118,6 @@ public class ASMCodeGenerator {
 		public CodeVisitor() {
 			codeMap = new HashMap<ParseNode, ASMCodeFragment>();
 		}
-
 
 		////////////////////////////////////////////////////////////////////
         // Make the field "code" refer to a new fragment of different sorts.
@@ -160,32 +169,8 @@ public class ASMCodeGenerator {
 				code.markAsValue();
 			}	
 		}
-		private void turnAddressIntoValue(ASMCodeFragment code, ParseNode node) {
-			if(node.getType() == PrimitiveType.CHAR) {
-				code.add(LoadC);
-			}	
-			else if(node.getType() == PrimitiveType.INTEGER) {
-				code.add(LoadI);
-			}	
-			else if(node.getType() == PrimitiveType.FLOAT) {
-				code.add(LoadF);
-			}	
-			else if(node.getType() == PrimitiveType.STRING) {
-				code.add(LoadI);
-			}	
-			else if(node.getType() == PrimitiveType.BOOLEAN) {
-				code.add(LoadC);
-			}	
-			else if(node.getType() instanceof Array) {
-				code.add(LoadI);
-			}
-			else {
-				assert false : "node " + node;
-			}
-			code.markAsValue();
-		}
 		
-	    ////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////
         // ensures all types of ParseNode in given AST have at least a visitLeave	
 		public void visitLeave(ParseNode node) {
 			assert false : "node " + node + " not handled in ASMCodeGenerator";

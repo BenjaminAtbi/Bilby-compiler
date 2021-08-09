@@ -13,7 +13,7 @@ public class Scope {
 	private MemoryAllocator allocator;
 	private SymbolTable symbolTable;
 	
-	public static boolean Debug = false;
+	public static boolean Debug = true;
 	
 //////////////////////////////////////////////////////////////////////
 // factories

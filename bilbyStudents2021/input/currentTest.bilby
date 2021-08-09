@@ -1,6 +1,7 @@
 
 func int shit(int a, float b){
-	imm c := 4;
+	print "shit" $s a $s b $n;
+	imm c := 3;
 	%return a;
 }
 
