@@ -26,6 +26,7 @@ public enum Keyword implements Lextant {
 	STRING("string"),
 	INT("int"),
 	FLOAT("float"),
+	VOID("void"),
 	ARRAY("array"),
 	FUNC("func"),
 	RETURN("return"),

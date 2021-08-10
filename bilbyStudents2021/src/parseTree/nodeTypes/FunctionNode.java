@@ -56,6 +56,9 @@ public class FunctionNode extends ParseNode {
 		this.binding = binding;
 	}
 	
+	public Binding getBinding() {
+		return binding;
+	}
 	public void setSignature(FunctionSignature signature) {
 		this.signature = signature;
 	}

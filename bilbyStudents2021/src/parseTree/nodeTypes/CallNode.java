@@ -10,16 +10,13 @@ import tokens.LextantToken;
 import tokens.Token;
 import tokens.TypeToken;
 
-public class ReturnNode extends ParseNode {
+public class CallNode extends ParseNode {
 	
-	String functionIdentifier;
-	
-	public ReturnNode(Token token) {
+	public CallNode(Token token) {
 		super(token);
-		assert(token.isLextant(Keyword.RETURN));
-		functionIdentifier = null;
+		assert(token.isLextant(Keyword.CALL));
 	}
-	public ReturnNode(ParseNode node) {
+	public CallNode(ParseNode node) {
 		super(node);
 	}
 
@@ -27,7 +24,7 @@ public class ReturnNode extends ParseNode {
 // factory
 	
 	public static ParseNode withChild(Token token, ParseNode child) {
-		ReturnNode node = new ReturnNode(token);
+		CallNode node = new CallNode(token);
 		node.appendChild(child);
 		return node;
 	}
@@ -38,13 +35,5 @@ public class ReturnNode extends ParseNode {
 		visitor.visitEnter(this);
 		visitChildren(visitor);
 		visitor.visitLeave(this);
-	}
-	public void setFunctionIdentifier(String lexeme) {
-		functionIdentifier = lexeme;
-		
-	}
-	public String getFunctionIdentifier() {
-		return functionIdentifier;
-		
 	}
 }

@@ -9,6 +9,7 @@ import asmCodeGenerator.codeStorage.ASMCodeFragment;
 import asmCodeGenerator.codeStorage.ASMOpcode;
 import asmCodeGenerator.operators.ArrayIndexCodeGenerator;
 import asmCodeGenerator.operators.ArrayListCodeGenerator;
+import asmCodeGenerator.operators.FunctionCodeGenerator;
 import asmCodeGenerator.operators.SimpleCodeGenerator;
 import asmCodeGenerator.runtime.MemoryManager;
 import asmCodeGenerator.runtime.RunTime;
@@ -29,19 +30,23 @@ import parseTree.nodeTypes.IfStatementNode;
 import parseTree.nodeTypes.IntegerConstantNode;
 import parseTree.nodeTypes.NewlineNode;
 import parseTree.nodeTypes.OperatorNode;
+import parseTree.nodeTypes.ParameterListNode;
 import parseTree.nodeTypes.PrintStatementNode;
 import parseTree.nodeTypes.ProgramNode;
+import parseTree.nodeTypes.ReturnNode;
 import parseTree.nodeTypes.SpaceNode;
 import parseTree.nodeTypes.StringConstantNode;
 import parseTree.nodeTypes.TypeNode;
+import parseTree.nodeTypes.CallNode;
 import parseTree.nodeTypes.WhileStatementNode;
+import parseTree.nodeTypes.InvocationNode;
 import semanticAnalyzer.signatures.PromotedSignature;
 import semanticAnalyzer.signatures.Promotion;
 import semanticAnalyzer.types.Array;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Range;
 import semanticAnalyzer.types.Type;
-
+import semanticAnalyzer.types.VoidType;
 import symbolTable.Binding;
 import symbolTable.Scope;
 
@@ -91,6 +96,10 @@ public class ASMCodeGenerator {
 		ASMCodeFragment code = new ASMCodeFragment(GENERATES_VOID);
 		
 		code.add(    Label, RunTime.MAIN_PROGRAM_LABEL);
+		code.add(Memtop);
+		storeITo(code, RunTime.FRAME_POINTER);
+		code.add(Memtop);
+		storeITo(code, RunTime.STACK_POINTER);
 		code.append( programCode());
 		code.add(    Halt );
 		
@@ -105,10 +114,6 @@ public class ASMCodeGenerator {
 	
 	private ASMCodeFragment setFrameStackPointers() {
 		ASMCodeFragment code = new ASMCodeFragment(GENERATES_VOID);
-		code.add(Memtop);
-		storeITo(code, RunTime.FRAME_POINTER);
-		code.add(Memtop);
-		storeITo(code, RunTime.STACK_POINTER);
 		return code;
 	}
 
@@ -183,8 +188,10 @@ public class ASMCodeGenerator {
 		// constructs larger than statements
 		public void visitLeave(ProgramNode node) {
 			newVoidCode(node);
+			code.add(Jump,"AFTER-FUNCTIONS");
 			for(ParseNode child : node.getChildren()) {
 				ASMCodeFragment childCode = removeVoidCode(child);
+				if(child instanceof BlockNode) code.add(Label, "AFTER-FUNCTIONS");
 				code.append(childCode);
 			}
 		}
@@ -196,14 +203,17 @@ public class ASMCodeGenerator {
 			}
 		}
 		public void visitLeave(FunctionNode node) {
-			// label for function, get it from binding?
-			
+			newVoidCode(node);
+			SimpleCodeGenerator generator = new FunctionCodeGenerator();
+			List<ASMCodeFragment> args = new ArrayList<>();
+			args.add(removeVoidCode(node.child(3)));
+			code.append(generator.generate(node, args));
+
 			// body code?
 			// if body has a variable, identifier automatically finds correct binding, grabs value relative to frame pointer
 			// if body references parameter, identifier will look up scope tree until it finds most recent instance, either parameter or 
 			// 			a local shadowing the parameter
 		}
-
 		///////////////////////////////////////////////////////////////////////////
 		// statements and declarations
 
@@ -249,7 +259,6 @@ public class ASMCodeGenerator {
 			newVoidCode(node);
 			ASMCodeFragment lvalue = removeAddressCode(node.child(0));	
 			ASMCodeFragment rvalue = removeValueCode(node.child(1));
-			
 			code.append(lvalue);
 			code.append(rvalue);
 			Type type = node.getType();
@@ -260,17 +269,68 @@ public class ASMCodeGenerator {
 			newVoidCode(node);
 			ASMCodeFragment lvalue = removeAddressCode(node.child(0));	
 			ASMCodeFragment rvalue = removeValueCode(node.child(1));
-			
 			code.append(lvalue);
 			code.append(rvalue);
+			
 			
 			Promotion rightPromotion = node.getPromotedSignature().getPromotions().get(1);
 			code.append(rightPromotion.codeFor());
 			Type type = node.getType();
+			
 			code.append(opcodeForStore(type));
+			
 		}
 
+		////////////////////////////////////////////////////////////////////////////
+		// invocation
+		
+		public void vistLeave(CallNode node) {
+			newVoidCode(node);
+			Type type = node.child(0).getType();
+			ASMCodeFragment invocation = removeValueCode(node.child(0));
+			code.append(invocation);
+			if(!(type instanceof VoidType)) {
+				code.add(Pop);
+			}
+			
+		}
+		
+		public void visitLeave(InvocationNode node) {
+			newValueCode(node);
+			//push parameters to frame stack
+			assert node.child(1) instanceof ParameterListNode : "CodeGenerator - Invocation Node: second child is not parameter list";
+			ASMCodeFragment parameters = removeVoidCode(node.child(1));
+			code.append(parameters);
+			
+			code.add(Call, RunTime.FUNCTION_PREFIX+node.getBinding().getLexeme());
+			
+			if(!(node.getType() instanceof VoidType)) {
+				loadIFrom(code, RunTime.STACK_POINTER);
+				code.append(opcodeForLoad(node.getType()));
+				code.add(PushI, node.getType().getSize());
+				addITo(code, RunTime.STACK_POINTER);
+			}
+		}
 
+		public void visitLeave(ParameterListNode node) {
+			newVoidCode(node);
+			if(node.getToken().isLextant(Punctuator.ARGUMENT_LIST)) {
+				for(ParseNode child: node.getChildren()) {
+					ASMCodeFragment parameter = removeValueCode(child);
+					ASMCodeFragment pushParameter = stackPushArg(parameter, child.getType());
+					code.append(pushParameter);
+				}
+			}
+		}
+		
+		public void visitLeave(ReturnNode node) {
+			newVoidCode(node);
+			if(node.nChildren() != 0) {
+				ASMCodeFragment value = removeValueCode(node.child(0));
+				code.append(value);
+			}
+			code.add(Jump, RunTime.FUNCTION_END_PREFIX+node.getFunctionIdentifier());
+		}
 		///////////////////////////////////////////////////////////////////////////
 		// expressions
 		public void visitLeave(OperatorNode node) {

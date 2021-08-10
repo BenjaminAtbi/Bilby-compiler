@@ -1,12 +1,20 @@
 
 func int shit(int a, float b){
 	imm c := 3;
-	print "shit" $s a $s b $s c $n;
-	%return a;
+	print "shit" $s c $s a $s b $n;
+
+	return a;
+	print "damn" $n;
+}
+
+func float fluke(){
+	return 7.7;
 }
 
 main {
 	print "fuck" $n;
-	imm d := 50;
-	print shit(3, d) $n;
+	print fluke() $s $n;
+	imm f := shit(3, 5.5);
+	print "bitch" $s f $n;
+
 }

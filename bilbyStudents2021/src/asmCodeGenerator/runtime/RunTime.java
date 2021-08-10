@@ -29,6 +29,8 @@ public class RunTime {
 	public static final String MAIN_PROGRAM_LABEL     = "$$main";
 	public static final String FRAME_POINTER 		  = "$frame-pointer";
 	public static final String STACK_POINTER 		  = "$stack-pointer";
+	public static final String FUNCTION_PREFIX		  = "$function-";
+	public static final String FUNCTION_END_PREFIX 	  = "$function-end-";
 	
 	public static final String GENERAL_RUNTIME_ERROR = "$$general-runtime-error";
 	public static final String INTEGER_DIVIDE_BY_ZERO_RUNTIME_ERROR = "$$i-divide-by-zero";
@@ -38,11 +40,7 @@ public class RunTime {
 	public static final String ARRAY_NOT_INITIALIZED_ERROR = "$$array-not-initialized";
 	public static final String RANGE_CONTAINS_INVALID_TYPE_ERROR = "$$range-contains-invalid-type";
 	public static final String RANGE_LOW_HIGH_MISMATCH_ERROR = "$$range-low-high-mismatch";
-
 	
-	
-	
-
 	private ASMCodeFragment environmentASM() {
 		ASMCodeFragment result = new ASMCodeFragment(GENERATES_VOID);
 		result.append(jumpToMain());
@@ -55,8 +53,6 @@ public class RunTime {
 		return result;
 	}
 	
-
-
 	private ASMCodeFragment jumpToMain() {
 		ASMCodeFragment frag = new ASMCodeFragment(GENERATES_VOID);
 		frag.add(Jump, MAIN_PROGRAM_LABEL);

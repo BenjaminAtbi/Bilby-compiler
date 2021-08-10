@@ -328,6 +328,10 @@
         Label        $$range-low-high-mismatch 
         PushD        $range-low-high-mismatch  
         Jump         $$general-runtime-error   
+        DLabel       $frame-pointer            
+        DataZ        4                         
+        DLabel       $stack-pointer            
+        DataZ        4                         
         DLabel       $reference-space-1        
         DataZ        4                         
         DLabel       $reference-space-2        
@@ -344,60 +348,333 @@
         DataZ        8                         
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        0                         
+        DataZ        16                        
         Label        $$main                    
-        PushI        2                         
-        Nop                                    
-        PushI        2                         
-        Nop                                    
-        Negate                                 
-        Nop                                    
-        Subtract                               
-        JumpNeg      $$range-low-high-mismatch 
-        PushI        2                         
-        Nop                                    
-        Negate                                 
-        Nop                                    
-        PushI        2                         
-        Nop                                    
-        Nop                                    
-        PushI        3                         
-        Nop                                    
-        Negate                                 
-        Nop                                    
-        Subtract                               
-        JumpNeg      -in-generator-1-false     
-        PushI        3                         
-        Nop                                    
-        Negate                                 
-        Nop                                    
+        Memtop                                 
+        PushD        $frame-pointer            
+        Exchange                               
+        StoreI                                 
+        Memtop                                 
+        PushD        $stack-pointer            
+        Exchange                               
+        StoreI                                 
+        Jump         AFTER-FUNCTIONS           
+        Label        $function-shit            
+        PushD        $stack-pointer            
+        LoadI                                  
+        PushI        -4                        
+        Add                                    
+        PushD        $frame-pointer            
+        LoadI                                  
+        StoreI                                 
+        PushD        $stack-pointer            
+        LoadI                                  
+        PushI        -8                        
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushD        $stack-pointer            
+        LoadI                                  
+        PushD        $frame-pointer            
+        Exchange                               
+        StoreI                                 
+        PushI        12                        
+        PushD        $stack-pointer            
+        LoadI                                  
         Exchange                               
         Subtract                               
-        JumpNeg      -in-generator-1-false     
-        PushI        1                         
-        Jump         -in-generator-1-end       
-        Label        -in-generator-1-false     
-        PushI        0                         
-        Label        -in-generator-1-end       
-        JumpTrue     -print-boolean-2-true     
-        PushD        $boolean-false-string     
-        Jump         -print-boolean-2-join     
-        Label        -print-boolean-2-true     
-        PushD        $boolean-true-string      
-        Label        -print-boolean-2-join     
-        PushD        $print-format-boolean     
+        PushD        $stack-pointer            
+        Exchange                               
+        StoreI                                 
+        PushD        $frame-pointer            
+        LoadI                                  
+        PushI        -12                       
+        Add                                    %% c
+        PushI        3                         
+        StoreI                                 
+        DLabel       -string-constant-1-       
+        DataI        3                         
+        DataI        9                         
+        DataI        4                         
+        DataC        115                       %% "shit"
+        DataC        104                       
+        DataC        105                       
+        DataC        116                       
+        DataC        0                         
+        PushD        -string-constant-1-       
+        PushI        12                        
+        Add                                    
+        PushD        $print-format-string      
         Printf                                 
         PushI        32                        
         PushD        $print-format-char        
         Printf                                 
+        PushD        $frame-pointer            
+        LoadI                                  
+        PushI        -12                       
+        Add                                    %% c
+        LoadI                                  
+        PushD        $print-format-integer     
+        Printf                                 
+        PushI        32                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushD        $frame-pointer            
+        LoadI                                  
+        PushI        8                         
+        Add                                    %% a
+        LoadI                                  
+        PushD        $print-format-integer     
+        Printf                                 
+        PushI        32                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushD        $frame-pointer            
+        LoadI                                  
         PushI        0                         
-        JumpTrue     -print-boolean-3-true     
-        PushD        $boolean-false-string     
-        Jump         -print-boolean-3-join     
-        Label        -print-boolean-3-true     
-        PushD        $boolean-true-string      
-        Label        -print-boolean-3-join     
-        PushD        $print-format-boolean     
+        Add                                    %% b
+        LoadF                                  
+        PushD        $print-format-floating    
+        Printf                                 
+        PushI        10                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushD        $frame-pointer            
+        LoadI                                  
+        PushI        8                         
+        Add                                    %% a
+        LoadI                                  
+        Jump         $function-end-shit        
+        DLabel       -string-constant-2-       
+        DataI        3                         
+        DataI        9                         
+        DataI        4                         
+        DataC        100                       %% "damn"
+        DataC        97                        
+        DataC        109                       
+        DataC        110                       
+        DataC        0                         
+        PushD        -string-constant-2-       
+        PushI        12                        
+        Add                                    
+        PushD        $print-format-string      
+        Printf                                 
+        PushI        10                        
+        PushD        $print-format-char        
+        Printf                                 
+        Label        $function-end-shit        
+        PushD        $frame-pointer            
+        LoadI                                  
+        PushI        -8                        
+        Add                                    
+        LoadI                                  
+        PushD        $frame-pointer            
+        LoadI                                  
+        PushI        -4                        
+        Add                                    
+        LoadI                                  
+        PushD        $frame-pointer            
+        Exchange                               
+        StoreI                                 
+        PushI        24                        
+        PushD        $stack-pointer            
+        LoadI                                  
+        Add                                    
+        PushD        $stack-pointer            
+        Exchange                               
+        StoreI                                 
+        Exchange                               
+        PushI        4                         
+        PushD        $stack-pointer            
+        LoadI                                  
+        Exchange                               
+        Subtract                               
+        PushD        $stack-pointer            
+        Exchange                               
+        StoreI                                 
+        PushD        $stack-pointer            
+        LoadI                                  
+        Exchange                               
+        StoreI                                 
+        Return                                 
+        Label        $function-fluke           
+        PushD        $stack-pointer            
+        LoadI                                  
+        PushI        -4                        
+        Add                                    
+        PushD        $frame-pointer            
+        LoadI                                  
+        StoreI                                 
+        PushD        $stack-pointer            
+        LoadI                                  
+        PushI        -8                        
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushD        $stack-pointer            
+        LoadI                                  
+        PushD        $frame-pointer            
+        Exchange                               
+        StoreI                                 
+        PushI        8                         
+        PushD        $stack-pointer            
+        LoadI                                  
+        Exchange                               
+        Subtract                               
+        PushD        $stack-pointer            
+        Exchange                               
+        StoreI                                 
+        PushF        7.700000                  
+        Jump         $function-end-fluke       
+        Label        $function-end-fluke       
+        PushD        $frame-pointer            
+        LoadI                                  
+        PushI        -8                        
+        Add                                    
+        LoadI                                  
+        PushD        $frame-pointer            
+        LoadI                                  
+        PushI        -4                        
+        Add                                    
+        LoadI                                  
+        PushD        $frame-pointer            
+        Exchange                               
+        StoreI                                 
+        PushI        8                         
+        PushD        $stack-pointer            
+        LoadI                                  
+        Add                                    
+        PushD        $stack-pointer            
+        Exchange                               
+        StoreI                                 
+        Exchange                               
+        PushI        8                         
+        PushD        $stack-pointer            
+        LoadI                                  
+        Exchange                               
+        Subtract                               
+        PushD        $stack-pointer            
+        Exchange                               
+        StoreI                                 
+        PushD        $stack-pointer            
+        LoadI                                  
+        Exchange                               
+        StoreF                                 
+        Return                                 
+        Label        AFTER-FUNCTIONS           
+        DLabel       -string-constant-3-       
+        DataI        3                         
+        DataI        9                         
+        DataI        4                         
+        DataC        102                       %% "fuck"
+        DataC        117                       
+        DataC        99                        
+        DataC        107                       
+        DataC        0                         
+        PushD        -string-constant-3-       
+        PushI        12                        
+        Add                                    
+        PushD        $print-format-string      
+        Printf                                 
+        PushI        10                        
+        PushD        $print-format-char        
+        Printf                                 
+        Call         $function-fluke           
+        PushD        $stack-pointer            
+        LoadI                                  
+        LoadF                                  
+        PushI        8                         
+        PushD        $stack-pointer            
+        LoadI                                  
+        Add                                    
+        PushD        $stack-pointer            
+        Exchange                               
+        StoreI                                 
+        PushD        $print-format-floating    
+        Printf                                 
+        PushI        32                        
+        PushD        $print-format-char        
+        Printf                                 
+        Call         $function-fluke           
+        PushD        $stack-pointer            
+        LoadI                                  
+        LoadF                                  
+        PushI        8                         
+        PushD        $stack-pointer            
+        LoadI                                  
+        Add                                    
+        PushD        $stack-pointer            
+        Exchange                               
+        StoreI                                 
+        PushD        $print-format-floating    
+        Printf                                 
+        PushI        10                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        12                        
+        Add                                    %% f
+        PushI        3                         
+        PushI        4                         
+        PushD        $stack-pointer            
+        LoadI                                  
+        Exchange                               
+        Subtract                               
+        PushD        $stack-pointer            
+        Exchange                               
+        StoreI                                 
+        PushD        $stack-pointer            
+        LoadI                                  
+        Exchange                               
+        StoreI                                 
+        PushF        5.500000                  
+        PushI        8                         
+        PushD        $stack-pointer            
+        LoadI                                  
+        Exchange                               
+        Subtract                               
+        PushD        $stack-pointer            
+        Exchange                               
+        StoreI                                 
+        PushD        $stack-pointer            
+        LoadI                                  
+        Exchange                               
+        StoreF                                 
+        Call         $function-shit            
+        PushD        $stack-pointer            
+        LoadI                                  
+        LoadI                                  
+        PushI        4                         
+        PushD        $stack-pointer            
+        LoadI                                  
+        Add                                    
+        PushD        $stack-pointer            
+        Exchange                               
+        StoreI                                 
+        StoreI                                 
+        DLabel       -string-constant-4-       
+        DataI        3                         
+        DataI        9                         
+        DataI        5                         
+        DataC        98                        %% "bitch"
+        DataC        105                       
+        DataC        116                       
+        DataC        99                        
+        DataC        104                       
+        DataC        0                         
+        PushD        -string-constant-4-       
+        PushI        12                        
+        Add                                    
+        PushD        $print-format-string      
+        Printf                                 
+        PushI        32                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        12                        
+        Add                                    %% f
+        LoadI                                  
+        PushD        $print-format-integer     
         Printf                                 
         PushI        10                        
         PushD        $print-format-char        
@@ -562,7 +839,7 @@
         LoadI                                  
         PushI        8                         
         Subtract                               
-        JumpNeg      -print-value-4-char       
+        JumpNeg      -print-value-5-char       
         PushD        $print-value-address      
         LoadI                                  
         PushD        $print-value-typeid       
@@ -583,44 +860,44 @@
         PushD        $print-value-address      
         Exchange                               
         StoreI                                 
-        Jump         -print-value-4-end        
-        Label        -print-value-4-char       
+        Jump         -print-value-5-end        
+        Label        -print-value-5-char       
         PushD        $print-value-typeid       
         LoadI                                  
-        JumpTrue     -print-value-4-int        
+        JumpTrue     -print-value-5-int        
         PushD        $print-value-address      
         LoadI                                  
         LoadC                                  
         PushD        $print-format-char        
         Printf                                 
-        Label        -print-value-4-int        
+        Label        -print-value-5-int        
         PushD        $print-value-typeid       
         LoadI                                  
         PushI        1                         
         Subtract                               
-        JumpTrue     -print-value-4-float      
+        JumpTrue     -print-value-5-float      
         PushD        $print-value-address      
         LoadI                                  
         LoadI                                  
         PushD        $print-format-integer     
         Printf                                 
-        Label        -print-value-4-float      
+        Label        -print-value-5-float      
         PushD        $print-value-typeid       
         LoadI                                  
         PushI        2                         
         Subtract                               
-        JumpTrue     -print-value-4-string     
+        JumpTrue     -print-value-5-string     
         PushD        $print-value-address      
         LoadI                                  
         LoadF                                  
         PushD        $print-format-floating    
         Printf                                 
-        Label        -print-value-4-string     
+        Label        -print-value-5-string     
         PushD        $print-value-typeid       
         LoadI                                  
         PushI        3                         
         Subtract                               
-        JumpTrue     -print-value-4-bool       
+        JumpTrue     -print-value-5-bool       
         PushD        $print-value-address      
         LoadI                                  
         LoadI                                  
@@ -628,84 +905,84 @@
         Add                                    
         PushD        $print-format-string      
         Printf                                 
-        Label        -print-value-4-bool       
+        Label        -print-value-5-bool       
         PushD        $print-value-typeid       
         LoadI                                  
         PushI        4                         
         Subtract                               
-        JumpTrue     -print-value-4-end        
+        JumpTrue     -print-value-5-end        
         PushD        $print-value-address      
         LoadI                                  
         LoadC                                  
-        JumpTrue     -print-value-4-true       
+        JumpTrue     -print-value-5-true       
         PushD        $boolean-false-string     
-        Jump         -print-value-4-pastTrue   
-        Label        -print-value-4-true       
+        Jump         -print-value-5-pastTrue   
+        Label        -print-value-5-true       
         PushD        $boolean-true-string      
-        Label        -print-value-4-pastTrue   
+        Label        -print-value-5-pastTrue   
         PushD        $print-format-string      
         Printf                                 
-        Label        -print-value-4-end        
+        Label        -print-value-5-end        
         PushD        $print-value-return-address 
         LoadI                                  
         Return                                 
         Label        $print-range              
-        DLabel       -print-range-5-return-address 
+        DLabel       -print-range-6-return-address 
         DataZ        4                         
-        DLabel       -print-range-5-typeID     
+        DLabel       -print-range-6-typeID     
         DataZ        4                         
-        DLabel       -print-range-5-address    
+        DLabel       -print-range-6-address    
         DataZ        4                         
-        PushD        -print-range-5-return-address 
+        PushD        -print-range-6-return-address 
         Exchange                               
         StoreI                                 
         PushI        7                         
         BTAnd                                  
-        PushD        -print-range-5-typeID     
+        PushD        -print-range-6-typeID     
         Exchange                               
         StoreI                                 
-        PushD        -print-range-5-address    
+        PushD        -print-range-6-address    
         Exchange                               
         StoreI                                 
         PushD        $print-format-less        
         Printf                                 
-        PushD        -print-range-5-address    
+        PushD        -print-range-6-address    
         LoadI                                  
-        PushD        -print-range-5-typeID     
+        PushD        -print-range-6-typeID     
         LoadI                                  
         Call         $print-value              
         PushD        $print-format-period      
         Printf                                 
-        PushD        -print-range-5-typeID     
+        PushD        -print-range-6-typeID     
         LoadI                                  
-        JumpTrue     -print-range-5-type-int   
+        JumpTrue     -print-range-6-type-int   
         PushI        1                         
-        Jump         -print-range-5-after-offset 
-        Label        -print-range-5-type-int   
-        PushD        -print-range-5-typeID     
+        Jump         -print-range-6-after-offset 
+        Label        -print-range-6-type-int   
+        PushD        -print-range-6-typeID     
         LoadI                                  
         PushI        1                         
         BTAnd                                  
-        JumpFalse    -print-range-5-type-float 
+        JumpFalse    -print-range-6-type-float 
         PushI        4                         
-        Jump         -print-range-5-after-offset 
-        Label        -print-range-5-type-float 
-        PushD        -print-range-5-typeID     
+        Jump         -print-range-6-after-offset 
+        Label        -print-range-6-type-float 
+        PushD        -print-range-6-typeID     
         LoadI                                  
         PushI        2                         
         BTAnd                                  
         JumpFalse    $$range-contains-invalid-type 
         PushI        8                         
-        Label        -print-range-5-after-offset 
-        PushD        -print-range-5-address    
+        Label        -print-range-6-after-offset 
+        PushD        -print-range-6-address    
         LoadI                                  
         Add                                    
-        PushD        -print-range-5-typeID     
+        PushD        -print-range-6-typeID     
         LoadI                                  
         Call         $print-value              
         PushD        $print-format-greater     
         Printf                                 
-        PushD        -print-range-5-return-address 
+        PushD        -print-range-6-return-address 
         LoadI                                  
         Return                                 
         Label        -mem-manager-make-tags    

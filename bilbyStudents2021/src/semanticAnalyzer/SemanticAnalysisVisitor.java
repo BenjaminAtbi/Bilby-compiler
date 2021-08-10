@@ -10,6 +10,7 @@ import logging.BilbyLogger;
 import parseTree.ParseNode;
 import parseTree.ParseNodeVisitor;
 import parseTree.nodeTypes.BooleanConstantNode;
+import parseTree.nodeTypes.CallNode;
 import parseTree.nodeTypes.CharConstantNode;
 import parseTree.nodeTypes.ArrayExpressionListNode;
 import parseTree.nodeTypes.AssignmentNode;
@@ -27,6 +28,7 @@ import parseTree.nodeTypes.OperatorNode;
 import parseTree.nodeTypes.ParameterListNode;
 import parseTree.nodeTypes.PrintStatementNode;
 import parseTree.nodeTypes.ProgramNode;
+import parseTree.nodeTypes.ReturnNode;
 import parseTree.nodeTypes.SpaceNode;
 import parseTree.nodeTypes.StringConstantNode;
 import parseTree.nodeTypes.TypeNode;
@@ -37,6 +39,7 @@ import semanticAnalyzer.signatures.PromotedSignature;
 import semanticAnalyzer.types.Array;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
+import semanticAnalyzer.types.VoidType;
 import symbolTable.Binding;
 import symbolTable.FunctionBinding;
 import symbolTable.Scope;
@@ -67,6 +70,11 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	}
 	
 	public void visitLeave(FunctionNode node) {
+		assert node.child(3) instanceof BlockNode :  "Semantic Analyzer: Function Node: 4th child is not block node";
+		BlockNode blockChild = (BlockNode) node.child(3);
+		assert blockChild.hasScope() : "function block has no scope";
+		
+		((FunctionBinding) node.getBinding()).setFrameSize(blockChild.getScope().getAllocatedSize());
 		leaveScope(node);
 	}
 	
@@ -110,7 +118,6 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 //		node.getScope().leave();
 //		exitScopeDebug(node, oldScope);
 //	}
-//	
 //	
 //	
 //	///////////////////////////////////////////////////////////////////////////
@@ -237,10 +244,15 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	///////////////////////////////////////////////////////////////////////////
 	// fuction invocation
 	
+	public void visitLeave(CallNode node) {
+		assert node.child(0) instanceof InvocationNode : "Semantic Analyzer: Call does not call a function invocation";
+	}
+	
+	
 	@Override
 	public void visitLeave(InvocationNode node) {
-		assert node.child(0) instanceof IdentifierNode :  "Semantic Analyzer: Function Node: 1st child is not identifier node";
-		assert node.child(1) instanceof ParameterListNode : "Semantic Analyzer: Function Node: 2nd child is not parameter list node"; 
+		assert node.child(0) instanceof IdentifierNode :  "Semantic Analyzer: Invocation Node: 1st child is not identifier node";
+		assert node.child(1) instanceof ParameterListNode : "Semantic Analyzer: Invocation Node: 2nd child is not parameter list node"; 
 		IdentifierNode identifier = (IdentifierNode) node.child(0);
 		ParameterListNode parameterList = (ParameterListNode) node.child(1);
 		
@@ -253,10 +265,37 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		if(signature.accepts(argumentTypes) && identifier.getType().equivalent(signature.resultType())) {
 			node.setType(signature.resultType());
 			node.setSignature(signature);
+			node.setBinding(binding);
 		} else {
 			typeCheckError(node, argumentTypes);
 			node.setType(PrimitiveType.ERROR);
 		}
+	}
+	
+	public void visitLeave(ReturnNode node) {
+		
+		ParseNode parent = node.getParent();
+		FunctionNode function = null;
+		while(parent.getParent() != ParseNode.NO_PARENT) {
+			parent = parent.getParent();
+			if(parent instanceof FunctionNode) {
+				function = (FunctionNode) parent;
+			}
+		}
+		
+		if(node.nChildren() == 0) {
+			assert function.getType() instanceof VoidType : "Semantic Analyzer: return no value but function not void";
+		} else {
+			Type type = node.child(0).getType();
+			
+			assert function != null : "return is not part of function block";
+			assert type.equivalent(function.getType()) : "return node returns incorrect type";
+			
+			node.setType(type);
+			node.setFunctionIdentifier(function.getBinding().getLexeme());
+		}
+		
+
 	}
 
 	///////////////////////////////////////////////////////////////////////////
@@ -322,10 +361,13 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	
 	@Override
 	public void visitLeave(TypeNode node) {
+		
 		if(node.isArray()) {
 			Type subtype = node.child(0).getType();
 			Type arrayType = new Array(subtype); 
 			node.setType(arrayType);
+		} else if(node.getToken().isLextant(Keyword.VOID)) {
+			assert node.getParent() instanceof FunctionNode : "using void type outside of function declaration";
 		} else {
 			node.setType(PrimitiveType.fromToken(node.LextantToken()));
 		}

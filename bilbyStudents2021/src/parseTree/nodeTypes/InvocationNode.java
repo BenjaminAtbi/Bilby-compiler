@@ -5,15 +5,20 @@ import lexicalAnalyzer.Punctuator;
 import parseTree.ParseNode;
 import parseTree.ParseNodeVisitor;
 import semanticAnalyzer.signatures.FunctionSignature;
+import symbolTable.Binding;
+import symbolTable.FunctionBinding;
 import tokens.Token;
 
 public class InvocationNode extends ParseNode {
 
 	FunctionSignature signature;
+	FunctionBinding binding;
 	
 	public InvocationNode(Token token) {
 		super(token);
 		assert(token.isLextant(Keyword.FUNC));
+		signature = null;
+		binding = null;
 	}
 	
 	public InvocationNode(ParseNode node) {
@@ -38,5 +43,14 @@ public class InvocationNode extends ParseNode {
 
 	public void setSignature(FunctionSignature signature) {
 		this.signature = signature;
+	}
+
+	public void setBinding(FunctionBinding binding) {
+		this.binding = binding;
+		
+	}
+	
+	public FunctionBinding getBinding() {
+		return binding;
 	}
 }

@@ -3,9 +3,11 @@ package asmCodeGenerator;
 import static asmCodeGenerator.codeStorage.ASMCodeFragment.CodeType.GENERATES_VOID;
 import static asmCodeGenerator.codeStorage.ASMCodeFragment.CodeType.GENERATES_VALUE;
 import static asmCodeGenerator.codeStorage.ASMOpcode.*;
+import static asmCodeGenerator.Macros.*;
 
 import asmCodeGenerator.codeStorage.ASMCodeFragment;
 import asmCodeGenerator.codeStorage.ASMOpcode;
+import asmCodeGenerator.runtime.RunTime;
 import asmCodeGenerator.codeStorage.ASMCodeFragment.CodeType;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
@@ -153,4 +155,17 @@ public class CodeGeneratorAids {
 		frag.add(DataZ, 8);
 		return frag;
 	}
+	
+	public static ASMCodeFragment stackPushArg(ASMCodeFragment arg, Type type) {
+		ASMCodeFragment frag = new ASMCodeFragment(GENERATES_VOID);
+		frag.append(arg);
+		stackPointerStore(frag, opcodeForStore(type), type.getSize());
+		return frag;
+	}
+	
+	
+	
+	
+	
+	
 }

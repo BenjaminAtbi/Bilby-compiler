@@ -2,7 +2,7 @@ package semanticAnalyzer.types;
 
 import java.util.Collection;
 
-public class Void implements Type {
+public class VoidType implements Type {
 
 	@Override
 	public int getSize() {

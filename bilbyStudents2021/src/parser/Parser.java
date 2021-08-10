@@ -6,6 +6,7 @@ import java.util.Arrays;
 import logging.BilbyLogger;
 import parseTree.*;
 import parseTree.nodeTypes.BooleanConstantNode;
+import parseTree.nodeTypes.CallNode;
 import parseTree.nodeTypes.CharConstantNode;
 import parseTree.nodeTypes.ArrayExpressionListNode;
 import parseTree.nodeTypes.AssignmentNode;
@@ -170,6 +171,9 @@ public class Parser {
 		if(startsReturnStatement(nowReading)) {
 			return parseReturnStatement();
 		}
+		if(startsCallStatement(nowReading)) {
+			return parseCallStatement();
+		}
 		return syntaxErrorNode("statement");
 	}
 	private boolean startsStatement(Token token) {
@@ -179,8 +183,27 @@ public class Parser {
 			   startsDeclaration(token) ||
 			   startsBlockStatement(token)||
 			   startsAssignmentStatement(token)||
-			   startsReturnStatement(token);
+			   startsReturnStatement(token)||
+			   startsCallStatement(token);
 	}
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	private ParseNode parseCallStatement() {
+		if(!startsCallStatement(nowReading)) {
+			return syntaxErrorNode("call statement");
+		}
+		Token callToken = nowReading;
+		expect(Keyword.CALL);
+		ParseNode expression = parseInvocation();
+		expect(Punctuator.TERMINATOR);
+		return CallNode.withChild(callToken, expression);
+	}
+	
+	private boolean startsCallStatement(Token token) {
+		return token.isLextant(Keyword.CALL);
+	}
+	
 	
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -583,6 +606,9 @@ public class Parser {
 		if(startsInvocation(nowReading)) {
 			return parseInvocation();
 		}
+		if(startsReturn(nowReading)) {
+			return parseReturn();
+		}
 		return parseLiteral();
 	}
 	
@@ -592,7 +618,22 @@ public class Parser {
 				startsSquareBracketExpression(token) || 
 				startsAllocExpression(token) || 
 				startsRangeExpression(token) ||
-				startsInvocation(token);
+				startsInvocation(token) ||
+				startsReturn(token);
+	}
+	
+	private ParseNode parseReturn() {
+		if(!startsReturn(nowReading)) {
+			return syntaxErrorNode("return");
+		}
+		Token returnToken = nowReading;
+		expect(Keyword.RETURN);
+		ParseNode expression = parseExpression();
+		return ReturnNode.withChild(returnToken, expression);
+	}
+	
+	private boolean startsReturn(Token token) {
+		return token.isLextant(Keyword.RETURN);
 	}
 	
 	private ParseNode parseParantheticExpression() {

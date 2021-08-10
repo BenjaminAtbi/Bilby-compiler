@@ -56,6 +56,16 @@
         DLabel       $print-format-close-square 
         DataC        93                        %% "]"
         DataC        0                         
+        DLabel       $print-format-less        
+        DataC        60                        %% "<"
+        DataC        0                         
+        DLabel       $print-format-greater     
+        DataC        62                        %% ">"
+        DataC        0                         
+        DLabel       $print-format-period      
+        DataC        46                        %% ".."
+        DataC        46                        
+        DataC        0                         
         DLabel       $print-format-comma       
         DataC        44                        %% ","
         DataC        0                         
@@ -240,6 +250,88 @@
         Label        $$array-not-initialized   
         PushD        $array-not-initialized    
         Jump         $$general-runtime-error   
+        DLabel       $range-contains-invalid-type 
+        DataC        114                       %% "range contains invalid type"
+        DataC        97                        
+        DataC        110                       
+        DataC        103                       
+        DataC        101                       
+        DataC        32                        
+        DataC        99                        
+        DataC        111                       
+        DataC        110                       
+        DataC        116                       
+        DataC        97                        
+        DataC        105                       
+        DataC        110                       
+        DataC        115                       
+        DataC        32                        
+        DataC        105                       
+        DataC        110                       
+        DataC        118                       
+        DataC        97                        
+        DataC        108                       
+        DataC        105                       
+        DataC        100                       
+        DataC        32                        
+        DataC        116                       
+        DataC        121                       
+        DataC        112                       
+        DataC        101                       
+        DataC        0                         
+        Label        $$range-contains-invalid-type 
+        PushD        $range-contains-invalid-type 
+        Jump         $$general-runtime-error   
+        DLabel       $range-low-high-mismatch  
+        DataC        114                       %% "range low value is higher than high value"
+        DataC        97                        
+        DataC        110                       
+        DataC        103                       
+        DataC        101                       
+        DataC        32                        
+        DataC        108                       
+        DataC        111                       
+        DataC        119                       
+        DataC        32                        
+        DataC        118                       
+        DataC        97                        
+        DataC        108                       
+        DataC        117                       
+        DataC        101                       
+        DataC        32                        
+        DataC        105                       
+        DataC        115                       
+        DataC        32                        
+        DataC        104                       
+        DataC        105                       
+        DataC        103                       
+        DataC        104                       
+        DataC        101                       
+        DataC        114                       
+        DataC        32                        
+        DataC        116                       
+        DataC        104                       
+        DataC        97                        
+        DataC        110                       
+        DataC        32                        
+        DataC        104                       
+        DataC        105                       
+        DataC        103                       
+        DataC        104                       
+        DataC        32                        
+        DataC        118                       
+        DataC        97                        
+        DataC        108                       
+        DataC        117                       
+        DataC        101                       
+        DataC        0                         
+        Label        $$range-low-high-mismatch 
+        PushD        $range-low-high-mismatch  
+        Jump         $$general-runtime-error   
+        DLabel       $frame-pointer            
+        DataZ        4                         
+        DLabel       $stack-pointer            
+        DataZ        4                         
         DLabel       $reference-space-1        
         DataZ        4                         
         DLabel       $reference-space-2        
@@ -248,19 +340,189 @@
         DataZ        4                         
         DLabel       $reference-space-Iter     
         DataZ        4                         
+        DLabel       $range-move-outer-val     
+        DataZ        8                         
+        DLabel       $range-move-inner-val     
+        DataZ        8                         
+        DLabel       $range-load-outer-val     
+        DataZ        8                         
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        4                         
-        Label        $$main                    
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% abcd
-        PushI        8                         
+        DataZ        12                        
+        Memtop                                 
+        PushD        $frame-pointer            
+        Exchange                               
         StoreI                                 
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% abcd
+        Memtop                                 
+        PushD        $stack-pointer            
+        Exchange                               
+        StoreI                                 
+        Label        $$main                    
+        Jump         AFTER-FUNCTIONS           
+        Label        $function-shit            
+        PStack                                 
+        PushD        $frame-pointer            
         LoadI                                  
+        PushI        4                         
+        PushD        $stack-pointer            
+        LoadI                                  
+        Exchange                               
+        Subtract                               
+        PushD        $stack-pointer            
+        Exchange                               
+        StoreI                                 
+        PushD        $stack-pointer            
+        LoadI                                  
+        LoadI                                  
+        Exchange                               
+        StoreI                                 
+        PushI        4                         
+        PushD        $stack-pointer            
+        LoadI                                  
+        Exchange                               
+        Subtract                               
+        PushD        $stack-pointer            
+        Exchange                               
+        StoreI                                 
+        PushD        $stack-pointer            
+        LoadI                                  
+        LoadI                                  
+        Exchange                               
+        StoreI                                 
+        PushD        $stack-pointer            
+        LoadI                                  
+        PushD        $frame-pointer            
+        Exchange                               
+        StoreI                                 
+        PushI        12                        
+        PushD        $stack-pointer            
+        LoadI                                  
+        Exchange                               
+        Subtract                               
+        PushD        $stack-pointer            
+        Exchange                               
+        StoreI                                 
+        PushD        $frame-pointer            
+        LoadI                                  
+        PushI        -12                       
+        Add                                    %% c
+        PushI        3                         
+        StoreI                                 
+        DLabel       -string-constant-1-       
+        DataI        3                         
+        DataI        9                         
+        DataI        4                         
+        DataC        115                       %% "shit"
+        DataC        104                       
+        DataC        105                       
+        DataC        116                       
+        DataC        0                         
+        PushD        -string-constant-1-       
+        PushI        12                        
+        Add                                    
+        PushD        $print-format-string      
+        Printf                                 
+        PushI        10                        
+        PushD        $print-format-char        
+        Printf                                 
+        Label        $function-end-shit        
+        PushD        $frame-pointer            
+        PushI        -8                        
+        Add                                    
+        LoadI                                  
+        LoadI                                  
+        PushD        $frame-pointer            
+        PushI        -4                        
+        Add                                    
+        LoadI                                  
+        PushD        $frame-pointer            
+        Exchange                               
+        StoreI                                 
+        PushI        24                        
+        PushD        $stack-pointer            
+        LoadI                                  
+        Add                                    
+        PushD        $stack-pointer            
+        Exchange                               
+        StoreI                                 
+        PStack                                 
+        Return                                 
+        Label        AFTER-FUNCTIONS           
+        DLabel       -string-constant-2-       
+        DataI        3                         
+        DataI        9                         
+        DataI        4                         
+        DataC        102                       %% "fuck"
+        DataC        117                       
+        DataC        99                        
+        DataC        107                       
+        DataC        0                         
+        PushD        -string-constant-2-       
+        PushI        12                        
+        Add                                    
+        PushD        $print-format-string      
+        Printf                                 
+        PushI        10                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% d
+        PushI        5                         
+        StoreI                                 
+        DLabel       -string-constant-3-       
+        DataI        3                         
+        DataI        9                         
+        DataI        4                         
+        DataC        118                       %% "val:"
+        DataC        97                        
+        DataC        108                       
+        DataC        58                        
+        DataC        0                         
+        PushD        -string-constant-3-       
+        PushI        12                        
+        Add                                    
+        PushD        $print-format-string      
+        Printf                                 
+        PushI        32                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% d
+        LoadI                                  
+        PushD        $print-format-integer     
+        Printf                                 
+        PushI        10                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        8                         
+        Add                                    %% f
+        Call         $function-shit            
+        PushI        27                        
+        StoreI                                 
+        DLabel       -string-constant-4-       
+        DataI        3                         
+        DataI        9                         
+        DataI        5                         
+        DataC        98                        %% "bitch"
+        DataC        105                       
+        DataC        116                       
+        DataC        99                        
+        DataC        104                       
+        DataC        0                         
+        PushD        -string-constant-4-       
+        PushI        12                        
+        Add                                    
+        PushD        $print-format-string      
+        Printf                                 
+        PushI        32                        
+        PushD        $print-format-char        
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        8                         
+        Add                                    %% f
         LoadI                                  
         PushD        $print-format-integer     
         Printf                                 
@@ -423,43 +685,69 @@
         PushD        $print-value-address      
         Exchange                               
         StoreI                                 
-        Label        -print-value-1-char       
         PushD        $print-value-typeid       
         LoadI                                  
-        JumpTrue     -print-value-1-int        
+        PushI        8                         
+        Subtract                               
+        JumpNeg      -print-value-5-char       
+        PushD        $print-value-address      
+        LoadI                                  
+        PushD        $print-value-typeid       
+        LoadI                                  
+        PushD        $print-value-return-address 
+        LoadI                                  
+        PushD        $print-value-address      
+        LoadI                                  
+        PushD        $print-value-typeid       
+        LoadI                                  
+        Call         $print-range              
+        PushD        $print-value-return-address 
+        Exchange                               
+        StoreI                                 
+        PushD        $print-value-typeid       
+        Exchange                               
+        StoreI                                 
+        PushD        $print-value-address      
+        Exchange                               
+        StoreI                                 
+        Jump         -print-value-5-end        
+        Label        -print-value-5-char       
+        PushD        $print-value-typeid       
+        LoadI                                  
+        JumpTrue     -print-value-5-int        
         PushD        $print-value-address      
         LoadI                                  
         LoadC                                  
         PushD        $print-format-char        
         Printf                                 
-        Label        -print-value-1-int        
+        Label        -print-value-5-int        
         PushD        $print-value-typeid       
         LoadI                                  
         PushI        1                         
         Subtract                               
-        JumpTrue     -print-value-1-float      
+        JumpTrue     -print-value-5-float      
         PushD        $print-value-address      
         LoadI                                  
         LoadI                                  
         PushD        $print-format-integer     
         Printf                                 
-        Label        -print-value-1-float      
+        Label        -print-value-5-float      
         PushD        $print-value-typeid       
         LoadI                                  
         PushI        2                         
         Subtract                               
-        JumpTrue     -print-value-1-string     
+        JumpTrue     -print-value-5-string     
         PushD        $print-value-address      
         LoadI                                  
         LoadF                                  
         PushD        $print-format-floating    
         Printf                                 
-        Label        -print-value-1-string     
+        Label        -print-value-5-string     
         PushD        $print-value-typeid       
         LoadI                                  
         PushI        3                         
         Subtract                               
-        JumpTrue     -print-value-1-bool       
+        JumpTrue     -print-value-5-bool       
         PushD        $print-value-address      
         LoadI                                  
         LoadI                                  
@@ -467,25 +755,84 @@
         Add                                    
         PushD        $print-format-string      
         Printf                                 
-        Label        -print-value-1-bool       
+        Label        -print-value-5-bool       
         PushD        $print-value-typeid       
         LoadI                                  
         PushI        4                         
         Subtract                               
-        JumpTrue     -print-value-1-end        
+        JumpTrue     -print-value-5-end        
         PushD        $print-value-address      
         LoadI                                  
         LoadC                                  
-        JumpTrue     -print-value-1-true       
+        JumpTrue     -print-value-5-true       
         PushD        $boolean-false-string     
-        Jump         -print-value-1-pastTrue   
-        Label        -print-value-1-true       
+        Jump         -print-value-5-pastTrue   
+        Label        -print-value-5-true       
         PushD        $boolean-true-string      
-        Label        -print-value-1-pastTrue   
+        Label        -print-value-5-pastTrue   
         PushD        $print-format-string      
         Printf                                 
-        Label        -print-value-1-end        
+        Label        -print-value-5-end        
         PushD        $print-value-return-address 
+        LoadI                                  
+        Return                                 
+        Label        $print-range              
+        DLabel       -print-range-6-return-address 
+        DataZ        4                         
+        DLabel       -print-range-6-typeID     
+        DataZ        4                         
+        DLabel       -print-range-6-address    
+        DataZ        4                         
+        PushD        -print-range-6-return-address 
+        Exchange                               
+        StoreI                                 
+        PushI        7                         
+        BTAnd                                  
+        PushD        -print-range-6-typeID     
+        Exchange                               
+        StoreI                                 
+        PushD        -print-range-6-address    
+        Exchange                               
+        StoreI                                 
+        PushD        $print-format-less        
+        Printf                                 
+        PushD        -print-range-6-address    
+        LoadI                                  
+        PushD        -print-range-6-typeID     
+        LoadI                                  
+        Call         $print-value              
+        PushD        $print-format-period      
+        Printf                                 
+        PushD        -print-range-6-typeID     
+        LoadI                                  
+        JumpTrue     -print-range-6-type-int   
+        PushI        1                         
+        Jump         -print-range-6-after-offset 
+        Label        -print-range-6-type-int   
+        PushD        -print-range-6-typeID     
+        LoadI                                  
+        PushI        1                         
+        BTAnd                                  
+        JumpFalse    -print-range-6-type-float 
+        PushI        4                         
+        Jump         -print-range-6-after-offset 
+        Label        -print-range-6-type-float 
+        PushD        -print-range-6-typeID     
+        LoadI                                  
+        PushI        2                         
+        BTAnd                                  
+        JumpFalse    $$range-contains-invalid-type 
+        PushI        8                         
+        Label        -print-range-6-after-offset 
+        PushD        -print-range-6-address    
+        LoadI                                  
+        Add                                    
+        PushD        -print-range-6-typeID     
+        LoadI                                  
+        Call         $print-value              
+        PushD        $print-format-greater     
+        Printf                                 
+        PushD        -print-range-6-return-address 
         LoadI                                  
         Return                                 
         Label        -mem-manager-make-tags    

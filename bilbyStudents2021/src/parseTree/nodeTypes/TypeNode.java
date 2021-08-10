@@ -13,7 +13,7 @@ import tokens.TypeToken;
 public class TypeNode extends ParseNode {
 	public TypeNode(Token token) {
 		super(token);
-		assert(token.isLextant(Keyword.BOOL, Keyword.CHAR, Keyword.STRING, Keyword.INT, Keyword.FLOAT, Keyword.ARRAY));
+		assert(token.isLextant(Keyword.BOOL, Keyword.CHAR, Keyword.STRING, Keyword.INT, Keyword.FLOAT, Keyword.ARRAY, Keyword.VOID));
 	}
 	public TypeNode(ParseNode node) {
 		super(node);
