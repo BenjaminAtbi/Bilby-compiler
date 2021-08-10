@@ -328,6 +328,10 @@
         Label        $$range-low-high-mismatch 
         PushD        $range-low-high-mismatch  
         Jump         $$general-runtime-error   
+        DLabel       $frame-pointer            
+        DataZ        4                         
+        DLabel       $stack-pointer            
+        DataZ        4                         
         DLabel       $reference-space-1        
         DataZ        4                         
         DLabel       $reference-space-2        
@@ -346,6 +350,16 @@
         DLabel       $global-memory-block      
         DataZ        0                         
         Label        $$main                    
+        Memtop                                 
+        PushD        $frame-pointer            
+        Exchange                               
+        StoreI                                 
+        Memtop                                 
+        PushD        $stack-pointer            
+        Exchange                               
+        StoreI                                 
+        Jump         AFTER-FUNCTIONS           
+        Label        AFTER-FUNCTIONS           
         PushD        $print-format-less        
         Printf                                 
         PushI        99                        
